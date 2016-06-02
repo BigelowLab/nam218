@@ -76,17 +76,17 @@ NAMANLRefClass$methods(
 #' 
 #' @name NAMANLRefClass_get_layer
 #' @param name the name of the layer
-#' @param ... further arguments for the parameter
 #' @return RasterLayer object or NULL
 NAMANLRefClass$methods(
-    get_layer = function(name = 'Temperature'){
+    get_layer = function(name = 'Temperature', ...){
     
     if(!(name[1] %in% ncvarname_get(.self$NC))) {
         cat("variable not found:", name[1], "\n")
         return(NULL)
     }
     
-    x <- try(eval(call(name[1], .self)))
+    fun <- paste0("namanl_",name[1])
+    x <- try(eval(call(fun, .self)))
     if (inherits(x, 'try-error')){
         cat("that function is not defined:", name[1], "\n")
         R <- NULL
@@ -110,23 +110,44 @@ NAMANL <- function(nc, proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=
     NAMANLRefClass$new(nc, proj = proj)
 }
 
-# Temperature [x,y,isobaric,time]
-Temperature <- function(X, isobaric = 1000){
-    ix  <- which.min(abs(ncdim_get(X$NC, "isobaric")- isobaric[1]))
+#' Retrieve variable Temperature [x,y,isobaric,time] as a matrix
+#'
+#' @export
+#' @param X NAMANLRefClass object
+#' @param isobar the isobaric lavel to match (we take the closest match)
+#' @return numeric matrix
+namanl_Temperature <- function(X, isobar = 1000){
+    ix  <- which.min(abs(ncdim_get(X$NC, "isobaric") - isobar[1]))
     ncdf4::ncvar_get(X$NC, "Temperature", count = c(-1,-1,ix,-1))
 }
 
-Relative_humidity <- function(X, isobaric = 1000){
-    ix  <- which.min(abs(ncdim_get(X$NC, "isobaric")- isobaric[1]))
+#' Retrieve variable Relative_humidity [x,y,isobaric,time] as a matrix
+#'
+#' @export
+#' @param X NAMANLRefClass object
+#' @param isobar the isobaric lavel to match (we take the closest match)
+#' @return numeric matrix
+namanl_Relative_humidity <- function(X, isobar = 1000){
+    ix  <- which.min(abs(ncdim_get(X$NC, "isobaric") - isobar[1]))
     ncdf4::ncvar_get(X$NC, "Relative_humidity", count = c(-1,-1,ix,-1))
 }
 
-# Surface_wind_gust[x,y,time]
-Surface_wind_gust <- function(X){
+#' Retrieve variable Surface_wind_gust[x,y,time] as a matrix
+#'
+#' @export
+#' @param X NAMANLRefClass object
+#' @param ... further arguments (unused)
+#' @return numeric matrix
+namanl_Surface_wind_gust <- function(X,...){
     ncdf4::ncvar_get(X$NC, "Surface_wind_gust")
 }
 
-# Total_precipitation [x,y,time1]
-Total_precipitation <- function(X){
+#' Retrieve variable Total_precipitation [x,y,time1] as a matrix
+#'
+#' @export
+#' @param X NAMANLRefClass object
+#' @param ... further arguments (unused)
+#' @return numeric matrix
+namanl_Total_precipitation <- function(X,...){
     ncdf4::ncvar_get(X$NC, "Total_precipitation")
 }

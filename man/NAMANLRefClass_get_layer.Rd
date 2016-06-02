@@ -5,8 +5,6 @@
 \title{Retrieve a parameter}
 \arguments{
 \item{name}{the name of the layer}
-
-\item{...}{further arguments for the parameter}
 }
 \value{
 RasterLayer object or NULL
