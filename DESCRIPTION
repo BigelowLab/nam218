@@ -1,0 +1,20 @@
+Package: namanl
+Title: A simplified interface to NOMADS NAM-ANL forecast data and archives.
+Version: 0.1
+Depends:
+    R (>= 3.0)
+Imports:
+    methods,
+    threddscrawler,
+    ncdf4,
+    raster
+Maintainer: Ben Tupper <btupper@bigelow.org>
+Author: Ben Tupper <btupper@bigelow.org>
+URL: https://github.com/btupper/namanl
+License: GPL (>= 2)
+RoxygenNote: 5.0.1
+Collate:
+    namanl-package.R
+    NAMANL.R
+    nc.R
+    query.R
