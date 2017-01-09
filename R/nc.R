@@ -75,6 +75,30 @@ ncvarname_pretty <- function(nc, rm.names = TRUE){
         ss    
 }
 
+#' Retrieve a named vector of variable dimensions as a string.  If a variable
+#'  has dimensions [x, y, isobaric, time] then the value will be 
+#'  'x_y_isobaric_time'.
+#'
+#' @export
+#' @param NC a ncdf4 object
+#' @param sep character used to separate the dimension names
+#' @return a named vector of variable dimension names
+ncvar_dim_name <- function(nc,sep = "_"){
+    ss <- sapply(nc[['var']],
+            function(x){
+                nd <- x$ndims
+                if( x$ndims > 0 ) {
+                    s <- paste(sapply(x$dim, "[[", 'name'), collapse = sep)
+                } else {
+                    s =""
+                }
+                s
+            }
+        )
+    ss
+}
+
+
 
 #' Retrieve a vector of variable names
 #'

@@ -1,6 +1,3 @@
-# namanlcrawler query.R
-# https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-mesoscale-forecast-system-nam
-
 # http://www.nco.ncep.noaa.gov/pmb/docs/on388/tableb.html#GRID218
 # Grid over the Contiguous United States (used by the 12-km NAM Model) (Lambert Conformal)
 # 	
@@ -22,23 +19,31 @@
 # Pole point
 # (I,J) 	(347.668, 1190.097)
 
-#library(threddscrawler)
-#library(ncdf4)
+# example thredds
+# https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb
 
-#' Run a query for NAM-ANL datasets
+#' Run a query for NAM-218 datasets
 #'
 #' @export
-#' @param top character, the top level uri - XML
+#' @param what character specifies 'analysis' or 'forecast'
 #' @param day either POSIXct or an 8 character date (YYYYmmdd)
 #' @param time 4 character forecast period time stamp ('0000', '0006', etc.)
 #' @param ahead 3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc)
 #' @return DatasetsRefClass or NULL 
-namanl_query <- function(
-    top = "http://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
+nam_query <- function(what = c("analysis", "forecast")[1],
     day = c('20060601', format(as.POSIXct(Sys.time(), format = "%Y%m%d")))[1] , 
-    time = c('0000', '0600','1200','1800')[3], # midday
-    ahead = c('000', '003', '006')[1], # 'now'
-    stub = 'namanl_218'){
+    time = c('0000', '0600','1200','1800')[3],
+    ahead = c('000', '003', '006', '084')[1]
+    ){
+    
+    what <- tolower(what[1])
+    top <- switch(what,
+        'analysis' = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
+        'forecast' = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
+        stop("what must be 'analysis' or 'forecast'") )
+    
+    if (inherits(time, 'numeric')) time <- sprintf("%0.4i", time[1])
+    if (inherits(ahead, 'numeric')) ahead <- sprintf("%0.3i", ahead[1])
     
     Top <- threddscrawler::get_catalog(top)
     CC <- Top$get_catalogs()
@@ -70,7 +75,7 @@ namanl_query <- function(
 #'  \item{NetcdfServer for httr::BROWSE() NetCDF Subset Service for Grids (interactive)}
 #'  } 
 #' @return character, URL
-namanl_url <- function(X, 
+nam_url <- function(X, 
     what = c("OPeNDAP",     # for ncdf::nc_open()
         "OPeNDAP_form",     # for httr::BROWSE() OPeNDAP Dataset Access Form
         "HTTPServer",       # for utils::download.file()
@@ -107,9 +112,9 @@ namanl_url <- function(X,
 #' @param X DatasetsRefClass object
 #' @param what character, which format do you prefer?
 #' @return the value of httr::BROWSE
-namanl_browse <- function(X, what = c("opendap_form", "netcdfserver")[1]){
+nam_browse <- function(X, what = c("opendap_form", "netcdfserver")[1]){
     stopifnot(inherits(X, 'DatasetsRefClass'))
-    uri <- namanl_url(X, what = what[1])
+    uri <- nam_url(X, what = what[1])
     httr::BROWSE(uri)
 }
 
@@ -118,11 +123,11 @@ namanl_browse <- function(X, what = c("opendap_form", "netcdfserver")[1]){
 #' @export
 #' @param X DatasetsRefClass object 
 #' @return value returned by ncdf4::nc_open()
-namanl_nc_open <- function(X){
+nam_nc_open <- function(X){
     stopifnot(inherits(X, 'DatasetsRefClass'))
 
     stopifnot(require(ncdf4))
-    ncdf4::nc_open(namanl_url(X, "opendap"))
+    ncdf4::nc_open(nam_url(X, "opendap"))
 }
 
 #' Download a GRIB file
@@ -131,8 +136,8 @@ namanl_nc_open <- function(X){
 #' @param X DatasetsRefClass object
 #' @param dest the destination file name, if not provided then it is borrowed from X
 #' @return value returned by utils::download.file()
-namanl_download <- function(X, dest = NULL){
+nam_download <- function(X, dest = NULL){
     stopifnot(inherits(X, 'DatasetsRefClass'))
     if (is.null(dest)) dest <- basename(X$url)
-    utils::download.file(namanl_url(X, "httpserver"), dest = dest, mode = 'wb')
+    utils::download.file(nam_url(X, "httpserver"), dest = dest, mode = 'wb')
 }

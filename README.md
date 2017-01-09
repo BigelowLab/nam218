@@ -1,5 +1,5 @@
-# namanl
-A simplified [R language](https://www.r-project.org/) interface to [NOMADS NAM-ANL](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-mesoscale-forecast-system-nam) forecast data and archives.
+# nam218
+A simple [R language](https://www.r-project.org/) interface to [NOMADS NAM](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-mesoscale-forecast-system-nam) forecasts and archives.
 
 
 #### Requirements
@@ -18,7 +18,7 @@ It's fairly easy to install using Hadley Wickham's [devtools](http://cran.r-proj
 
 ```r
 library(devtools)
-install_github('BigelowLab/namanl')
+install_github('BigelowLab/nam218')
 ```
 
 #### Examples
@@ -26,26 +26,26 @@ install_github('BigelowLab/namanl')
 Finding data with a query...
 
 ```R
-library(namanl)
-dataset <- namanl_query(day = '20080704', time = '1200')
+library(nam218)
+dataset <- nam_query(what = 'analysis', day = '20080704', time = '1200')
 dataset
 # Reference Class: "DatasetsRefClass"
 #   verbose_mode: FALSE
-#   url: http://nomads.ncdc.noaa.gov/thredds/catalog/namanl/200807/20080704/namanl_218_20080704_1200_000.grb
+#   url: https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/200807/20080704/namanl_218_20080704_1200_000.grb
 #   children: dataSize date
 #   datasets: NA
 ```
 
-Once you have identified the resource then you can instantiate a NAMANL reference class to get data.
+Once you have identified the resource then you can instantiate a NAM reference class to get data.
 
 ```R
 # extract an OPeNDAP url
-url <- namanl_url(dataset, what = 'OPeNDAP')
-url
-# [1] "http://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb"
+uri <- nam_url(dataset, what = 'OPeNDAP')
+uri
+# [1] "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb"
 
 # create the NetCDF handler 
-X <- NAMANL(url)
+X <- NAM(uri)
 
 # retrieve a layer and show it
 RH <- X$get_layer("Relative_humidity")
@@ -53,6 +53,3 @@ RH <- X$get_layer("Relative_humidity")
 library(raster)
 raster::spplot(RH)
 ```
-
-Not every variable has a simplified access method, current ones include: Temperature at different isobaric levels, Surface_wind_gust, Total_precipitation, and Relative_humidity at different isobaric levels.  
-
