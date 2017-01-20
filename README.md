@@ -45,11 +45,27 @@ uri
 # [1] "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb"
 
 # create the NetCDF handler 
-X <- NAM(uri)
+X <- NAM218(uri)
 
 # retrieve a layer and show it
 RH <- X$get_layer("Relative_humidity")
 
 library(raster)
 raster::spplot(RH)
+```
+
+As a convenience a spatial subset can be requested with a bounding box specified as [left, right, bottom, top].  Note that the retrieved is projected to `+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0`.
+
+```R
+BBOX <- c(-72,-63,39,46)
+RH <- X$get_layer("Relative_humidity", bb = BBOX)
+RH
+# class       : RasterLayer 
+# dimensions  : 115, 110, 12650  (nrow, ncol, ncell)
+# resolution  : 0.14, 0.104  (x, y)
+# extent      : -74.72739, -59.32739, 36.42884, 48.38884  (xmin, xmax, ymin, ymax)
+# coord. ref. : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+# data source : in memory
+# names       : layer 
+# values      : 56.33741, 100.045  (min, max)
 ```

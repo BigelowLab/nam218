@@ -50,7 +50,7 @@ bbox_to_polygon <- function(bb = c(-153.681, -48.59701 , 11.37212, 62.08712),
    # make into Polygons
    Polys <- sp::Polygons(list(Poly), id)
    if (output_class == 'Polygons') return(Polys)
-   SpatialPolygons(list(Polys), proj4string = CRS(proj))
+   sp::SpatialPolygons(list(Polys), proj4string = sp::CRS(proj))
 }
 
 
