@@ -1,16 +1,13 @@
 NAM218RefClass <- setRefClass("NAM218RefClass",
     fields = list(
         NC = 'ANY',
-        lccR = 'ANY',
-        longlatR = 'ANY', 
+        lccR = 'ANY', 
         vardim = 'character',
         BB = 'ANY',
         proj = 'character'
         ), #fields
     methods = list(
-        initialize = function(nc = NULL, bb = NULL,
-            proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"){
-            .self$field("proj", proj[1])
+        initialize = function(nc = NULL){
             if (!is.null(nc) && inherits(nc, 'ncdf4')){
                 .self$field("NC", nc)
             } else {
@@ -35,7 +32,6 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
                     ymin = -838.793818334546,
                     ymax = 4378.95418166546)), 
                 vals=1)
-            .self$longlatR <- raster::projectRaster(from =.self$lccR, crs = .self$proj['longlat'])
             
             if (!is.null(.self$NC)){
                 bb = c(
@@ -44,8 +40,7 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
                     raster::yFromRow(.self$lccR, nrow(.self$lccR)),
                     raster::yFromRow(.self$lccR, 1) )
                 
-                bb_lcc <- bbox_to_polygon(bb, .self$proj['lcc'])
-               .self$BB <- sp::spTransform(bb_lcc, .self$proj['longlat'])
+                .self$BB <- bbox_to_polygon(bb, .self$proj['lcc'])
             }                
         },
         finalize = function(){
@@ -54,7 +49,7 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
         is_open = function(){
             !is.null(.self$NC) && inherits(.self$NC, 'ncdf4')
             },
-        close = function(){ nc_close(.self$NC) },
+        close = function(){ ncdf4::nc_close(.self$NC) },
         show = function(){
             cat("Reference Class:", classLabel(class(.self)), "\n")
             opn <- .self$is_open()
@@ -72,22 +67,6 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
     ) # methods
 )
 
-#' Convert a matrix into a RasterLayer object
-#'
-#' @name NAM218RefClass_RasterLayer
-#' @param x matrix
-#' @param name character name of the layer
-#' @param flip_it character ('y' the default, 'x' or '') for flip-y, flip-x or no-flip
-#' @return RasterLayer object 
-NAM218RefClass$methods(
-    RasterLayer = function(x, name = 'layer', flip_it = 'y'){
-            R <- raster::raster(t(x), template = .self$lccR)
-            R <- raster::projectRaster(from = R, crs = .self$proj['longlat'])
-            names(R) <- name
-            if (nchar(flip_it) > 0) R <- raster::flip(R, flip_it)
-            return(R)
-        })
-
 
 #' Convert from longlat bounding box to start, count for x and y 
 #'
@@ -98,8 +77,12 @@ NAM218RefClass$methods(
     bb_to_xy = function(bb){
     
         if (missing(bb)) bb <- .self$BB
-        
-        x <- sp::spTransform(bb, .self$proj['lcc'])
+        if (sp::proj4string(bb) != .self$proj['lcc']) {
+            x <- sp::spTransform(bb, .self$proj['lcc'])
+            b <- sp::bbox(x)
+        } else {
+            b <- sp::bbox(bb)
+        }
         b <- sp::bbox(x)
         
         xb <- find_interval(b[c(1,3)], .self$NC$dim$x$val)
@@ -118,21 +101,47 @@ NAM218RefClass$methods(
 #' 
 #' @name NAM218RefClass_get_layer
 #' @param name the name of the layer
-#' @param bb a 4-element vector of longlat as [xmin,xmax,ymin,ymax] defining the region of interest
-#'   If NULL then extent of the BB element of the  NAM218RefClass object is used
+#' @param bb a 4-element vector as [xmin,xmax,ymin,ymax] defining 
+#'  the subset region. If NULL then the full extent of the  
+#'  NAM218RefClass object is used.  Should be in the coordinate system
+#'  identified by the \code{from_proj} argument - defaults to native.
+#' @param from_proj character, indicates the input projection of bb
+#'  \itemize{
+#'      \item{native - the default, the native projection of the NAM218 dataset}
+#'      \item{lcc - the same as native}
+#'      \item{longlat - use longlat projection}
+#'      \item{other proj4string possibilities}
+#'  }
+#' @param to_proj character, indicates the desired output projection
+#'  It has the same options as \code{from_proj}
 #' @return RasterLayer object or NULL
 NAM218RefClass$methods(
-    get_layer = function(name = 'Temperature', bb = NULL, ...){
+    get_layer = function(name = 'Temperature', bb = NULL, 
+        from_proj = c('native', 'lcc', 'longlat')[1],
+        to_proj = c('native', 'lcc', 'longlat')[1],
+        flip = 'y', ...){
+    
+    if (is.null(bb)) bb <- as.vector(raster::extent(.self$BB))
+    
+    from_p <- switch(tolower(from_proj[1]),
+        'longlat' = .self$proj['longlat'],
+        'native' = .self$proj['lcc'],
+        'lcc' = .self$proj['lcc'],
+        from_proj)
+    
+    to_p <- switch(tolower(to_proj[1]),
+        'longlat' = .self$proj['longlat'],
+        'native' = .self$proj['lcc'],
+        'lcc' = .self$proj['lcc'],
+        to_proj)
     
     if(!(name[1] %in% names(.self$vardim))) {
         cat("variable not found:", name[1], "\n")
         return(NULL)
     }
-    if (is.null(bb)) {
-        bb <- .self$BB
-    } else {
-        bb <- bbox_to_polygon(bb, proj = .self$proj['longlat'])
-    }
+
+    #bb <- bbox_to_polygon(bb, proj = .self$proj['longlat'])
+    bb <- bbox_to_polygon(bb, proj = from_p)
     
     xy <- .self$bb_to_xy(bb)
     
@@ -195,9 +204,10 @@ NAM218RefClass$methods(
             xmn = xy$bbox[1], xmx = xy$bbox[2],
             ymn = xy$bbox[3], ymx = xy$bbox[4],
             crs = .self$proj['lcc'])
-        R <- raster::projectRaster(from = R, crs = .self$proj['longlat'])
+        if (to_p != .self$proj['lcc'])
+            R <- raster::projectRaster(from = R, crs = to_p)
+        if (tolower(flip[1]) == 'y') R <- raster::flip(R, 'y')
         names(R) <- name
-        R <- raster::flip(R, 'y')
     }
     return(R)
     })
@@ -210,14 +220,9 @@ NAM218RefClass$methods(
 #'
 #' @export
 #' @param nc either a path, url, ncdf4 object or null
-#' @param bb a 4-element vector of longlat as [xmin,xmax,ymin,ymax] defining the region of interest
-#'   If NULL then the extent of the dataset is used.
-#' @param proj projection string for automatic transformation from NAM-ANL's native 'lcc' projection
 #' @return NAM218RefClass object
-NAM218 <- function(nc, 
-    bb = NULL, 
-    proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"){
-    NAM218RefClass$new(nc, proj = proj)
+NAM218 <- function(nc){
+    NAM218RefClass$new(nc)
 }
 
 #' Retrieve a variable based upon [x,y,time] as a matrix

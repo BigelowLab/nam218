@@ -54,18 +54,28 @@ library(raster)
 raster::spplot(RH)
 ```
 
-As a convenience a spatial subset can be requested with a bounding box specified as [left, right, bottom, top].  Note that the retrieved is projected to `+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0`.
+As a convenience a spatial subset can be requested with a bounding box specified as [left, right, bottom, top].  The inout and output subset coordinate system can be specified in NAM218 native coordinates `lambert conformal conic` or in `longlat` using the `from_proj` and `to_proj` arguments.
 
 ```R
 BBOX <- c(-72,-63,39,46)
-RH <- X$get_layer("Relative_humidity", bb = BBOX)
-RH
-# class       : RasterLayer 
-# dimensions  : 115, 110, 12650  (nrow, ncol, ncell)
-# resolution  : 0.14, 0.104  (x, y)
-# extent      : -74.72739, -59.32739, 36.42884, 48.38884  (xmin, xmax, ymin, ymax)
-# coord. ref. : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
-# data source : in memory
-# names       : layer 
-# values      : 56.33741, 100.045  (min, max)
+
+X$get_layer("Relative_humidity", bb = BBOX, from_proj = 'longlat', to_proj = 'native')
+  # class       : RasterLayer 
+  # dimensions  : 79, 77, 6083  (nrow, ncol, ncell)
+  # resolution  : 11.91252, 11.93954  (x, y)
+  # extent      : 1771.791, 2689.055, 1761.549, 2704.773  (xmin, xmax, ymin, ymax)
+  # coord. ref. : +proj=lcc +lat_1=25 +lon_0=-95 +lat_0=25 +ellps=WGS84 +lat_2=45 +units=km 
+  # data source : in memory
+  # names       : Relative_humidity 
+  # values      : 39, 98  (min, max)
+
+X$get_layer("Relative_humidity", bb = BBOX, from_proj = 'longlat', to_proj = 'longlat')
+  # class       : RasterLayer 
+  # dimensions  : 115, 110, 12650  (nrow, ncol, ncell)
+  # resolution  : 0.14, 0.104  (x, y)
+  # extent      : -74.72739, -59.32739, 36.42884, 48.38884  (xmin, xmax, ymin, ymax)
+  # coord. ref. : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+  # data source : in memory
+  # names       : Relative_humidity 
+  # values      : 39.18564, 97.58833  (min, max)
 ```

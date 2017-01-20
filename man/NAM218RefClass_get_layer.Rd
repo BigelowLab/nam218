@@ -6,8 +6,21 @@
 \arguments{
 \item{name}{the name of the layer}
 
-\item{bb}{a 4-element vector of longlat as [xmin,xmax,ymin,ymax] defining the region of interest
-If NULL then extent of the BB element of the  NAM218RefClass object is used}
+\item{bb}{a 4-element vector as [xmin,xmax,ymin,ymax] defining 
+the subset region. If NULL then the full extent of the  
+NAM218RefClass object is used.  Should be in the coordinate system
+identified by the \code{from_proj} argument - defaults to native.}
+
+\item{from_proj}{character, indicates the input projection of bb
+\itemize{
+    \item{native - the default, the native projection of the NAM218 dataset}
+    \item{lcc - the same as native}
+    \item{longlat - use longlat projection}
+    \item{other proj4string possibilities}
+}}
+
+\item{to_proj}{character, indicates the desired output projection
+It has the same options as \code{from_proj}}
 }
 \value{
 RasterLayer object or NULL

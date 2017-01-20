@@ -4,16 +4,10 @@
 \alias{NAM218}
 \title{Create an instance of NAM218RefClass}
 \usage{
-NAM218(nc, bb = NULL,
-  proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+NAM218(nc)
 }
 \arguments{
 \item{nc}{either a path, url, ncdf4 object or null}
-
-\item{bb}{a 4-element vector of longlat as [xmin,xmax,ymin,ymax] defining the region of interest
-If NULL then the extent of the dataset is used.}
-
-\item{proj}{projection string for automatic transformation from NAM-ANL's native 'lcc' projection}
 }
 \value{
 NAM218RefClass object
