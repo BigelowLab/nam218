@@ -51,7 +51,7 @@ X <- NAM218(uri)
 RH <- X$get_layer("Relative_humidity")
 
 library(raster)
-raster::spplot(RH)
+sp::spplot(RH)
 ```
 
 As a convenience a spatial subset can be requested with a bounding box specified as [left, right, bottom, top].  The inout and output subset coordinate system can be specified in NAM218 native coordinates `lambert conformal conic` or in `longlat` using the `from_proj` and `to_proj` arguments.

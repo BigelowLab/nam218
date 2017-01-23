@@ -83,7 +83,6 @@ NAM218RefClass$methods(
         } else {
             b <- sp::bbox(bb)
         }
-        b <- sp::bbox(x)
         
         xb <- find_interval(b[c(1,3)], .self$NC$dim$x$val)
         xb[xb <= 0] <- 1
