@@ -5,8 +5,9 @@
 \title{Run a query for NAM-218 datasets}
 \usage{
 nam_query(what = c("analysis", "forecast")[1], day = c("20060601",
-  format(as.POSIXct(Sys.time(), format = "\%Y\%m\%d")))[1], time = c("0000",
-  "0600", "1200", "1800")[3], ahead = c("000", "003", "006", "084")[1])
+  format(as.POSIXct(Sys.time(), format = "\%Y\%m\%d")))[1], time = c(NA,
+  "0000", "0600", "1200", "1800")[3], ahead = c(NA, "000", "003", "006",
+  "084")[1])
 }
 \arguments{
 \item{what}{character specifies 'analysis' or 'forecast'}

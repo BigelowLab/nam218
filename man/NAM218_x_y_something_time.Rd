@@ -5,7 +5,8 @@
 \title{Retrieve a variable based upon [x,y,something,time] as a matrix}
 \usage{
 NAM218_x_y_something_time(X, name, dimname = "isobaric", value = 1000,
-  bb = X$BB, xy = list(start = c(1, 1), count = c(-1, -1)), ...)
+  bb = X$BB, xy = list(start = c(1, 1), count = c(-1, -1)),
+  time_index = 1)
 }
 \arguments{
 \item{X}{NAM218RefClass object}
@@ -17,6 +18,8 @@ NAM218_x_y_something_time(X, name, dimname = "isobaric", value = 1000,
 \item{value}{numeric the value to retrieve (we take the closest match)}
 
 \item{xy}{a two element list providing start and count values}
+
+\item{time_index}{the default is to get just the first time index if there is}
 
 \item{...}{further arguments (unused)}
 }

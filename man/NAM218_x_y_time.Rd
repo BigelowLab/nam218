@@ -5,7 +5,7 @@
 \title{Retrieve a variable based upon [x,y,time] as a matrix}
 \usage{
 NAM218_x_y_time(X, name, bb = X$BB, xy = list(start = c(1, 1), count = c(-1,
-  -1)), ...)
+  -1)), time_index = 1)
 }
 \arguments{
 \item{X}{NAM218RefClass object}
@@ -13,6 +13,8 @@ NAM218_x_y_time(X, name, bb = X$BB, xy = list(start = c(1, 1), count = c(-1,
 \item{name}{character variable name}
 
 \item{xy}{a two element list providing start and count values}
+
+\item{time_index}{the default is to get just the first time index if there is}
 
 \item{...}{further arguments (unused)}
 }

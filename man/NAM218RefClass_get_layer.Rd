@@ -21,6 +21,8 @@ identified by the \code{from_proj} argument - defaults to native.}
 
 \item{to_proj}{character, indicates the desired output projection
 It has the same options as \code{from_proj}}
+
+\item{...}{further arguments for NAM218_x_y_time() and NAM218_x_y_something_time()}
 }
 \value{
 RasterLayer object or NULL
