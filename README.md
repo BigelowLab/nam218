@@ -49,6 +49,15 @@ X <- NAM218(uri)
 
 # retrieve a layer and show it
 RH <- X$get_layer("Relative_humidity")
+RH
+  # class       : RasterLayer 
+  # dimensions  : 428, 614, 262792  (nrow, ncol, ncell)
+  # resolution  : 12.17114, 12.16252  (x, y)
+  # extent      : -4226.107, 3246.976, -832.6983, 4372.859  (xmin, xmax, ymin, ymax)
+  # coord. ref. : +proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs 
+  # data source : in memory
+  # names       : Relative_humidity 
+  # values      : 4, 100  (min, max)
 
 library(raster)
 sp::spplot(RH)
@@ -59,23 +68,25 @@ As a convenience a spatial subset can be requested with a bounding box specified
 ```R
 BBOX <- c(-72,-63,39,46)
 
-X$get_layer("Relative_humidity", bb = BBOX, from_proj = 'longlat', to_proj = 'native')
+R_lcc <- X$get_layer("Relative_humidity", bb = BBOX, from_proj = 'longlat', to_proj = 'native')
+R_lcc
   # class       : RasterLayer 
-  # dimensions  : 79, 77, 6083  (nrow, ncol, ncell)
-  # resolution  : 11.91252, 11.93954  (x, y)
-  # extent      : 1771.791, 2689.055, 1761.549, 2704.773  (xmin, xmax, ymin, ymax)
-  # coord. ref. : +proj=lcc +lat_1=25 +lon_0=-95 +lat_0=25 +ellps=WGS84 +lat_2=45 +units=km 
+  # dimensions  : 80, 77, 6160  (nrow, ncol, ncell)
+  # resolution  : 11.99663, 11.9678  (x, y)
+  # extent      : 1901.858, 2825.599, 1745.543, 2702.967  (xmin, xmax, ymin, ymax)
+  # coord. ref. : +proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs 
   # data source : in memory
   # names       : Relative_humidity 
-  # values      : 39, 98  (min, max)
+  # values      : 56, 100  (min, max)
 
-X$get_layer("Relative_humidity", bb = BBOX, from_proj = 'longlat', to_proj = 'longlat')
+R_ll <- X$get_layer("Relative_humidity", bb = BBOX, from_proj = 'longlat', to_proj = 'longlat')
+R_ll
   # class       : RasterLayer 
-  # dimensions  : 115, 110, 12650  (nrow, ncol, ncell)
-  # resolution  : 0.14, 0.104  (x, y)
-  # extent      : -74.72739, -59.32739, 36.42884, 48.38884  (xmin, xmax, ymin, ymax)
+  # dimensions  : 110, 104, 11440  (nrow, ncol, ncell)
+  # resolution  : 0.136, 0.1  (x, y)
+  # extent      : -74.21129, -60.06729, 36.93508, 47.93508  (xmin, xmax, ymin, ymax)
   # coord. ref. : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
   # data source : in memory
   # names       : Relative_humidity 
-  # values      : 39.18564, 97.58833  (min, max)
+  # values      : 56.18131, 100  (min, max)
 ```

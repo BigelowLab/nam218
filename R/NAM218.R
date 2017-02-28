@@ -4,7 +4,8 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
         lccR = 'ANY', 
         vardim = 'character',
         BB = 'ANY',
-        proj = 'character'
+        proj = 'character',
+        res = 'numeric'
         ), #fields
     methods = list(
         initialize = function(nc = NULL){
@@ -19,7 +20,8 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
             }
             
             .self$proj <- c(
-                lcc = "+proj=lcc +lat_1=25 +lon_0=-95 +lat_0=25 +ellps=WGS84 +lat_2=45 +units=km",
+                # see http://www.gdal.org/gdalsrsinfo.html
+                lcc = "+proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs",
                 longlat =  "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
          
             .self$lccR <- raster::raster(
@@ -32,7 +34,9 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
                     ymin = -838.793818334546,
                     ymax = 4378.95418166546)), 
                 vals=1)
-            
+        
+            .self$res <- res(.self$lccR)
+        
             if (!is.null(.self$NC)){
                 bb = c(
                     raster::xFromCol(.self$lccR, 1),
@@ -54,8 +58,8 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
             cat("Reference Class:", classLabel(class(.self)), "\n")
             opn <- .self$is_open()
             cat("  state:", if(opn) "open" else "closed", "\n")
-            
             if (opn){
+                cat("file: ", .self$NC$file, "\n")
                 v <- ncvarname_pretty(.self$NC)
                 cat("\n VARS:\n")
                 cat(paste("   ", v), sep = "\n")
@@ -100,7 +104,7 @@ NAM218RefClass$methods(
 #'
 #' @name NAM218RefClass_bb_to_xy
 #' @param bb SpatialPolygons object to project to Lamber Conformal Conic
-#' @return list of start[x,y] and count[x,y]
+#' @return list of start[x,y] and count[x,y], bbox (original), ext (Extent coordinates)
 NAM218RefClass$methods(
     bb_to_xy = function(bb){
     
@@ -111,18 +115,21 @@ NAM218RefClass$methods(
         } else {
             b <- sp::bbox(bb)
         }
-        
+        r <- .self$res/2
         xb <- find_interval(b[c(1,3)], .self$NC$dim$x$val)
         xb[xb <= 0] <- 1
         yb <- find_interval(b[c(2,4)], .self$NC$dim$y$val)
-        yb[yb <= 0] <- 1        
+        yb[yb <= 0] <- 1
+
+        bb <- b[c(1,3,2,4)]    
+        Ext <- bb + c(-r[1], r[1], -r[2], r[2])   
         list(
             start = c( x = xb[1], y = yb[1] ),
             count = c( x = xb[2]-xb[1]+1, y = yb[2]-yb[1]+1 ),
-            bbox = b[c(1,3,2,4)] ) 
+            bbox = bb,
+            ext =  Ext) 
     } )   
-        
-        
+
 
 #' Retrieve a parameter
 #' 
@@ -149,6 +156,16 @@ NAM218RefClass$methods(
         to_proj = c('native', 'lcc', 'longlat')[1],
         flip = 'y', ...){
     
+    if (FALSE){
+        # for devel purposes
+        name = 'Temperature'
+        bb = NULL
+        from_proj = c('native', 'lcc', 'longlat')[1]
+        to_proj = c('native', 'lcc', 'longlat')[1]
+        flip = 'y'
+    }
+    
+    
     if (is.null(bb)) bb <- as.vector(raster::extent(.self$BB))
     
     from_p <- switch(tolower(from_proj[1]),
@@ -168,7 +185,6 @@ NAM218RefClass$methods(
         return(NULL)
     }
 
-    #bb <- bbox_to_polygon(bb, proj = .self$proj['longlat'])
     bb <- bbox_to_polygon(bb, proj = from_p)
     
     xy <- .self$bb_to_xy(bb)
@@ -179,9 +195,9 @@ NAM218RefClass$methods(
             'x_y_time' = 
                 NAM218_x_y_time(.self, name[1], xy=xy, ...), 
             'x_y_time1' = 
-                NAM218_x_y_time(.self, name[1], ...), 
+                NAM218_x_y_time(.self, name[1], xy=xy,...), 
             'x_y_time2' = 
-                NAM218_x_y_time(.self, name[1], ...), 
+                NAM218_x_y_time(.self, name[1], xy=xy,...), 
             'x_y_isobaric_time' = 
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy,  ...),
             'x_y_isobaric1_time' = 
@@ -231,8 +247,8 @@ NAM218RefClass$methods(
         cat(msg, sep = "\n")
     } else {
         R <- raster::raster(t(x), 
-            xmn = xy$bbox[1], xmx = xy$bbox[2],
-            ymn = xy$bbox[3], ymx = xy$bbox[4],
+            xmn = xy$ext[1], xmx = xy$ext[2],
+            ymn = xy$ext[3], ymx = xy$ext[4],
             crs = .self$proj['lcc'])
         if (to_p != .self$proj['lcc'])
             R <- raster::projectRaster(from = R, crs = to_p)

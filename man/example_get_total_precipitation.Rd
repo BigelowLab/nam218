@@ -6,7 +6,7 @@
 \usage{
 example_get_total_precipitation(param = "Total_precipitation",
   date = as.POSIXct("2015-01-01", "\%Y-\%m-\%d", tz = "UTC"), fun = "sum",
-  ...)
+  bb = c(-74, -57, 40, 51.5), ...)
 }
 \value{
 Raster*
