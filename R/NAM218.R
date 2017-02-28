@@ -250,9 +250,9 @@ NAM218RefClass$methods(
             xmn = xy$ext[1], xmx = xy$ext[2],
             ymn = xy$ext[3], ymx = xy$ext[4],
             crs = .self$proj['lcc'])
+        if (tolower(flip[1]) == 'y') R <- raster::flip(R, 'y')
         if (to_p != .self$proj['lcc'])
             R <- raster::projectRaster(from = R, crs = to_p)
-        if (tolower(flip[1]) == 'y') R <- raster::flip(R, 'y')
         names(R) <- name
     }
     return(R)
