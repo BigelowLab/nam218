@@ -1,6 +1,12 @@
 # nam218
 A simple [R language](https://www.r-project.org/) interface to [NOMADS NAM](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-mesoscale-forecast-system-nam) forecasts and archives.
 
+Parameters vary by the forecast hour
+
+[000](http://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys00.grb2.tm00.shtml)
+
+[006](http://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys06.grb2.tm00.shtml)
+
 
 #### Requirements
 
@@ -27,7 +33,7 @@ Finding data with a query...
 
 ```R
 library(nam218)
-dataset <- nam_query(what = 'analysis', day = '20080704', time = '1200')
+dataset <- nam218_query(what = 'analysis', date = '20080704', ftime = '1200')
 dataset
 # Reference Class: "DatasetsRefClass"
 #   verbose_mode: FALSE

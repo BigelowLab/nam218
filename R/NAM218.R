@@ -35,7 +35,7 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
                     ymax = 4378.95418166546)), 
                 vals=1)
         
-            .self$res <- res(.self$lccR)
+            .self$res <- raster::res(.self$lccR)
         
             if (!is.null(.self$NC)){
                 bb = c(
