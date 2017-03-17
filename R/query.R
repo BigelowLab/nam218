@@ -62,12 +62,24 @@ nam218_query <- function(what = c("analysis", "forecast")[1],
     if (inherits(date, "POSIXt")) date <- format(date[1], format = "%Y%m%d")
     
     Top <- threddscrawler::get_catalog(topuri)
+    if (is.null(Top)) return(Top)
+    
     CC <- Top$get_catalogs()
+    if (is.null(CC)) return(CC)
+    
     yyyymm <- substring(date[1], 1,6)
     C1 <- CC[[yyyymm]]$get_catalog()
+    if (is.null(C1)) return(C1)
+    
     C2 <- C1$get_catalogs()[[date]]
+    if (is.null(C2)) return(C2)
+    
     C3 <- C2$get_catalog()
+    if (is.null(C3)) return(C3)
+    
     DD <- C3$get_datasets()
+    if (is.null(DD)) return(DD)
+    
     # example names
     # "namanl_218_20150101_0000_000.grb" "namanl_218_20150101_0000_001.grb"
     if (length(DD) > 0){

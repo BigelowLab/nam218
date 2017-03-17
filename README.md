@@ -34,7 +34,7 @@ Finding data with a query...
 ```R
 library(nam218)
 dataset <- nam218_query(what = 'analysis', date = '20080704', ftime = '1200')
-dataset
+dataset[[1]]
 # Reference Class: "DatasetsRefClass"
 #   verbose_mode: FALSE
 #   url: https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/200807/20080704/namanl_218_20080704_1200_000.grb
@@ -46,7 +46,7 @@ Once you have identified the resource then you can instantiate a NAM reference c
 
 ```R
 # extract an OPeNDAP url
-uri <- nam_url(dataset, what = 'OPeNDAP')
+uri <- nam_url(dataset[[1]], what = 'OPeNDAP')
 uri
 # [1] "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb"
 
