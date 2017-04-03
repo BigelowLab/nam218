@@ -204,6 +204,20 @@ NAM218RefClass$methods(
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
             'x_y_isobaric2_time' = 
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
+            'x_y_isobaric3_time' = 
+                NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
+            'x_y_isobaric4_time' = 
+                NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
+            'x_y_isobaric5_time' = 
+                NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
+            'x_y_isobaric6_time' = 
+                NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
+            'x_y_isobaric7_time' = 
+                NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
+            'x_y_isobaric8_time' = 
+                NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
+            'x_y_isobaric9_time' = 
+                NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
             'x_y_depth_below_surface_time' = 
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
             'x_y_height_above_ground_time' = 

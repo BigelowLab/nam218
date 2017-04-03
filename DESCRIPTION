@@ -7,7 +7,9 @@ Imports:
     methods,
     threddscrawler,
     ncdf4,
-    raster
+    raster,
+    tibble,
+    magrittr
 Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Ben Tupper <btupper@bigelow.org>
 URL: https://github.com/btupper/nam218

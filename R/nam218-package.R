@@ -3,6 +3,7 @@
 #' @name nam218-package
 #' @docType package
 #' @import methods
+#' @importFrom magrittr %>%
 #' @examples
 #'  \dontrun{
 #'  url = "http://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200606/20060601/namanl_218_20060601_0000_000.grb"

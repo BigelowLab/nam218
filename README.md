@@ -33,7 +33,7 @@ Finding data with a query...
 
 ```R
 library(nam218)
-dataset <- nam218_query(what = 'analysis', date = '20080704', ftime = '1200')
+dataset <- query_nam218(what = 'analysis', date = '20080704', ftime = '1200')
 dataset[[1]]
 # Reference Class: "DatasetsRefClass"
 #   verbose_mode: FALSE

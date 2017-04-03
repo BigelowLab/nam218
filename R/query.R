@@ -22,6 +22,42 @@
 # example thredds
 # https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb
 
+
+#' Decompose a NAM218 filename into constituent parts. 
+#' The directory name is not retained.
+#'
+#' @export
+#' @param x character vector
+#' @return a tibble with the following
+#' \itemize{
+#'  \item{D POSIXct date}
+#'  \item{Y character year as YYYY}
+#'  \item{m character month as mm}
+#'  \item{d character day as dd}
+#'  \item{p character forecast period in hours as HHHH, aka 'ftime'}
+#'  \item{a character forecast time ahead in hours as hhh, aka 'ahead'}
+#'  \item{n character name of parameter}
+#'  \item{f character the basename of the input file}
+#' }
+decompose_uri <- function(x = c(
+    "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201702/20170225/namanl_218_20040331_1800_000.grb",
+    "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201702/20170225/namanl_218_20040331_1800_006.grb")){
+    
+    f <- basename(x)
+    ss <- strsplit(gsub(".grb", "", f, fixed = TRUE), "_", fixed = TRUE)
+    D <- sapply(ss, '[[', 3)  # YYYYmmdd
+    Y <- substring(D, 1,4)
+    m <- substring(D, 5, 6)
+    d <- substring(D, 7, 8)
+    p <- sapply(ss, '[[', 4)  # HHHH
+    a <- sapply(ss, '[[', 5)  # hhh
+    t <- nam218_time(p,a)
+    D <- as.POSIXct(paste(D, "00:00:00"), "%Y%m%d", tz = "UTC")
+    tibble::data_frame(D, Y, m, d, t, p, a, f)
+    
+}
+
+
 #' Perform grepl on multiple patterns; it's like  AND-ing or OR-ing successive grepl statements.
 #' 
 #' @param pattern character vector of patterns
@@ -41,7 +77,7 @@ mgrepl <- function(pattern, x, op = `|`, ... ){
 #' @param ftime 4 character forecast period time stamp ('0000', '0006', etc.) or NA
 #' @param ahead 3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc) or NA
 #' @return DatasetsRefClass or an empty list or NULL 
-nam218_query <- function(what = c("analysis", "forecast")[1],
+query_nam218 <- function(what = c("analysis", "forecast")[1],
     date = c('20060601', format(as.POSIXct(Sys.time(), format = "%Y%m%d")))[1] ,
     ftime =  c(NA, '0000', '0600','1200','1800')[1],
     ahead = c(NA, '000', '003', '006', '084')[1]){
@@ -60,6 +96,7 @@ nam218_query <- function(what = c("analysis", "forecast")[1],
         stop("what must be 'analysis' or 'forecast'") )
         
     if (inherits(date, "POSIXt")) date <- format(date[1], format = "%Y%m%d")
+    date <- gsub("[-/]", "", date)
     
     Top <- threddscrawler::get_catalog(topuri)
     if (is.null(Top)) return(Top)
@@ -99,6 +136,74 @@ nam218_query <- function(what = c("analysis", "forecast")[1],
     DD
 }
 
+
+#' Query the latest forecast datasets
+#'
+#' @export
+#' @param ftime character, the forecast time to retrieve
+#' \itemize{
+#'  \item{NA this disable filtering and gets the lot for the day}
+#'  \item{'latest' get just the latest (the default)}
+#'  \item{'0000', '0600', '1200''1800' one or more specific hours}
+#'  }
+#' @param ahead character, the 'forecast ahead' times as hhh.  This makes the
+#'  most sense when the value of ftime points to one time, such as 'latest', 
+#'      '0600', etc.
+#'  \itemize{
+#'  \item{NA if NA, the default then all are returned}
+#'  \item{ any combination of 000, 001, 002, etc}
+#'  }
+#' @param a list of DatasetRefClass, possibly empty or NULL
+query_latest_forecast <- function(
+    ftime = c(NA, 'latest', '0000', '0600', '1200', '1800')[2],
+    ahead = c(NA, '000', '006', '084')[1]){
+        
+    topuri <- "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml"
+    
+    Top <- threddscrawler::get_catalog(topuri)
+    if (is.null(Top)) return(Top)
+    
+    CC <- Top$get_catalogs()
+    if (is.null(CC)) return(CC)
+    
+    # the last should be the yyyymm directory we seek
+    C1 <- CC[[length(CC)]]$get_catalog()
+    if (length(C1) == 0) return(C1)
+
+    C2 <- C1$get_catalogs()
+    if (length(C2) == 0) return(C2)
+    
+    # presumably the latest by yyyymmdd
+    C3 <- C2[[length(C2)]]$get_catalog()
+    
+    DD <- C3$get_datasets()
+    if (is.null(DD)) return(DD)
+    
+    dd <- nam218::decompose_uri(sapply(DD, '[[', 'url'))
+    
+    # now we filter by name 
+    # ftime = NA then get them all
+    # latest = filter by the 'p' field
+    # 0000, 0600, ... filter by one or more of those
+    if (any(sapply(ftime, is.na))){
+        if ('latest' %in% ftime){
+            mx <- sprintf("%0.4i", max(as.numeric(dd[['p']])) )
+            dd <- dd %>%
+                dplyr::filter(p %in% mx)
+            DD <- DD[ dd[['f']] ]
+        } else {
+            dd <- dd %>%
+                dplyr::filter(p %in% ahead)
+            DD <- DD[ dd[['f']] ]
+        }
+    } 
+    if (!is.na(ahead)){
+        dd <- dd %>% 
+            dplyr::filter(a %in% ahead)
+        DD <- DD[ dd[['f']] ]
+    }
+    DD
+}
 
 
 #' Run a query for NAM-218 datasets
