@@ -22,6 +22,25 @@
 # example thredds
 # https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb
 
+#' From a two vectors of forecast period ('ftime') and forecast 
+#'  ahead ('ahead') determine the number of seconds to the forecast period from 
+#'  midnight
+#' @export
+#' @param ftime one or more forecast periods in hhhh
+#' @param ahead one or more ahead forecast times in hhh
+#' @return numeric number of seconds into a day
+nam218_time <- function(
+    ftime = c("0000", "0600", "1200", "1800"), 
+    ahead = c('000', '001', '003', '006')){
+    
+    stopifnot(length(ftime) == length(ahead))
+    
+    f <- as.numeric(substring(ftime, 1, 2)) + 
+         as.numeric(substring(ftime, 3,4))/60
+    a <- as.numeric(ahead)
+    
+    (f + a) * 3600
+}
 
 #' Decompose a NAM218 filename into constituent parts. 
 #' The directory name is not retained.
