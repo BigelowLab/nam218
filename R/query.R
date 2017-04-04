@@ -177,6 +177,10 @@ query_latest_forecast <- function(
     ftime = c(NA, 'latest', '0000', '0600', '1200', '1800')[2],
     ahead = c(NA, '000', '006', '084')[1]){
         
+    if (FALSE){
+        ftime = NA
+        ahead = NA
+    }
     topuri <- "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml"
     
     Top <- threddscrawler::get_catalog(topuri)
@@ -204,7 +208,7 @@ query_latest_forecast <- function(
     # ftime = NA then get them all
     # latest = filter by the 'p' field
     # 0000, 0600, ... filter by one or more of those
-    if (any(sapply(ftime, is.na))){
+    if (!any(sapply(ftime, is.na))){
         if ('latest' %in% ftime){
             mx <- sprintf("%0.4i", max(as.numeric(dd[['p']])) )
             dd <- dd %>%
@@ -216,7 +220,7 @@ query_latest_forecast <- function(
             DD <- DD[ dd[['f']] ]
         }
     } 
-    if (!is.na(ahead)){
+    if (!any(sapply(ahead, is.na))){
         dd <- dd %>% 
             dplyr::filter(a %in% ahead)
         DD <- DD[ dd[['f']] ]
