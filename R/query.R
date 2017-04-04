@@ -216,7 +216,7 @@ query_latest_forecast <- function(
             DD <- DD[ dd[['f']] ]
         } else {
             dd <- dd %>%
-                dplyr::filter(p %in% ahead)
+                dplyr::filter(p %in% ftime)
             DD <- DD[ dd[['f']] ]
         }
     } 
