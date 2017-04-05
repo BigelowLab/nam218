@@ -288,7 +288,7 @@ NAM218 <- function(nc){
             cat("if nc is character it must be a URL\n")
             return(NULL)
         }
-        if (httr::http_error(paste0(nc, ".html"))){
+        if (nam_url_error(nc)){
             cat("error accessing URL:", nc, "\n")
             cat("please cross check catalog and dataset\n")
             return(NULL)

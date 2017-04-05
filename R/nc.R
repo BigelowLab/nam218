@@ -1,5 +1,17 @@
 # nc.R
 
+#' Test if a NAM218 OpenDAP URL points to accessible datasets.
+#' 
+#' @export
+#' @param x character URL or DatasetsRefClass object
+#' @return logical TRUE if the URL fails to point to an available dataset
+nam_url_error <- function(x){
+    if (length(x) > 1) return(sapply(x, nc_url_ok))
+    if (inherits(x, 'DatasetsRefClass')) x <- nam_url(x)   
+    httr::http_error(paste0(nc, ".html"))
+}
+
+
 #' Retrieve a named list of global attributes
 #'
 #' @export
