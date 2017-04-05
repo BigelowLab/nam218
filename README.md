@@ -1,22 +1,36 @@
 # nam218
+
 A simple [R language](https://www.r-project.org/) interface to [NOMADS NAM](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-mesoscale-forecast-system-nam) forecasts and archives.
 
-Parameters vary by the forecast hour
+Parameters vary by the forecast hour. 
 
 [000](http://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys00.grb2.tm00.shtml)
 
 [006](http://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys06.grb2.tm00.shtml)
 
 
+#### Catalog-dataset mishaps
+
+There are some entires days missing from the catalog. While slightly annoying this generally is not an issue as the catalogs will properly match the missingness of the datasets ( ala catalog == dataset). Unfortunately, sometimes the catalog will indicate a dataset is present when in fact it is not available ( ala catalog != dataset). Some attempt has been made to resolve the latter issue - trying to open an unavailable OPeNDAP dataset that is listed in the THREDDS catalog will cause the main object class to return as NULL.  At the time of this writing you can see an example [here at 0000_051.grib](https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/201704/20170401/catalog.html)
+
+
 #### Requirements
 
 + [R](https://www.r-project.org/) version 3.0 or higher
 
-+ [raster](https://cran.r-project.org/web/packages/raster/index.html) R package
+And packages...
 
-+ [ncdf4](https://cran.r-project.org/web/packages/ncdf4/index.html) R package
++ [raster](https://cran.r-project.org/web/packages/raster/index.html) 
 
-+ [threddscrawler](https://github.com/BigelowLab/threddscrawler) R package
++ [ncdf4](https://cran.r-project.org/web/packages/ncdf4/index.html)
+
++ [threddscrawler](https://github.com/BigelowLab/threddscrawler)
+
++ [httr](https://cran.r-project.org/web/packages/httr/index.html)
+
++ [tibble](https://cran.r-project.org/web/packages/tibble/index.html)
+
++ [magrittr](https://cran.r-project.org/web/packages/magrittr/index.html)
 
 #### Installation
 
@@ -24,6 +38,7 @@ It's fairly easy to install using Hadley Wickham's [devtools](http://cran.r-proj
 
 ```r
 library(devtools)
+install_github("BigelowLab/threddscrawler")
 install_github('BigelowLab/nam218')
 ```
 

@@ -279,10 +279,22 @@ NAM218RefClass$methods(
 #' Create an instance of NAM218RefClass
 #'
 #' @export
-#' @param nc either a path, url, ncdf4 object, DatasetsRefClass object or null
-#' @return NAM218RefClass object
+#' @param nc either a url, ncdf4 object, DatasetsRefClass object or null
+#' @return NAM218RefClass object or NULL
 NAM218 <- function(nc){
     if (inherits(nc, 'DatasetsRefClass')) nc <- nam_url(nc)
+    if (inherits(nc, 'character')){
+        if (file.exists(nc)){
+            cat("if nc is character it must be a URL\n")
+            return(NULL)
+        }
+        if (httr::http_error(paste0(nc, ".html"))){
+            cat("error accessing URL:", nc, "\n")
+            cat("please cross check catalog and dataset\n")
+            return(NULL)
+        }
+    }
+    
     NAM218RefClass$new(nc)
 }
 

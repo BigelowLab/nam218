@@ -7,10 +7,10 @@
 NAM218(nc)
 }
 \arguments{
-\item{nc}{either a path, url, ncdf4 object, DatasetsRefClass object or null}
+\item{nc}{either a url, ncdf4 object, DatasetsRefClass object or null}
 }
 \value{
-NAM218RefClass object
+NAM218RefClass object or NULL
 }
 \description{
 Create an instance of NAM218RefClass

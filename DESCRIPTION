@@ -7,6 +7,7 @@ Imports:
     methods,
     threddscrawler,
     ncdf4,
+    httr,
     raster,
     tibble,
     magrittr
