@@ -25,6 +25,7 @@
 #' From a two vectors of forecast period ('ftime') and forecast 
 #'  ahead ('ahead') determine the number of seconds to the forecast period from 
 #'  midnight
+#'
 #' @export
 #' @param ftime one or more forecast periods in hhhh
 #' @param ahead one or more ahead forecast times in hhh
@@ -79,6 +80,7 @@ decompose_uri <- function(x = c(
 
 #' Perform grepl on multiple patterns; it's like  AND-ing or OR-ing successive grepl statements.
 #' 
+#' @export
 #' @param pattern character vector of patterns
 #' @param x the character vector to search
 #' @param op logical vector operator back quoted, defaults to `|`
@@ -282,7 +284,7 @@ nam_query <- function(what = c("analysis", "forecast")[1],
 #'  \item{NetcdfServer for httr::BROWSE() NetCDF Subset Service for Grids (interactive)}
 #'  } 
 #' @return character, URL
-nam_url <- function(X, 
+nam218_url <- function(X, 
     what = c("OPeNDAP",     # for ncdf::nc_open()
         "OPeNDAP_form",     # for httr::BROWSE() OPeNDAP Dataset Access Form
         "HTTPServer",       # for utils::download.file()
@@ -319,7 +321,7 @@ nam_url <- function(X,
 #' @param X DatasetsRefClass object
 #' @param what character, which format do you prefer?
 #' @return the value of httr::BROWSE
-nam_browse <- function(X, what = c("opendap_form", "netcdfserver")[1]){
+nam218_browse <- function(X, what = c("opendap_form", "netcdfserver")[1]){
     stopifnot(inherits(X, 'DatasetsRefClass'))
     uri <- nam_url(X, what = what[1])
     httr::BROWSE(uri)
@@ -330,7 +332,7 @@ nam_browse <- function(X, what = c("opendap_form", "netcdfserver")[1]){
 #' @export
 #' @param X DatasetsRefClass object 
 #' @return value returned by ncdf4::nc_open()
-nam_nc_open <- function(X){
+nam218_nc_open <- function(X){
     stopifnot(inherits(X, 'DatasetsRefClass'))
 
     stopifnot(require(ncdf4))
@@ -343,8 +345,58 @@ nam_nc_open <- function(X){
 #' @param X DatasetsRefClass object
 #' @param dest the destination file name, if not provided then it is borrowed from X
 #' @return value returned by utils::download.file()
-nam_download <- function(X, dest = NULL){
+nam218_download <- function(X, dest = NULL){
     stopifnot(inherits(X, 'DatasetsRefClass'))
     if (is.null(dest)) dest <- basename(X$url)
     utils::download.file(nam_url(X, "httpserver"), dest = dest, mode = 'wb')
 }
+
+
+#' Query the namcast resources 
+#' 
+#' @export
+#' @param charcater uri, the base uri for NOMADS NCEP DODS NAM server
+#' @param day POSIXct or character in the form of 'YYYYmmdd', Default to today()
+#' @param ftime character or numeric, on or more of the forecast time on of 0, 6, 12 or 18
+#' @return character vector of uri
+query_namcast <- function(
+    day = format(Sys.time(), "%Y%m%d"),
+    ftime = c(0,6,12,18)[1],
+    uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"){
+    
+    if (FALSE){
+        day = format(Sys.time(), "%Y%m%d")
+        ftime = c(0,6,12,18)[1]
+        uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"
+    }
+        
+    namcast_uri <- function(x, nm = c('dods','dds', 'das')[1]){
+        xml_find_first(x, nm) %>% xml_text()
+    }
+    if (inherits(day, 'POSIXt')) day <- format(day, '%Y%m%d')
+    ftime <- sprintf("nam_%0.2iz", as.numeric(ftime))
+    #path <- file.path(uristub,
+    #    paste0("nam", day),
+    #    sprintf("nam_%0.2iz.xml", as.numeric(ftime))[1]
+    
+    x <- try(xml2::read_xml(uri))   
+    if (inherits(x, 'try-error')){
+        cat("unable to read path:", uri)
+        return(NULL)
+    }
+    dd <- x %>% 
+        xml2::xml_find_all('dataset') 
+    if (length(dd) == 0){
+        cat("no datasets available:", path)
+        return(NULL)
+    }    
+    
+    nm <- dd %>%
+        xml2::xml_find_first("name") %>% 
+        xml2::xml_text()
+
+    ix <- nam218::mgrepl(c(paste0("nam",day),'nam_[0-9].z'), nm, op = '&')
+
+   dd[ix] %>% namcast_uri()
+}
+

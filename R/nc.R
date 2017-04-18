@@ -8,7 +8,7 @@
 nam_url_error <- function(x){
     if (length(x) > 1) return(sapply(x, nc_url_ok))
     if (inherits(x, 'DatasetsRefClass')) x <- nam_url(x)   
-    httr::http_error(paste0(nc, ".html"))
+    httr::http_error(paste0(x, ".html"))
 }
 
 

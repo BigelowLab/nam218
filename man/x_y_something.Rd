@@ -5,13 +5,13 @@
 \title{Given a string x_y_something_time extract the 'something'}
 \usage{
 x_y_something(x = c("x_y_layer_between_two_depths_below_surface_time",
-  "x_y_time2", "bounds_foo_bar"))
+  "x_y_time2", "bounds_foo_bar", "x_y_lev_time", "x_y_time"))
 }
 \arguments{
 \item{x}{the string to parse}
 }
 \value{
-the 'something' string if s doesn't start with x_y_ or starts with x_y_time then "" is returned
+the 'something' string if x doesn't start with x_y_ or starts with x_y_time then "" is returned
 }
 \description{
 Given a string x_y_something_time extract the 'something'
