@@ -357,21 +357,22 @@ nam218_download <- function(X, dest = NULL){
 #' @export
 #' @param charcater uri, the base uri for NOMADS NCEP DODS NAM server
 #' @param day POSIXct or character in the form of 'YYYYmmdd', Default to today()
-#' @param ftime character or numeric, on or more of the forecast time on of 0, 6, 12 or 18
+#' @param ftime character or numeric, on or more of the forecast time one or
+#'  more of [0, 6, 12, 18]
 #' @return character vector of uri
 query_namcast <- function(
     day = format(Sys.time(), "%Y%m%d"),
-    ftime = c(0,6,12,18)[1],
+    ftime = c(0,6,12,18),
     uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"){
     
     if (FALSE){
         day = format(Sys.time(), "%Y%m%d")
-        ftime = c(0,6,12,18)[1]
+        ftime = c(0,6,12,18)
         uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"
     }
         
     namcast_uri <- function(x, nm = c('dods','dds', 'das')[1]){
-        xml_find_first(x, nm) %>% xml_text()
+        xml2::xml_find_first(x, nm) %>% xml2::xml_text()
     }
     if (inherits(day, 'POSIXt')) day <- format(day, '%Y%m%d')
     ftime <- sprintf("nam_%0.2iz", as.numeric(ftime))
@@ -394,9 +395,10 @@ query_namcast <- function(
     nm <- dd %>%
         xml2::xml_find_first("name") %>% 
         xml2::xml_text()
-
-    ix <- nam218::mgrepl(c(paste0("nam",day),'nam_[0-9].z'), nm, op = '&')
-
-   dd[ix] %>% namcast_uri()
+        
+    #ix <- nam218::mgrepl(c(paste0("nam",day),'nam_[0-9].z'), nm, op = '&')
+    ix <- grepl(file.path(paste0("nam",day),ftime), nm, fixed = TRUE)
+    
+    dd[ix] %>% namcast_uri()
 }
 

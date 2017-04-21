@@ -5,18 +5,20 @@ NAMcastRefClass <- setRefClass("NAMcastRefClass",
         vardim = 'character',
         BB = 'ANY',
         proj = 'character',
-        res = 'numeric'
+        res = 'numeric',
+        time = 'ANY'
         ), #fields
     methods = list(
         initialize = function(nc = NULL){
             if (!is.null(nc) && inherits(nc, 'ncdf4')){
                 .self$field("NC", nc)
             } else {
-                 nc <- try(ncdf4::nc_open(nc))
+                nc <- try(ncdf4::nc_open(nc))
                 if (!inherits(nc, 'try-error')) .self$field("NC",nc)
             }
-            if (!is.null(.self$NC)) {
+            if (.self$is_open()) {
                 .self$field("vardim",ncvar_dim_name(.self$NC))
+                .self$field("time", .self$get_time())
             }
             
             .self$proj <- c(
@@ -28,11 +30,15 @@ NAMcastRefClass <- setRefClass("NAMcastRefClass",
                 nrows=443, 
                 ncols=913, 
                 crs = .self$proj['longlat'], 
-                ext = raster::extent(c(
-                    xmin = -152.878623,
-                    xmax = -49.47263081081, 
-                    ymin = 12.219908, 
-                    ymax = 61.20556254545)), 
+                xmn = -152.878623,
+                xmx = -49.47263081081, 
+                ymn = 12.219908, 
+                ymx = 61.20556254545,
+                #ext = raster::extent(c(
+                #    xmin = -152.878623,
+                #    xmax = -49.47263081081, 
+                #    ymin = 12.219908, 
+                #    ymax = 61.20556254545)), 
                 vals=1)
         
             .self$res <- raster::res(.self$template)
@@ -71,6 +77,21 @@ NAMcastRefClass <- setRefClass("NAMcastRefClass",
     ) # methods  
 )
 
+#' Compute the POSIXct timestamps
+#' 
+#' @name NAMcastRefClass_get_time
+#' @param shift numeric, the raw day numbers and epoch conspire to cause a two day 
+#' difference from what is expected. So this param is used to correct that.
+#' @seealso \url{https://github.com/dankelley/oce/issues/738}
+#' @seealso \url{http://www.epic.noaa.gov/java/ncBrowse/mail/msg00059.html}
+#' @return POSIXct vector or NULL
+NAMcastRefClass$methods(
+    get_time = function(shift = -2){
+        if (!.self$is_open() || (length(.self$time) ==0)) return(NULL)
+        secsperday <- 24 * 60 * 60
+        as.POSIXct("1-01-01 00:00:0.0", tz = 'UTC') +
+            (.self$NC$dim$time$vals + shift) * secsperday
+    })
 
 #' Convert from longlat bounding box to start, count for x and y 
 #'
@@ -183,9 +204,9 @@ NAMcastRefClass$methods(
         R <- raster::raster(t(x), 
             xmn = xy$ext[1], xmx = xy$ext[2],
             ymn = xy$ext[3], ymx = xy$ext[4],
-            crs = .self$proj['lcc'])
+            crs = .self$proj['longlat'])
         if (tolower(flip[1]) == 'y') R <- raster::flip(R, 'y')
-        if (to_p != .self$proj['lcc'])
+        if (to_p != .self$proj['longlat'])
             R <- raster::projectRaster(from = R, crs = to_p)
         names(R) <- name
     }
@@ -193,6 +214,35 @@ NAMcastRefClass$methods(
     })
 
 
+#' Retrieve a stack of numerous layers for a single parameter
+#'
+#' This is a convenience wrapper around repeated \code{get_layer()} for a single
+#'  parameter
+#' 
+#' @name NAMcastRefClass_get_layers
+#' @param ... parameters for \code{get_layer()}
+#' @param times the time indices or POSIXct values, by default all times
+#'  or a character flag of 'first', 'last', or 'all'
+#' @return a RasterStack with Z set to time or NULL
+NAMcastRefClass$methods(
+    get_layers = function(..., times = 'all'){
+    
+        if (length(.self$time) == 0) return(NULL)
+        
+        if (inherits(times, 'POSIXt')){
+            ix <- closest_index(.self$time, times)
+        } else if (inherits(times, 'character')){
+            ix <- switch(tolower(times[1]),
+                'first' = 1,
+                'last' = length(.self$time),
+                seq_along(.self$time))
+        } else {
+            ix <- as.integer(times)
+        }
+        
+        PP <- raster::stack(lapply(ix, function(i) .self$get_layer(..., time = i)))
+        setZ(PP, .self$time[ix])
+    })
 ################################################################################
 
 #' Create an instance of NAMcastRefClass
@@ -227,7 +277,17 @@ NAMcast_x_y_time <- function(X, name, bb = X$BB,
     ncdf4::ncvar_get(X$NC, name, start = c(xy$start, time_index[1]), count = c(xy$count, 1))
 }
 
-
+#' Retrieve a variable based upon [x,y,lev,time] as a matrix
+#'
+#' @export
+#' @param X NAMcastRefClass object
+#' @param name character variable name
+#' @param xy a two element list providing start and count values
+#' @param lev numeric the level to extract
+#' @param time_index the default is to get just the first time index if there is
+#   more than one to choose from
+#' @param ... further arguments (unused)
+#' @return numeric matrix
 NAMcast_x_y_lev_time <- function(X, name, 
     lev = 1000, time_index = 1,
     xy = list(start = c(1,1), count = c(-1, -1))){
