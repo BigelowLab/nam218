@@ -396,8 +396,8 @@ query_namcast <- function(
         xml2::xml_find_first("name") %>% 
         xml2::xml_text()
         
-    #ix <- nam218::mgrepl(c(paste0("nam",day),'nam_[0-9].z'), nm, op = '&')
-    ix <- grepl(file.path(paste0("nam",day),ftime), nm, fixed = TRUE)
+    ix <- nam218::mgrepl(c(paste0("nam",day),'nam_[0-9].z'), nm, op = '|')
+    #ix <- grepl(file.path(paste0("nam",day),ftime), nm, fixed = TRUE)
     
     dd[ix] %>% namcast_uri()
 }
