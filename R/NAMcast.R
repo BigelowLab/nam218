@@ -241,7 +241,7 @@ NAMcastRefClass$methods(
         }
         
         PP <- raster::stack(lapply(ix, function(i) .self$get_layer(..., time = i)))
-        setZ(PP, .self$time[ix])
+        raster::setZ(PP, .self$time[ix])
     })
 ################################################################################
 

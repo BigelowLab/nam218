@@ -359,15 +359,19 @@ nam218_download <- function(X, dest = NULL){
 #' @param day POSIXct or character in the form of 'YYYYmmdd', Default to today()
 #' @param ftime character or numeric, on or more of the forecast time one or
 #'  more of [0, 6, 12, 18]
+#' @param pattern character of NULL, defaults to 'nam_[0-9]{2}z'
 #' @return character vector of uri
 query_namcast <- function(
     day = format(Sys.time(), "%Y%m%d"),
     ftime = c(0,6,12,18),
+    pattern = 'nam_[0-9]{2}z',
     uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"){
+
     
     if (FALSE){
         day = format(Sys.time(), "%Y%m%d")
         ftime = c(0,6,12,18)
+        pattern = 'nam_[0-9]{2}z'
         uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"
     }
         
@@ -395,9 +399,12 @@ query_namcast <- function(
     nm <- dd %>%
         xml2::xml_find_first("name") %>% 
         xml2::xml_text()
-        
-    ix <- nam218::mgrepl(c(paste0("nam",day),'nam_[0-9].z'), nm, op = '|')
-    #ix <- grepl(file.path(paste0("nam",day),ftime), nm, fixed = TRUE)
+    
+    if (is.null(pattern)){
+        ix <- nam218::mgrepl(file.path(paste0("nam", day), ftime), nm, op = '|', fixed = TRUE)
+    } else {
+        ix <- nam218::mgrepl(file.path(paste0("nam", day), pattern), nm, op = '|')
+    }
     
     dd[ix] %>% namcast_uri()
 }

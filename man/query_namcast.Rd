@@ -5,13 +5,16 @@
 \title{Query the namcast resources}
 \usage{
 query_namcast(day = format(Sys.time(), "\%Y\%m\%d"), ftime = c(0, 6, 12,
-  18), uri = "http://nomads.ncep.noaa.gov/dods/nam.xml")
+  18), pattern = "nam_[0-9]{2}z",
+  uri = "http://nomads.ncep.noaa.gov/dods/nam.xml")
 }
 \arguments{
 \item{day}{POSIXct or character in the form of 'YYYYmmdd', Default to today()}
 
 \item{ftime}{character or numeric, on or more of the forecast time one or
 more of [0, 6, 12, 18]}
+
+\item{pattern}{character of NULL, defaults to 'nam_[0-9]{2}z'}
 
 \item{charcater}{uri, the base uri for NOMADS NCEP DODS NAM server}
 }
