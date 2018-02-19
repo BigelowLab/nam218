@@ -17,4 +17,3 @@ closest_index(vec, val)
 This is not like \code{findInterval} which places by order.  Here order 
 is irrelevant.
 }
-

@@ -21,4 +21,3 @@ Retrieve a named vector of variable dimensions as a string.  If a variable
  has dimensions [x, y, isobaric, time] then the value will be 
  'x_y_isobaric_time'.
 }
-

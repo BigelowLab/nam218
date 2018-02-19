@@ -2,8 +2,8 @@
 % Please edit documentation in R/query.R
 \name{nam218_time}
 \alias{nam218_time}
-\title{From a two vectors of forecast period ('ftime') and forecast 
- ahead ('ahead') determine the number of seconds to the forecast period from 
+\title{From a two vectors of forecast period ('ftime') and forecast
+ ahead ('ahead') determine the number of seconds to the forecast period from
  midnight}
 \usage{
 nam218_time(ftime = c("0000", "0600", "1200", "1800"), ahead = c("000",
@@ -18,8 +18,7 @@ nam218_time(ftime = c("0000", "0600", "1200", "1800"), ahead = c("000",
 numeric number of seconds into a day
 }
 \description{
-From a two vectors of forecast period ('ftime') and forecast 
- ahead ('ahead') determine the number of seconds to the forecast period from 
+From a two vectors of forecast period ('ftime') and forecast
+ ahead ('ahead') determine the number of seconds to the forecast period from
  midnight
 }
-

@@ -16,7 +16,7 @@ query_latest_forecast(ftime = c(NA, "latest", "0000", "0600", "1200",
  }}
 
 \item{ahead}{character, the 'forecast ahead' times as hhh.  This makes the
-most sense when the value of ftime points to one time, such as 'latest', 
+most sense when the value of ftime points to one time, such as 'latest',
     '0600', etc.
 \itemize{
 \item{NA if NA, the default then all are returned}
@@ -28,4 +28,3 @@ most sense when the value of ftime points to one time, such as 'latest',
 \description{
 Query the latest forecast datasets
 }
-

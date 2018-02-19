@@ -19,7 +19,7 @@ example_get_total_precipitation <- function(
     DD <- nam218_query(date = date,
         ftime = c("0000", "0600", "1200", "1800"),
         ahead = "006")
-    XX <- lapply(DD, function(D) NAM218(nam_url(D)))
+    XX <- lapply(DD, function(D) NAM218(nam218_url(D)))
     
     RR <- lapply(XX, function(X) 
         X$get_layer(name = param, bb = bb, from_proj = 'longlat') )

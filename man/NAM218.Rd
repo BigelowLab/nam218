@@ -15,4 +15,3 @@ NAM218RefClass object or NULL
 \description{
 Create an instance of NAM218RefClass
 }
-

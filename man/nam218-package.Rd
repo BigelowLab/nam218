@@ -15,4 +15,3 @@ A simplified interface to NOMADS NAM 218 forecasts and archives.
  SWG <- X$get_layer("Surface_wind_gust")
 }
 }
-

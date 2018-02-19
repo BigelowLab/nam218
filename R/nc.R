@@ -5,9 +5,9 @@
 #' @export
 #' @param x character URL or DatasetsRefClass object
 #' @return logical TRUE if the URL fails to point to an available dataset
-nam_url_error <- function(x){
+nam218_url_error <- function(x){
     if (length(x) > 1) return(sapply(x, nc_url_ok))
-    if (inherits(x, 'DatasetsRefClass')) x <- nam_url(x)   
+    if (inherits(x, 'DatasetsRefClass')) x <- nam218_url(x)   
     httr::http_error(paste0(x, ".html"))
 }
 

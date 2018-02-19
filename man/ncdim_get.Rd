@@ -20,4 +20,3 @@ a lst of dimension elements
 \description{
 Retrieve a list defining a single dimension
 }
-

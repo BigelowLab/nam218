@@ -15,4 +15,3 @@ value returned by ncdf4::nc_open()
 \description{
 Retrieve a ncdf4 object - only if ncdf4 package is available
 }
-

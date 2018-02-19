@@ -1,6 +1,6 @@
 # http://www.nco.ncep.noaa.gov/pmb/docs/on388/tableb.html#GRID218
 # Grid over the Contiguous United States (used by the 12-km NAM Model) (Lambert Conformal)
-# 	
+#
 # Nx 	614
 # Ny 	428
 # La1 	12.190N
@@ -22,8 +22,8 @@
 # example thredds
 # https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb
 
-#' From a two vectors of forecast period ('ftime') and forecast 
-#'  ahead ('ahead') determine the number of seconds to the forecast period from 
+#' From a two vectors of forecast period ('ftime') and forecast
+#'  ahead ('ahead') determine the number of seconds to the forecast period from
 #'  midnight
 #'
 #' @export
@@ -31,19 +31,19 @@
 #' @param ahead one or more ahead forecast times in hhh
 #' @return numeric number of seconds into a day
 nam218_time <- function(
-    ftime = c("0000", "0600", "1200", "1800"), 
+    ftime = c("0000", "0600", "1200", "1800"),
     ahead = c('000', '001', '003', '006')){
-    
+
     stopifnot(length(ftime) == length(ahead))
-    
-    f <- as.numeric(substring(ftime, 1, 2)) + 
+
+    f <- as.numeric(substring(ftime, 1, 2)) +
          as.numeric(substring(ftime, 3,4))/60
     a <- as.numeric(ahead)
-    
+
     (f + a) * 3600
 }
 
-#' Decompose a NAM218 filename into constituent parts. 
+#' Decompose a NAM218 filename into constituent parts.
 #' The directory name is not retained.
 #'
 #' @export
@@ -62,7 +62,7 @@ nam218_time <- function(
 decompose_uri <- function(x = c(
     "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201702/20170225/namanl_218_20040331_1800_000.grb",
     "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201702/20170225/namanl_218_20040331_1800_006.grb")){
-    
+
     f <- basename(x)
     ss <- strsplit(gsub(".grb", "", f, fixed = TRUE), "_", fixed = TRUE)
     D <- sapply(ss, '[[', 3)  # YYYYmmdd
@@ -74,12 +74,12 @@ decompose_uri <- function(x = c(
     t <- nam218_time(p,a)
     D <- as.POSIXct(paste(D, "00:00:00"), "%Y%m%d", tz = "UTC")
     tibble::data_frame(D, Y, m, d, t, p, a, f)
-    
+
 }
 
 
 #' Perform grepl on multiple patterns; it's like  AND-ing or OR-ing successive grepl statements.
-#' 
+#'
 #' @export
 #' @param pattern character vector of patterns
 #' @param x the character vector to search
@@ -90,54 +90,78 @@ mgrepl <- function(pattern, x, op = `|`, ... ){
    Reduce(op, lapply(pattern, grepl, x, ...))
 }
 
+#' Retrieve the top level catalog URL
+#'
+#' @export
+#' @param what character specifies 'analysis' or 'forecast', 'current-forecast', 'archived-forecast'
+#'  'forecast' and 'archived-forecast' are the same thredds catalog but here for backward compatibility
+#'  'current-forecast' is actually a pointer NOMADS (not NCEP) which fuddles me
+#'  'analysis' points to a thredds catalog
+#' @return character URL
+top_url <- function(what = c("analysis", "forecast", "archived-forecast")[1]){
+
+    switch(tolower(what[1]),
+        #'analysis'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
+        #'forecast'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
+        'analysis'   = "https://www.ncei.noaa.gov/thredds/catalog/namanl/catalog.xml",
+        'forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.xml",
+        'archived-forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.xml",
+        'current-forecast'    =  "http://nomads.ncep.noaa.gov:9090/dods/nam.xml",
+        stop("what must be 'analysis', 'forecast', 'archived-forecast' or 'current-archived'") )
+}
+
 #' Run a query for NAM-218 datasets
 #'
 #' @export
 #' @param what character specifies 'analysis' or 'forecast'
-#' @param date either POSIXct or an 8 character date (YYYYmmdd)
+#' @param day either POSIXct or an 8 character day (YYYYmmdd)
 #' @param ftime 4 character forecast period time stamp ('0000', '0006', etc.) or NA
 #' @param ahead 3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc) or NA
-#' @return DatasetsRefClass or an empty list or NULL 
+#' @return DatasetsRefClass or an empty list or NULL
 query_nam218 <- function(what = c("analysis", "forecast")[1],
-    date = c('20060601', format(as.POSIXct(Sys.time(), format = "%Y%m%d")))[1] ,
+    day = c('20060601', format(as.POSIXct(Sys.time(), format = "%Y%m%d")))[1] ,
     ftime =  c(NA, '0000', '0600','1200','1800')[1],
     ahead = c(NA, '000', '003', '006', '084')[1]){
-    
+
     if (FALSE){
         what = c("analysis", "forecast")[1]
-        date = c('20150101', format(as.POSIXct(Sys.time(), format = "%Y%m%d")))[1]
+        day = c('20150101', format(as.POSIXct(Sys.time(), format = "%Y%m%d")))[1]
         ftime =  c(NA, '0000', '0600','1200','1800')[1]
         ahead = c(NA, '000', '003', '006', '084')[1]
     }
-    
+
     what <- tolower(what[1])
-    topuri <- switch(what,
-        'analysis' = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
-        'forecast' = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
-        stop("what must be 'analysis' or 'forecast'") )
-        
-    if (inherits(date, "POSIXt")) date <- format(date[1], format = "%Y%m%d")
-    date <- gsub("[-/]", "", date)
-    
+    topuri <- top_url(what)
+
+    #topuri <- switch(what,
+    #    #'analysis'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
+    #    #'forecast'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
+    #    'analysis'   = "https://www.ncei.noaa.gov/thredds/catalog/namanl/catalog.xml",
+    #    'forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.xml",
+    #    stop("what must be 'analysis' or 'forecast'") )
+
+    if (inherits(day, "POSIXt")) day <- format(day[1], format = "%Y%m%d")
+    day <- gsub("[-/]", "", day)
+
     Top <- threddscrawler::get_catalog(topuri)
     if (is.null(Top)) return(Top)
-    
+
     CC <- Top$get_catalogs()
     if (is.null(CC)) return(CC)
-    
-    yyyymm <- substring(date[1], 1,6)
+
+    yyyymm <- substring(day[1], 1,6)
     C1 <- CC[[yyyymm]]$get_catalog()
     if (is.null(C1)) return(C1)
-    
-    C2 <- C1$get_catalogs()[[date]]
+
+    C2 <- C1$get_catalogs()[[day]]
     if (is.null(C2)) return(C2)
-    
+
     C3 <- C2$get_catalog()
     if (is.null(C3)) return(C3)
-    
+
     DD <- C3$get_datasets()
     if (is.null(DD)) return(DD)
-    
+
     # example names
     # "namanl_218_20150101_0000_000.grb" "namanl_218_20150101_0000_001.grb"
     if (length(DD) > 0){
@@ -168,7 +192,7 @@ query_nam218 <- function(what = c("analysis", "forecast")[1],
 #'  \item{'0000', '0600', '1200''1800' one or more specific hours}
 #'  }
 #' @param ahead character, the 'forecast ahead' times as hhh.  This makes the
-#'  most sense when the value of ftime points to one time, such as 'latest', 
+#'  most sense when the value of ftime points to one time, such as 'latest',
 #'      '0600', etc.
 #'  \itemize{
 #'  \item{NA if NA, the default then all are returned}
@@ -178,35 +202,38 @@ query_nam218 <- function(what = c("analysis", "forecast")[1],
 query_latest_forecast <- function(
     ftime = c(NA, 'latest', '0000', '0600', '1200', '1800')[2],
     ahead = c(NA, '000', '006', '084')[1]){
-        
+
     if (FALSE){
         ftime = NA
         ahead = NA
     }
-    topuri <- "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml"
-    
+
+    #topuri <- "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml"
+
+    topuri <- top_url(what = 'forecast')
+
     Top <- threddscrawler::get_catalog(topuri)
     if (is.null(Top)) return(Top)
-    
+
     CC <- Top$get_catalogs()
     if (is.null(CC)) return(CC)
-    
+
     # the last should be the yyyymm directory we seek
     C1 <- CC[[length(CC)]]$get_catalog()
     if (length(C1) == 0) return(C1)
 
     C2 <- C1$get_catalogs()
     if (length(C2) == 0) return(C2)
-    
+
     # presumably the latest by yyyymmdd
     C3 <- C2[[length(C2)]]$get_catalog()
-    
+
     DD <- C3$get_datasets()
     if (is.null(DD)) return(DD)
-    
+
     dd <- nam218::decompose_uri(sapply(DD, '[[', 'url'))
-    
-    # now we filter by name 
+
+    # now we filter by name
     # ftime = NA then get them all
     # latest = filter by the 'p' field
     # 0000, 0600, ... filter by one or more of those
@@ -221,9 +248,9 @@ query_latest_forecast <- function(
                 dplyr::filter(p %in% ftime)
             DD <- DD[ dd[['f']] ]
         }
-    } 
+    }
     if (!any(sapply(ahead, is.na))){
-        dd <- dd %>% 
+        dd <- dd %>%
             dplyr::filter(a %in% ahead)
         DD <- DD[ dd[['f']] ]
     }
@@ -238,38 +265,64 @@ query_latest_forecast <- function(
 #' @param day either POSIXct or an 8 character date (YYYYmmdd)
 #' @param time 4 character forecast period time stamp ('0000', '0006', etc.)
 #' @param ahead 3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc)
-#' @return DatasetsRefClass or NULL 
+#' @return DatasetsRefClass or NULL
 nam_query <- function(what = c("analysis", "forecast")[1],
-    day = c('20060601', format(as.POSIXct(Sys.time(), format = "%Y%m%d")))[1] , 
+    day = c('20060601', format(as.POSIXct(Sys.time(), format = "%Y%m%d")))[1] ,
     time = c(NA, '0000', '0600','1200','1800')[3],
     ahead = c(NA, '000', '003', '006', '084')[1]
     ){
-    
+
+
+    if (FALSE){
+        what = c("analysis", "forecast")[1]
+        day = format(Sys.Date()-1, "%Y%m%d")
+        time = c(NA, '0000', '0600','1200','1800')[3]
+        ahead = c(NA, '000', '003', '006', '084')[1]
+    }
+
     what <- tolower(what[1])
-    topuri <- switch(what,
-        'analysis' = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
-        'forecast' = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
-        stop("what must be 'analysis' or 'forecast'") )
-    
+    topuri <- top_url(what)
+    # topuri <- switch(what,
+    #     'analysis' = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
+    #     'forecast' = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
+    #     stop("what must be 'analysis' or 'forecast'") )
+    #topuri <- switch(what,
+    #    #'analysis'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
+    #    #'forecast'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
+    #    'analysis'   = "https://www.ncei.noaa.gov/thredds/catalog/namanl/catalog.html",
+    #    'forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.html",
+    #    stop("what must be 'analysis' or 'forecast'") )
     if (inherits(time, 'numeric')) time <- sprintf("%0.4i", time[1])
     if (inherits(ahead, 'numeric')) ahead <- sprintf("%0.3i", ahead[1])
-    
+
     Top <- threddscrawler::get_catalog(topuri)
     CC <- Top$get_catalogs()
     if (inherits(day, "POSIXt")) day <- format(day[1], format = "%Y%m%d")
     yyyymm <- substring(day[1], 1,6)
     C1 <- CC[[yyyymm]]$get_catalog()
-    C2 <- C1$get_catalogs()[[date]]
+    C2 <- C1$get_catalogs()[[day]]
     C3 <- C2$get_catalog()
     DD <- C3$get_datasets()
-    ix <- grepl(paste0(time[1],'_',ahead[1]), names(DD), fixed = TRUE)
-    if (any(ix)) {
-        x <- DD[ix][[1]]
-    } else {
-        x <- NULL
+    if (!is.na(time[1])){
+        if (!is.na(ahead[1])){
+            ix <- grepl(paste0("_", time[1],'_',ahead[1], "_"), names(DD), fixed = TRUE)
+            if (any(ix)) {
+                x <- DD[ix][[1]]
+                    } else {
+                x <- NULL
+            }
+        } else {
+            ix <- grepl(paste0("_", time[1],'_'), names(DD), fixed = TRUE)
+            if (any(ix)) {
+                x <- DD[ix][[1]]
+                    } else {
+                x <- NULL
+            }
+        }
     }
+    x
 }
- 
+
 #' Retrieve a URL for various resources
 #'
 #' @export
@@ -282,17 +335,17 @@ nam_query <- function(what = c("analysis", "forecast")[1],
 #'  \item{WCS not sure what one does with this}
 #'  \item{WMS ditto}
 #'  \item{NetcdfServer for httr::BROWSE() NetCDF Subset Service for Grids (interactive)}
-#'  } 
+#'  }
 #' @return character, URL
-nam218_url <- function(X, 
+nam218_url <- function(X,
     what = c("OPeNDAP",     # for ncdf::nc_open()
         "OPeNDAP_form",     # for httr::BROWSE() OPeNDAP Dataset Access Form
         "HTTPServer",       # for utils::download.file()
         "WCS",              # not sure what one does with this
         "WMS",              # ditto
-        "NetcdfServer")[1]  # for httr::BROWSE() NetCDF Subset Service for Grids (interactive) 
+        "NetcdfServer")[1]  # for httr::BROWSE() NetCDF Subset Service for Grids (interactive)
         ){
-        
+
     stopifnot(inherits(X, 'DatasetsRefClass'))
     wh <- tolower(what[1])
         #> orig
@@ -312,35 +365,35 @@ nam218_url <- function(X,
             #http://nomads.ncdc.noaa.gov/thredds/ncss/grid/namanl/200606/20060601/namanl_218_20060601_0000_000.grb/dataset.html"
         "netcdfserver" =  paste0(gsub("catalog", "ncss/grid", X$url, fixed = TRUE),
             "/dataset.html"),
-        "" ) 
+        "" )
 }
 
 #' Browse the OPeNDAP resources online
-#' 
+#'
 #' @export
 #' @param X DatasetsRefClass object
 #' @param what character, which format do you prefer?
 #' @return the value of httr::BROWSE
 nam218_browse <- function(X, what = c("opendap_form", "netcdfserver")[1]){
     stopifnot(inherits(X, 'DatasetsRefClass'))
-    uri <- nam_url(X, what = what[1])
+    uri <- nam218_url(X, what = what[1])
     httr::BROWSE(uri)
 }
 
 #' Retrieve a ncdf4 object - only if ncdf4 package is available
-#' 
+#'
 #' @export
-#' @param X DatasetsRefClass object 
+#' @param X DatasetsRefClass object
 #' @return value returned by ncdf4::nc_open()
 nam218_nc_open <- function(X){
     stopifnot(inherits(X, 'DatasetsRefClass'))
 
     stopifnot(require(ncdf4))
-    ncdf4::nc_open(nam_url(X, "opendap"))
+    ncdf4::nc_open(nam218_url(X, "opendap"))
 }
 
 #' Download a GRIB file
-#' 
+#'
 #' @export
 #' @param X DatasetsRefClass object
 #' @param dest the destination file name, if not provided then it is borrowed from X
@@ -348,12 +401,64 @@ nam218_nc_open <- function(X){
 nam218_download <- function(X, dest = NULL){
     stopifnot(inherits(X, 'DatasetsRefClass'))
     if (is.null(dest)) dest <- basename(X$url)
-    utils::download.file(nam_url(X, "httpserver"), dest = dest, mode = 'wb')
+    utils::download.file(nam218_url(X, "httpserver"), dest = dest, mode = 'wb')
 }
 
 
-#' Query the namcast resources 
-#' 
+#' Query the namcast resources for archived forecasts (different than analyses)
+#'
+#' @export
+#' @param charcater uri, the base uri for NOMADS NCEP DODS NAM server
+#' @param day POSIXct or character in the form of 'YYYYmmdd', Default to today()
+#' @param ftime character or numeric, on or more of the forecast time one or
+#'  more of [0, 6, 12, 18]
+#' @return character vector of uri
+query_namcast_archive <- function(
+    day = '20150115',
+    ftime = c(0,6,12,18),
+    ahead = c(0,6),
+    uri = top_url("archived-forecast")){
+
+
+    if (FALSE){
+        day = '20180101'
+        ftime = c(0,6,12,18)
+        ahead = c(0,6)
+        uri =  top_url("archived-forecast")
+    }
+    d <- as.POSIXct(paste(day, "00:00:00"), format = "%Y%m%d %H:%M:%S", tz = "UTC")
+    Ym <- format(d, "%Y%m")
+    Ymd <- format(d, "%Y%m%d")
+    if (is.numeric(ftime) && (max(ftime) <= 18)) ftime <- ftime * 100
+    ftime <- sprintf("_%0.4i", as.numeric(ftime))
+    atime <- sprintf("_%0.3i", as.numeric(ahead))
+    pat <- as.vector(sapply(ftime, function(f) paste0(f, atime)))
+
+    Top <- try(threddscrawler::get_catalog(uri))
+    if (inherits(x, 'try-error')){
+        cat("unable to read path:", uri)
+        return(NULL)
+    }
+
+    CC <- Top$get_catalogs()
+    if (!all(Ym %in% names(CC))){
+        cat("date not found in catalog:", day, "\n")
+        return(NULL)
+    }
+    Cat <- CC[[Ym]]$get_catalog()
+    CC <- Cat$get_catalogs()
+    if (!all(Ymd %in% names(CC))){
+        cat("date not found in catalog:", day, "\n")
+        return(NULL)
+    }
+    Cat <- CC[[Ymd]]$get_catalog()
+    dd <- Cat$get_datasets()
+    ix <- nam218::mgrepl(pat, names(dd))
+    sapply(dd[ix], '[[', 'url')
+}
+
+#' Query the namcast resources for the current forecasts
+#'
 #' @export
 #' @param charcater uri, the base uri for NOMADS NCEP DODS NAM server
 #' @param day POSIXct or character in the form of 'YYYYmmdd', Default to today()
@@ -362,50 +467,50 @@ nam218_download <- function(X, dest = NULL){
 #' @param pattern character of NULL, defaults to 'nam_[0-9]{2}z'
 #' @return character vector of uri
 query_namcast <- function(
-    day = format(Sys.time(), "%Y%m%d"),
+    day = format(Sys.Date(), "%Y%m%d"),
     ftime = c(0,6,12,18),
     pattern = 'nam_[0-9]{2}z',
-    uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"){
+    uri = top_url("current-forecast")){
 
-    
     if (FALSE){
         day = format(Sys.time(), "%Y%m%d")
         ftime = c(0,6,12,18)
         pattern = 'nam_[0-9]{2}z'
-        uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"
+        #uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"
+        uri = top_url("current-forecast")#"http://nomads.ncep.noaa.gov:9090/dods/nam.xml"
     }
-        
+
     namcast_uri <- function(x, nm = c('dods','dds', 'das')[1]){
         xml2::xml_find_first(x, nm) %>% xml2::xml_text()
     }
-    if (inherits(day, 'POSIXt')) day <- format(day, '%Y%m%d')
+    if (!inherits(day, 'character')) day <- format(day, '%Y%m%d')
     ftime <- sprintf("nam_%0.2iz", as.numeric(ftime))
     #path <- file.path(uristub,
     #    paste0("nam", day),
     #    sprintf("nam_%0.2iz.xml", as.numeric(ftime))[1]
-    
-    x <- try(xml2::read_xml(uri))   
+
+    x <- try(xml2::read_xml(uri))
     if (inherits(x, 'try-error')){
         cat("unable to read path:", uri)
         return(NULL)
     }
-    dd <- x %>% 
-        xml2::xml_find_all('dataset') 
+    dd <- x %>%
+        xml2::xml_find_all('dataset')
     if (length(dd) == 0){
         cat("no datasets available:", path)
         return(NULL)
-    }    
-    
+    }
+
     nm <- dd %>%
-        xml2::xml_find_first("name") %>% 
+        xml2::xml_find_first("name") %>%
         xml2::xml_text()
-    
+
     if (is.null(pattern)){
         ix <- nam218::mgrepl(file.path(paste0("nam", day), ftime), nm, op = '|', fixed = TRUE)
     } else {
         ix <- nam218::mgrepl(file.path(paste0("nam", day), pattern), nm, op = '|')
     }
-    
+
     dd[ix] %>% namcast_uri()
 }
 

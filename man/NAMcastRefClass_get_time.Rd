@@ -18,4 +18,3 @@ Compute the POSIXct timestamps
 
 \url{http://www.epic.noaa.gov/java/ncBrowse/mail/msg00059.html}
 }
-

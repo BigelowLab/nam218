@@ -26,4 +26,3 @@ character, URL
 \description{
 Retrieve a URL for various resources
 }
-

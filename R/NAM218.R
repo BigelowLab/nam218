@@ -1,7 +1,7 @@
 NAM218RefClass <- setRefClass("NAM218RefClass",
     fields = list(
         NC = 'ANY',
-        lccR = 'ANY', 
+        lccR = 'ANY',
         vardim = 'character',
         BB = 'ANY',
         proj = 'character',
@@ -18,34 +18,34 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
             if (!is.null(.self$NC)) {
                 .self$field("vardim",ncvar_dim_name(.self$NC))
             }
-            
+
             .self$proj <- c(
                 # see http://www.gdal.org/gdalsrsinfo.html
                 lcc = "+proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs",
                 longlat =  "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
-         
+
             .self$lccR <- raster::raster(
-                nrows=428, 
-                ncols=614, 
-                crs = .self$proj['lcc'], 
+                nrows=428,
+                ncols=614,
+                crs = .self$proj['lcc'],
                 ext = raster::extent(c(
                     xmin = -4232.20247114135,
                     xmax = 3253.07152885866,
                     ymin = -838.793818334546,
-                    ymax = 4378.95418166546)), 
+                    ymax = 4378.95418166546)),
                 vals=1)
-        
+
             .self$res <- raster::res(.self$lccR)
-        
+
             if (!is.null(.self$NC)){
                 bb = c(
                     raster::xFromCol(.self$lccR, 1),
                     raster::xFromCol(.self$lccR, ncol(.self$lccR)),
                     raster::yFromRow(.self$lccR, nrow(.self$lccR)),
                     raster::yFromRow(.self$lccR, 1) )
-                
+
                 .self$BB <- bbox_to_polygon(bb, .self$proj['lcc'])
-            }                
+            }
         },
         finalize = function(){
             if (.self$is_open()) .self$close()
@@ -68,46 +68,46 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
                 cat(paste("   ", d), sep = "\n")
             }
             }
-    ) # methods  
+    ) # methods
 )
 
 #' Retrieve the inventory for the grib file
 #'
 #' @name NAM218RefClass_get_inventory
-#' @param form character either 'text' for a character vector of 'data.frame' 
+#' @param form character either 'text' for a character vector of 'data.frame'
 #' @return NULL, character vector or data.frame
 NAM218RefClass$methods(
     get_inventory = function(form = c('text', 'data.frame')[2]){
-    
+
     # "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201501/20150101/namanl_218_20150101_0000_006.grb"
-    # "https://nomads.ncdc.noaa.gov/data/namanl/201501/20150101/namanl_218_20150101_0000_006.inv"  
-    
+    # "https://nomads.ncdc.noaa.gov/data/namanl/201501/20150101/namanl_218_20150101_0000_006.inv"
+
     if (!.self$is_open()) return(NULL)
-    
+
     uri <- sub("thredds/dodsC","data", .self$NC$file, fixed = TRUE)
     uri <- sub(".grb", ".inv", uri, fixed = TRUE)
-    
+
     x <- try(readLines(uri))
     if (inherits(x, 'try-error')) return(NULL)
-    
+
     x <- gsub('[\'\"]', "", x)
-    
+
     if (form == 'data.frame') {
         x <- read.table(text = x, sep = ":", stringsAsFactors = FALSE)
         names(x) <- c("ID", "N", "ftime", "shortname", "vlevel", "kpds", "ahead", "notes","longname")
     }
     invisible(x)
     })
-    
-    
-#' Convert from longlat bounding box to start, count for x and y 
+
+
+#' Convert from longlat bounding box to start, count for x and y
 #'
 #' @name NAM218RefClass_bb_to_xy
 #' @param bb SpatialPolygons object to project to Lamber Conformal Conic
 #' @return list of start[x,y] and count[x,y], bbox (original), ext (Extent coordinates)
 NAM218RefClass$methods(
     bb_to_xy = function(bb){
-    
+
         if (missing(bb)) bb <- .self$BB
         if (sp::proj4string(bb) != .self$proj['lcc']) {
             x <- sp::spTransform(bb, .self$proj['lcc'])
@@ -121,22 +121,22 @@ NAM218RefClass$methods(
         yb <- find_interval(b[c(2,4)], .self$NC$dim$y$val)
         yb[yb <= 0] <- 1
 
-        bb <- b[c(1,3,2,4)]    
-        Ext <- bb + c(-r[1], r[1], -r[2], r[2])   
+        bb <- b[c(1,3,2,4)]
+        Ext <- bb + c(-r[1], r[1], -r[2], r[2])
         list(
             start = c( x = xb[1], y = yb[1] ),
             count = c( x = xb[2]-xb[1]+1, y = yb[2]-yb[1]+1 ),
             bbox = bb,
-            ext =  Ext) 
-    } )   
+            ext =  Ext)
+    } )
 
 
 #' Retrieve a parameter
-#' 
+#'
 #' @name NAM218RefClass_get_layer
 #' @param name the name of the layer
-#' @param bb a 4-element vector as [xmin,xmax,ymin,ymax] defining 
-#'  the subset region. If NULL then the full extent of the  
+#' @param bb a 4-element vector as [xmin,xmax,ymin,ymax] defining
+#'  the subset region. If NULL then the full extent of the
 #'  NAM218RefClass object is used.  Should be in the coordinate system
 #'  identified by the \code{from_proj} argument - defaults to native.
 #' @param from_proj character, indicates the input projection of bb
@@ -151,11 +151,11 @@ NAM218RefClass$methods(
 #' @param ... further arguments for NAM218_x_y_time() and NAM218_x_y_something_time()
 #' @return RasterLayer object or NULL
 NAM218RefClass$methods(
-    get_layer = function(name = 'Temperature', bb = NULL, 
+    get_layer = function(name = 'Temperature', bb = NULL,
         from_proj = c('native', 'lcc', 'longlat')[1],
         to_proj = c('native', 'lcc', 'longlat')[1],
         flip = 'y', ...){
-    
+
     if (FALSE){
         # for devel purposes
         name = 'Temperature'
@@ -164,92 +164,104 @@ NAM218RefClass$methods(
         to_proj = c('native', 'lcc', 'longlat')[1]
         flip = 'y'
     }
-    
-    
+
+
     if (is.null(bb)) bb <- as.vector(raster::extent(.self$BB))
-    
+
     from_p <- switch(tolower(from_proj[1]),
         'longlat' = .self$proj['longlat'],
         'native' = .self$proj['lcc'],
         'lcc' = .self$proj['lcc'],
         from_proj)
-    
+
     to_p <- switch(tolower(to_proj[1]),
         'longlat' = .self$proj['longlat'],
         'native' = .self$proj['lcc'],
         'lcc' = .self$proj['lcc'],
         to_proj)
-    
+
     if(!(name[1] %in% names(.self$vardim))) {
         cat("variable not found:", name[1], "\n")
         return(NULL)
     }
 
     bb <- bbox_to_polygon(bb, proj = from_p)
-    
+
     xy <- .self$bb_to_xy(bb)
-    
+
     something <- x_y_something(.self$vardim[[name[1]]])
     x <- try(
         switch(.self$vardim[[name[1]]],
-            'x_y_time' = 
-                NAM218_x_y_time(.self, name[1], xy=xy, ...), 
-            'x_y_time1' = 
-                NAM218_x_y_time(.self, name[1], xy=xy,...), 
-            'x_y_time2' = 
-                NAM218_x_y_time(.self, name[1], xy=xy,...), 
-            'x_y_isobaric_time' = 
+            'x_y_time' =
+                NAM218_x_y_time(.self, name[1], xy=xy, ...),
+            'x_y_time1' =
+                NAM218_x_y_time(.self, name[1], xy=xy,...),
+            'x_y_time2' =
+                NAM218_x_y_time(.self, name[1], xy=xy,...),
+            'x_y_time3' =
+                NAM218_x_y_time(.self, name[1], xy=xy,...),
+            'x_y_time4' =
+                NAM218_x_y_time(.self, name[1], xy=xy,...),
+            'x_y_pressure1_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy,  ...),
-            'x_y_isobaric1_time' = 
+            'x_y_isobaric_time' =
+                NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy,  ...),
+            'x_y_isobaric1_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_isobaric2_time' = 
+            'x_y_isobaric2_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_isobaric3_time' = 
+            'x_y_isobaric3_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_isobaric4_time' = 
+            'x_y_isobaric4_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_isobaric5_time' = 
+            'x_y_isobaric5_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_isobaric6_time' = 
+            'x_y_isobaric6_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_isobaric7_time' = 
+            'x_y_isobaric7_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_isobaric8_time' = 
+            'x_y_isobaric8_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_isobaric9_time' = 
+            'x_y_isobaric9_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_depth_below_surface_time' = 
+            'x_y_depth_below_surface_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_height_above_ground_time' = 
+            'x_y_height_above_ground_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_height_above_ground1_time' = 
+            'x_y_height_above_ground1_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_hybrid_time' = 
+            'x_y_height_above_ground2_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_layer_between_two_depths_below_surface_time' = 
+            'x_y_height_above_ground3_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_layer_between_two_depths_below_surface1_time' = 
+            'x_y_height_above_ground4_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_layer_between_two_depths_below_surface2_time' = 
+            'x_y_hybrid_time' =
+                NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
+            'x_y_layer_between_two_depths_below_surface_time' =
+                NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
+            'x_y_layer_between_two_depths_below_surface1_time' =
+                NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
+            'x_y_layer_between_two_depths_below_surface2_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something,xy=xy,  ...),
-            'x_y_layer_between_two_pressure_difference_from_ground_time' = 
+            'x_y_layer_between_two_pressure_difference_from_ground_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_layer_between_two_pressure_difference_from_ground1_time' = 
+            'x_y_layer_between_two_pressure_difference_from_ground1_time' =
                 NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
-            'x_y_layer_between_two_pressure_difference_from_ground2_time' = 
-                NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...), 
-            
+            'x_y_layer_between_two_pressure_difference_from_ground2_time' =
+                NAM218_x_y_something_time(.self, name[1], dimname = something, xy=xy, ...),
+
             'bounds_dim_layer_between_two_depths_below_surface' =  NULL,
             'bounds_dim_layer_between_two_depths_below_surface1' = NULL,
             'bounds_dim_layer_between_two_depths_below_surface2' = NULL,
             'bounds_dim_layer_between_two_pressure_difference_from_ground' = NULL,
             'bounds_dim_layer_between_two_pressure_difference_from_ground1' = NULL,
-            'bounds_dim_layer_between_two_pressure_difference_from_ground2' = NULL,  
+            'bounds_dim_layer_between_two_pressure_difference_from_ground2' = NULL,
             'bounds_dim_time1' = NULL,
             'maxStrlen64' = NULL)
         )
 
-        
+
     R <- NULL
     if (inherits(x, 'try-error')){
         cat("error encountered - returning NULL \n")
@@ -260,7 +272,7 @@ NAM218RefClass$methods(
             "returning NULL")
         cat(msg, sep = "\n")
     } else {
-        R <- raster::raster(t(x), 
+        R <- raster::raster(t(x),
             xmn = xy$ext[1], xmx = xy$ext[2],
             ymn = xy$ext[3], ymx = xy$ext[4],
             crs = .self$proj['lcc'])
@@ -271,10 +283,28 @@ NAM218RefClass$methods(
     }
     return(R)
     })
-    
+
 
 ######## METHODS ABOVE
 ######## FUNCTIONS BELOW
+
+#' Retrieve the full variable name that best matches the provided pattern.
+#'
+#' This functions helps resolve the issues that arise with changing GRIB2 variable
+#'   names but note that it is possible for more than one variable name may be returned.
+#'
+#' @export
+#' @param nc a ncdf4 class object
+#' @param pattern to match - see \code{grepl()}
+#' @param fixed by default TRUE
+#' @param ... further arguments for \code{grepl()}
+#' @return character vector of zero or more matches
+which_var <- function(nc,
+    pattern = c("Total_precipitation", "Convective_precipitation")[1],
+    ignore.case = TRUE, ...){
+    names(nc$var)[grepl(pattern[1], names(nc$var), fixed = TRUE, ...)]
+}
+
 
 #' Create an instance of NAM218RefClass
 #'
@@ -282,19 +312,19 @@ NAM218RefClass$methods(
 #' @param nc either a url, ncdf4 object, DatasetsRefClass object or null
 #' @return NAM218RefClass object or NULL
 NAM218 <- function(nc){
-    if (inherits(nc, 'DatasetsRefClass')) nc <- nam_url(nc)
+    if (inherits(nc, 'DatasetsRefClass')) nc <- nam218_url(nc)
     if (inherits(nc, 'character')){
         if (file.exists(nc)){
             cat("if nc is character it must be a URL\n")
             return(NULL)
         }
-        if (nam_url_error(nc)){
+        if (nam218_url_error(nc)){
             cat("error accessing URL:", nc, "\n")
             cat("please cross check catalog and dataset\n")
             return(NULL)
         }
     }
-    
+
     NAM218RefClass$new(nc)
 }
 
@@ -308,7 +338,7 @@ NAM218 <- function(nc){
 #   more than one to choose from
 #' @param ... further arguments (unused)
 #' @return numeric matrix
-NAM218_x_y_time <- function(X, name, bb = X$BB, 
+NAM218_x_y_time <- function(X, name, bb = X$BB,
     xy = list(start = c(1,1), count = c(-1, -1)),
     time_index = 1){
     ncdf4::ncvar_get(X$NC, name, start = c(xy$start, time_index[1]), count = c(xy$count, 1))
@@ -327,8 +357,8 @@ NAM218_x_y_time <- function(X, name, bb = X$BB,
 #   more than one to choose from
 #' @param ... further arguments (unused)
 #' @return numeric matrix
-NAM218_x_y_something_time <- function(X, name, dimname = 'isobaric', 
-    value = 1000, bb = X$BB, 
+NAM218_x_y_something_time <- function(X, name, dimname = 'isobaric',
+    value = 1000, bb = X$BB,
     xy = list(start = c(1,1), count = c(-1, -1)),
     time_index = 1){
     ix  <- closest_index(ncdim_get(X$NC, dimname), value[1])

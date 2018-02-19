@@ -30,4 +30,3 @@ RasterLayer object or NULL
 \description{
 Retrieve a parameter
 }
-

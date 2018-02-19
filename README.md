@@ -61,7 +61,7 @@ Once you have identified the resource then you can instantiate a NAM reference c
 
 ```R
 # extract an OPeNDAP url
-uri <- nam_url(dataset[[1]], what = 'OPeNDAP')
+uri <- nam218_url(dataset[[1]], what = 'OPeNDAP')
 uri
 # [1] "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb"
 

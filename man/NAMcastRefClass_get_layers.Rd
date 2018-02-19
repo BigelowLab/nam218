@@ -16,4 +16,3 @@ a RasterStack with Z set to time or NULL
 This is a convenience wrapper around repeated \code{get_layer()} for a single
  parameter
 }
-

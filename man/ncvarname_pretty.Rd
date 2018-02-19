@@ -17,4 +17,3 @@ character vector of prettified varnames
 \description{
 Adapted from ncdf4::print.ncdf4()
 }
-

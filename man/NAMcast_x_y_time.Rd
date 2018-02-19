@@ -24,4 +24,3 @@ numeric matrix
 \description{
 Retrieve a variable based upon [x,y,time] as a matrix
 }
-

@@ -24,4 +24,3 @@ DatasetsRefClass or NULL
 \description{
 Run a query for NAM-218 datasets
 }
-

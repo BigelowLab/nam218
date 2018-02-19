@@ -17,4 +17,3 @@ value returned by utils::download.file()
 \description{
 Download a GRIB file
 }
-

@@ -13,7 +13,7 @@ Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Ben Tupper <btupper@bigelow.org>
 URL: https://github.com/btupper/nam218
 License: GPL (>= 2)
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Collate:
     nam218-package.R
     NAM218.R

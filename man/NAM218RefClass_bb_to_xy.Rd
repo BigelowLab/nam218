@@ -12,4 +12,3 @@ list of start[x,y] and count[x,y], bbox (original), ext (Extent coordinates)
 \description{
 Convert from longlat bounding box to start, count for x and y
 }
-

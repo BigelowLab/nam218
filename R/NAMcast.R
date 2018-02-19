@@ -250,10 +250,10 @@ NAMcastRefClass$methods(
 #' @export
 #' @param nc either a url, ncdf4 object or null
 #' @return NAMcastRefClass object or NULL
-NAMcast <- function(nc = "http://nomads.ncep.noaa.gov:80/dods/nam/nam20170414/nam_00z"){
+NAMcast <- function(nc = "http://nomads.ncep.noaa.gov:80/dods/nam/nam20170115/nam_00z"){
     if (is.null(nc)) return(NULL)
     if (inherits(nc, 'character')){
-        if (nam_url_error(nc)){
+        if (nam218_url_error(nc)){
             cat("error accessing URL:", nc, "\n")
             cat("please cross check uri\n")
             return(NULL)

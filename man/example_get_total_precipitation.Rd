@@ -14,4 +14,3 @@ Raster*
 \description{
 Get the total precipitation for two days.
 }
-

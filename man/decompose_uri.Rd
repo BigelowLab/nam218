@@ -2,7 +2,7 @@
 % Please edit documentation in R/query.R
 \name{decompose_uri}
 \alias{decompose_uri}
-\title{Decompose a NAM218 filename into constituent parts. 
+\title{Decompose a NAM218 filename into constituent parts.
 The directory name is not retained.}
 \usage{
 
@@ -26,7 +26,6 @@ a tibble with the following
 }
 }
 \description{
-Decompose a NAM218 filename into constituent parts. 
+Decompose a NAM218 filename into constituent parts.
 The directory name is not retained.
 }
-

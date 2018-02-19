@@ -12,4 +12,3 @@ NULL, character vector or data.frame
 \description{
 Retrieve the inventory for the grib file
 }
-

@@ -24,4 +24,3 @@ sp::SpatialPolygons object or NULL
 \description{
 Convert a bbox to sp::polygon, sp::Polygons, or sp::SpatialPolygons object
 }
-

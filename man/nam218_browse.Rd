@@ -17,4 +17,3 @@ the value of httr::BROWSE
 \description{
 Browse the OPeNDAP resources online
 }
-

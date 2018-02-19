@@ -16,4 +16,3 @@ the 'something' string if x doesn't start with x_y_ or starts with x_y_time then
 \description{
 Given a string x_y_something_time extract the 'something'
 }
-
