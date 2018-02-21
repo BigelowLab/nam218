@@ -435,7 +435,7 @@ query_namcast_archive <- function(
     pat <- as.vector(sapply(ftime, function(f) paste0(f, atime)))
 
     Top <- try(threddscrawler::get_catalog(uri))
-    if (inherits(x, 'try-error')){
+    if (inherits(Top, 'try-error')){
         cat("unable to read path:", uri)
         return(NULL)
     }
@@ -473,12 +473,13 @@ query_namcast <- function(
     uri = top_url("current-forecast")){
 
     if (FALSE){
-        day = format(Sys.time(), "%Y%m%d")
+        day = "20170707" #format(Sys.time(), "%Y%m%d")
         ftime = c(0,6,12,18)
         pattern = 'nam_[0-9]{2}z'
         #uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"
-        uri = top_url("current-forecast")#"http://nomads.ncep.noaa.gov:9090/dods/nam.xml"
-    }
+        #uri = top_url("current-forecast")#"http://nomads.ncep.noaa.gov:9090/dods/nam.xml"
+        uri = top_url("archived-forecast")
+}
 
     namcast_uri <- function(x, nm = c('dods','dds', 'das')[1]){
         xml2::xml_find_first(x, nm) %>% xml2::xml_text()
