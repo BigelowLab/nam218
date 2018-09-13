@@ -3,7 +3,7 @@
 \name{ncvar_dim_name}
 \alias{ncvar_dim_name}
 \title{Retrieve a named vector of variable dimensions as a string.  If a variable
- has dimensions [x, y, isobaric, time] then the value will be 
+ has dimensions [x, y, isobaric, time] then the value will be
  'x_y_isobaric_time'.}
 \usage{
 ncvar_dim_name(nc, sep = "_")
@@ -18,6 +18,6 @@ a named vector of variable dimension names
 }
 \description{
 Retrieve a named vector of variable dimensions as a string.  If a variable
- has dimensions [x, y, isobaric, time] then the value will be 
+ has dimensions [x, y, isobaric, time] then the value will be
  'x_y_isobaric_time'.
 }

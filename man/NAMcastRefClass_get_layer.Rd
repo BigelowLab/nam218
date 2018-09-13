@@ -6,8 +6,8 @@
 \arguments{
 \item{name}{the name of the layer}
 
-\item{bb}{a 4-element vector as [xmin,xmax,ymin,ymax] defining 
-the subset region. If NULL then the full extent of the  
+\item{bb}{a 4-element vector as [xmin,xmax,ymin,ymax] defining
+the subset region. If NULL then the full extent of the
 NAMcastRefClass object is used.  Should be in the coordinate system
 identified by the \code{from_proj} argument - defaults to native.}
 

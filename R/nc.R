@@ -1,13 +1,13 @@
 # nc.R
 
 #' Test if a NAM218 OpenDAP URL points to accessible datasets.
-#' 
+#'
 #' @export
 #' @param x character URL or DatasetsRefClass object
 #' @return logical TRUE if the URL fails to point to an available dataset
 nam218_url_error <- function(x){
-    if (length(x) > 1) return(sapply(x, nc_url_ok))
-    if (inherits(x, 'DatasetsRefClass')) x <- nam218_url(x)   
+    if (length(x) > 1) return(sapply(x, httr::http_error))
+    if (inherits(x, 'DatasetsRefClass')) x <- nam218_url(x)
     httr::http_error(paste0(x, ".html"))
 }
 
@@ -16,7 +16,7 @@ nam218_url_error <- function(x){
 #'
 #' @export
 #' @param NC a ncdf4 object
-#' @param rm_pattern character a pattern of characters to remove from the 
+#' @param rm_pattern character a pattern of characters to remove from the
 #'    attribute names.  By default 'NC_GLOBAL.'.  Set to "" or NA to skip
 #' @param fixed logical by default TRUE but see \code{grepl}
 #' @return named vector of global attributes
@@ -72,7 +72,7 @@ ncdim_pretty <- function(NC){
 #' @param nc ncdf4 object
 #' @param rm.names logical, if TRUE remove element names
 #' @return character vector of prettified varnames
-ncvarname_pretty <- function(nc, rm.names = TRUE){   
+ncvarname_pretty <- function(nc, rm.names = TRUE){
         ss <- sapply(nc[['var']],
             function(x){
                 s <- x$name
@@ -84,11 +84,11 @@ ncvarname_pretty <- function(nc, rm.names = TRUE){
                 s
             })
         if (rm.names) ss <- unname(ss)
-        ss    
+        ss
 }
 
 #' Retrieve a named vector of variable dimensions as a string.  If a variable
-#'  has dimensions [x, y, isobaric, time] then the value will be 
+#'  has dimensions [x, y, isobaric, time] then the value will be
 #'  'x_y_isobaric_time'.
 #'
 #' @export
@@ -139,7 +139,7 @@ ncvardim_get <- function(NC){
          names(len) <- x[['name']]
          return(len)
       }
-      
+
       dims <- d[['dim']]
       sapply(dims, get_vardim_one)
    }
@@ -154,15 +154,15 @@ ncvardim_get <- function(NC){
 #' @param as_POSIXct logical, if TRUE then convert to POSIXct
 #' @return a numeric vector of timestamps (possibly POSIXct) or NULL if none
 nctime_get <- function(NC, name = 'time', as_POSIXct = TRUE){
-   
+
    d <- ncdim_get(NC)
    if (!("time" %in% names(d)) ) return(NULL)
-   
+
    v <- NC[["dim"]][['time']][['vals']]
-   
+
    if (as_POSIXct){
       u <- NC[["dim"]][['time']][['units']]
-      
+
       if (grepl(" since ", u, fixed = TRUE)){
          secsperday <- 24 * 60 * 60
          spaces <- gregexpr(" since ", u, fixed = TRUE)[[1]]
@@ -175,7 +175,29 @@ nctime_get <- function(NC, name = 'time', as_POSIXct = TRUE){
             t0 + v)
       } else {
          cat("nctime_get: unknown time format for conversion to POSIXct\n")
-      }  
+      }
    }
    invisible(v)
+}
+
+
+#' Retrieve a matrix generic information about each variable
+#'
+#' @export
+#' @param NC a ncdf4 class object
+#' @param sep character, used to separate dimensions if any, deafult is a space " "
+#' @return a character matrix of
+#'  \itemize{
+#'  \item{longname the name of the variable}
+#'  \item{name the shortname of the variable}
+#'  \item{unit the units - possibly ""}
+#'  \item{dim the dimensions separated by underscores possibly ""}
+#' }
+ncvar_info <- function(NC, sep = " "){
+    name <- names(NC$var)
+    unit  <- sapply(name, function(vn) NC$var[[vn]][['units']])
+    longname  <- sapply(name, function(vn) NC$var[[vn]][['longname']])
+    shortname  <- sapply(name, function(vn) NC$var[[vn]][['name']])
+    dim   <- ncvar_dim_name(NC, sep = sep)
+    cbind(name, longname, shortname, unit, dim)
 }

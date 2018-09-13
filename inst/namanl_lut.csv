@@ -1,0 +1,14 @@
+,longname,name,units,ahead,trt,grib1_var,grib1_level
+airtemp,Temperature_surface,airtemp,K,0,min+max+mean,TMP,surface
+relhum,Relative_humidity_height_above_ground,relhum,%,0,mean,RH,2 m above ground
+uwind,u-component_of_wind_height_above_ground,uwind,m/s,0,mean,UGRD,10 m above ground
+vwind,v-component_of_wind_height_above_ground,vwind,m/s,0,mean,VGRD,10 m above ground
+sncvr,Snow_Cover_surface,sncvr,%,0,mean,SNOWC,surface
+sndep,Snow_depth_surface,sndep,m,0,mean,SNOD,surface
+vegtyp,Vegetation_Type_surface,vegtyp,index,0,first,VGTYP,surface
+vegcvr,Vegetation_surface,vegcvr,%,0,mean,VEG,surface
+trnstr,Transpiration_Stress-onset_soil_moisture_surface,trnstr,kg/m^3,0,mean,SMREF,surface
+wilt,Wilting_Point_surface,wilt,fraction,0,mean,WILT,surface
+precip,Total_precipitation,precip,mm,6,sum,APCP,surface
+vis,Visibility_surface,vis,m,0,mean,VIS,surface
+cloud,Total_cloud_cover_entire_atmosphere_single_layer,cloud,%,0,mean,TCDC,entire atmosphere (considered as a single layer)

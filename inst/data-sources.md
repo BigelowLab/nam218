@@ -74,7 +74,8 @@ content organization are different than for **Analyses** ans **Archived Forecast
 
 
 ```
-Z = NAMcast('http://nomads.ncep.noaa.gov/dods/nam/nam20180221/nam_00z')
+uri = format(Sys.Date(),"http://nomads.ncep.noaa.gov/dods/nam/nam%Y%m%d/nam_00z" )
+Z = NAMcast(uri)
 Z
 Reference Class: "NAMcastRefClass"
   state: open

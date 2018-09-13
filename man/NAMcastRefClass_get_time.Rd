@@ -4,7 +4,7 @@
 \alias{NAMcastRefClass_get_time}
 \title{Compute the POSIXct timestamps}
 \arguments{
-\item{shift}{numeric, the raw day numbers and epoch conspire to cause a two day 
+\item{shift}{numeric, the raw day numbers and epoch conspire to cause a two day
 difference from what is expected. So this param is used to correct that.}
 }
 \value{
