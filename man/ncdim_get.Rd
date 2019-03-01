@@ -4,8 +4,8 @@
 \alias{ncdim_get}
 \title{Retrieve a list defining a single dimension}
 \usage{
-ncdim_get(NC, dimname = "some dimension name", what = c("vals", "units",
-  NA)[1])
+ncdim_get(NC, dimname = "some dimension name", what = c("vals",
+  "units", NA)[1])
 }
 \arguments{
 \item{NC}{ncdf4 object}

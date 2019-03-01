@@ -4,8 +4,8 @@
 \alias{nam218_url}
 \title{Retrieve a URL for various resources}
 \usage{
-nam218_url(X, what = c("OPeNDAP", "OPeNDAP_form", "HTTPServer", "WCS", "WMS",
-  "NetcdfServer")[1])
+nam218_url(X, what = c("OPeNDAP", "OPeNDAP_form", "HTTPServer", "WCS",
+  "WMS", "NetcdfServer")[1])
 }
 \arguments{
 \item{X}{DatasetsRefClass object}

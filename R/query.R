@@ -106,7 +106,7 @@ top_url <- function(what = c("analysis", "forecast", "archived-forecast")[1]){
         'analysis'   = "https://www.ncei.noaa.gov/thredds/catalog/namanl/catalog.xml",
         'forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.xml",
         'archived-forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.xml",
-        'current-forecast'    =  "http://nomads.ncep.noaa.gov:9090/dods/nam.xml",
+        'current-forecast'    =  "https://nomads.ncep.noaa.gov:9090/dods/nam.xml",
         stop("what must be 'analysis', 'forecast', 'archived-forecast' or 'current-archived'") )
 }
 
@@ -473,7 +473,7 @@ query_namcast <- function(
     uri = top_url("current-forecast")){
 
     if (FALSE){
-        day = "20170707" #format(Sys.time(), "%Y%m%d")
+        day = format(Sys.Date(), "%Y%m%d")
         ftime = c(0,6,12,18)
         pattern = 'nam_[0-9]{2}z'
         #uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"

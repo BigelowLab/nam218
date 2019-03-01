@@ -4,8 +4,8 @@
 \alias{namanl_grib1_https}
 \title{Fetch a grb and companion inv file via https}
 \usage{
-namanl_grib1_https(name = "namanl_218_20040303_0000_000", path = tempdir(),
-  what = c("grb", "inv")[1], ...)
+namanl_grib1_https(name = "namanl_218_20040303_0000_000",
+  path = tempdir(), what = c("grb", "inv")[1], ...)
 }
 \arguments{
 \item{name}{the name of the file to retrieve in namanl_218_YYYYmmdd_ffff_aaa pattern}
