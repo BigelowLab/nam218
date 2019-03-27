@@ -1,14 +1,13 @@
 # nam218
 
-A simple [R language](https://www.r-project.org/) interface to [NOMADS NAM](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-mesoscale-forecast-system-nam) forecasts and archives.
+A simple [R language](https://www.r-project.org/) interface to
+[NCEP NAM](https://www.nco.ncep.noaa.gov/pmb/products/nam/) forecasts and archives.
 
 Parameters vary by the forecast hour. (Note - some of the docs seems to not match
 served data file contents.  Check carefully for discrepancies.)
 
-[000](http://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys00.grb2.tm00.shtml)
-
-[006](http://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys06.grb2.tm00.shtml)
-
+[000](https://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys00.tm00.grib2.shtml)
+[006](https://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys06.tm00.grib2.shtml)
 
 #### Catalog-dataset mishaps
 
@@ -18,9 +17,7 @@ the datasets ( ala catalog == dataset). Unfortunately, sometimes the catalog wil
 indicate a dataset is present when in fact it is not available ( ala catalog != dataset).
 Some attempt has been made to resolve the latter issue - trying to open an unavailable
 OPeNDAP dataset that is listed in the THREDDS catalog will cause the main object
-class to return as NULL.  At the time of this writing you can see an example
-[here at 0000_051.grib](https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/201704/20170401/catalog.html)
-
+class to return as NULL.
 
 #### Requirements
 
@@ -32,7 +29,7 @@ And packages...
 
 + [ncdf4](https://cran.r-project.org/web/packages/ncdf4/index.html)
 
-+ [threddscrawler](https://github.com/BigelowLab/threddscrawler)
++ [thredds](https://github.com/BigelowLab/thredds)
 
 + [httr](https://cran.r-project.org/web/packages/httr/index.html)
 
@@ -46,14 +43,16 @@ It's fairly easy to install using Hadley Wickham's [devtools](http://cran.r-proj
 
 ```r
 library(devtools)
-install_github("BigelowLab/threddscrawler")
+install_github("BigelowLab/thredds")
 install_github('BigelowLab/nam218')
 ```
 
 ### Realtime Forecasts aka 'namcast'
 
 An [example](http://nomads.ncep.noaa.gov/dods/nam) and more specifically we
-typically use the [NAM every 3 hours fcst staring from 00Z](http://nomads.ncep.noaa.gov/dods/nam/nam20180221/nam_00z.info)
+typically use the NAM every 3 hours fcst staring from 00Z - select a day from the
+page lineked to above and then select `nam_00z.info`.
+Be aware that the date identified in the link should be updated as needed.
 
 Grid node locations are given by lat,lon coordinates. We use the `NAMcast`
 reference object to handle this data source. Note that the variable names and
@@ -86,7 +85,7 @@ file:  http://nomads.ncep.noaa.gov/dods/nam/nam20180221/nam_00z
 
 ### Archived Forecasts
 
-An [example](https://www.ncei.noaa.gov/thredds/catalog/nam218/201802/20180219/catalog.html?dataset=nam218/201802/20180219/nam_218_20180219_0000_000.grb2)
+An [example](https://www.ncei.noaa.gov/thredds/catalog/nam218/201802/20180219/catalog.html)
 
 Note that these grids are projected Lamber Conformal Conic `lcc`.  Data covers
 2016-06 through present - typically lagging 'current' by **2 days**.
@@ -98,7 +97,6 @@ above for *Analyses*
 
 ### Analyses
 
-
 Not all variables extend through the entire 2004-present period (surface vis and cloud cover examples)
 Somewhere along the line the format changed from GRB (ugg) to GRB2 (readable by ncdf4)
 We need a switch to  navigate the GRB/GRB2 change
@@ -106,17 +104,18 @@ We need a switch to  navigate the GRB/GRB2 change
     if GRB2 use ncdf4
 
 
-An [example](https://www.ncei.noaa.gov/thredds/catalog/namanl/201802/20180219/catalog.html?dataset=namanl/201802/20180219/namanl_218_20180219_0600_000.grb2)
+An [example](https://www.ncei.noaa.gov/thredds/dodsC/nam218/201902/20190219/nam_218_20190219_0000_000.grb2.html)
 
 Note that these grids are projected Lamber Conformal Conic `lcc`.  Data covers 2004-03 through present - typically lagging 'current' by **2 days**.
 Forecasts are available for forecast statement times `ftime = 0000, 0600, 1200, 1800` with look-ahead times `ahead = 000, 001, 002, 002, 006`
 
 ```
-Y = NAM218('https://www.ncei.noaa.gov/thredds/dodsC/namanl/201802/20180219/namanl_218_20180219_0600_000.grb2')
+Y = NAM218("http://www.ncei.noaa.gov/thredds/dodsC/nam218/201902/20190219/nam_218_20190219_0000_000.grb2")
 Y
 Reference Class: "NAM218RefClass"
-  state: open
- file:  https://www.ncei.noaa.gov/thredds/dodsC/namanl/201802/20180219/namanl_218_20180219_0600_000.grb2
+state: open
+file:  http://www.ncei.noaa.gov/thredds/dodsC/nam218/201902/20190219/nam_218_20190219_0000_000.grb2
+
  VARS:
     LambertConformal_Projection
     reftime
@@ -145,13 +144,18 @@ Finding data with a query...
 
 ```R
 library(nam218)
-dataset <- query_nam218(what = 'analysis', date = '20080704', ftime = '1200')
+dataset <- query_nam218(what = 'analysis', day = '20180704', ftime = '1200', ahead = '000')
 dataset[[1]]
-# Reference Class: "DatasetsRefClass"
+# Reference Class: "DatasetRefClass"
 #   verbose_mode: FALSE
-#   url: https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/200807/20080704/namanl_218_20080704_1200_000.grb
+#   tries: 3
+#   url: https://www.ncei.noaa.gov/thredds/catalog/namanl/201807/20180704/namanl_218_20180704_1200_000.grb2
 #   children: dataSize date
 #   datasets: NA
+#   dataSize: 50.86
+#   date: 2018-07-09T22:43:47Z
+#   serviceName:
+#   urlPath:
 ```
 
 Once you have identified the resource then you can instantiate a NAM reference class to get data.
@@ -166,28 +170,31 @@ uri
 X <- NAM218(uri)
 
 # retrieve a layer and show it
-RH <- X$get_layer("Relative_humidity")
+RH <- X$get_layer("Relative_humidity_height_above_ground")
 RH
-  # class       : RasterLayer
-  # dimensions  : 428, 614, 262792  (nrow, ncol, ncell)
-  # resolution  : 12.17114, 12.16252  (x, y)
-  # extent      : -4226.107, 3246.976, -832.6983, 4372.859  (xmin, xmax, ymin, ymax)
-  # coord. ref. : +proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs
-  # data source : in memory
-  # names       : Relative_humidity
-  # values      : 4, 100  (min, max)
+# class       : RasterLayer
+# dimensions  : 427, 614, 262178  (nrow, ncol, ncell)
+# resolution  : 12.191, 12.21955  (x, y)
+# extent      : -4232.202, 3253.072, -838.7938, 4378.954  (xmin, xmax, ymin, ymax)
+# coord. ref. : +proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs
+# data source : in memory
+# names       : Relative_humidity_height_above_ground
+# values      : 7.132321, 100.0323  (min, max)
+
 
 library(raster)
 sp::spplot(RH)
 
 ```
 
-As a convenience a spatial subset can be requested with a bounding box specified as [left, right, bottom, top].  The inout and output subset coordinate system can be specified in NAM218 native coordinates `lambert conformal conic` or in `longlat` using the `from_proj` and `to_proj` arguments.
+As a convenience a spatial subset can be requested with a bounding box specified as [left, right, bottom, top].
+The inout and output subset coordinate system can be specified in NAM218 native coordinates
+`lambert conformal conic` or in `longlat` using the `from_proj` and `to_proj` arguments.
 
 ```R
 BBOX <- c(-72,-63,39,46)
 
-R_lcc <- X$get_layer("Relative_humidity", bb = BBOX, from_proj = 'longlat', to_proj = 'native')
+R_lcc <- X$get_layer("Relative_humidity_height_above_ground", bb = BBOX, from_proj = 'longlat', to_proj = 'native')
 R_lcc
   # class       : RasterLayer
   # dimensions  : 80, 77, 6160  (nrow, ncol, ncell)
@@ -198,7 +205,7 @@ R_lcc
   # names       : Relative_humidity
   # values      : 56, 100  (min, max)
 
-R_ll <- X$get_layer("Relative_humidity", bb = BBOX, from_proj = 'longlat', to_proj = 'longlat')
+R_ll <- X$get_layer("Relative_humidity_height_above_ground", bb = BBOX, from_proj = 'longlat', to_proj = 'longlat')
 R_ll
   # class       : RasterLayer
   # dimensions  : 110, 104, 11440  (nrow, ncol, ncell)

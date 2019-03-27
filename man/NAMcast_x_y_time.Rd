@@ -4,8 +4,8 @@
 \alias{NAMcast_x_y_time}
 \title{Retrieve a variable based upon [x,y,time] as a matrix}
 \usage{
-NAMcast_x_y_time(X, name, bb = X$BB, xy = list(start = c(1, 1), count =
-  c(-1, -1)), time_index = 1)
+NAMcast_x_y_time(X, name, xy = list(start = c(1, 1), count = c(-1, -1)),
+  time_index = 1)
 }
 \arguments{
 \item{X}{NAMcastRefClass object}

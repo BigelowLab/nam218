@@ -16,7 +16,7 @@ more of [0, 6, 12, 18]}
 
 \item{pattern}{character of NULL, defaults to 'nam_[0-9]{2}z'}
 
-\item{charcater}{uri, the base uri for NOMADS NCEP DODS NAM server}
+\item{uri, }{the base uri for NOMADS NCEP DODS NAM server}
 }
 \value{
 character vector of uri

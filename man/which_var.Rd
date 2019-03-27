@@ -12,9 +12,9 @@ which_var(nc, pattern = c("Total_precipitation",
 
 \item{pattern}{to match - see \code{grepl()}}
 
-\item{...}{further arguments for \code{grepl()}}
+\item{ignore.case}{logical it TRUE ignore case in the pattern}
 
-\item{fixed}{by default TRUE}
+\item{...}{further arguments for \code{grepl()}}
 }
 \value{
 character vector of zero or more matches

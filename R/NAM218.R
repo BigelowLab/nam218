@@ -296,7 +296,7 @@ NAM218RefClass$methods(
 #' @export
 #' @param nc a ncdf4 class object
 #' @param pattern to match - see \code{grepl()}
-#' @param fixed by default TRUE
+#' @param ignore.case logical it TRUE ignore case in the pattern
 #' @param ... further arguments for \code{grepl()}
 #' @return character vector of zero or more matches
 which_var <- function(nc,
@@ -338,7 +338,7 @@ NAM218 <- function(nc){
 #   more than one to choose from
 #' @param ... further arguments (unused)
 #' @return numeric matrix
-NAM218_x_y_time <- function(X, name, bb = X$BB,
+NAM218_x_y_time <- function(X, name,
     xy = list(start = c(1,1), count = c(-1, -1)),
     time_index = 1){
     ncdf4::ncvar_get(X$NC, name, start = c(xy$start, time_index[1]), count = c(xy$count, 1))
@@ -358,7 +358,7 @@ NAM218_x_y_time <- function(X, name, bb = X$BB,
 #' @param ... further arguments (unused)
 #' @return numeric matrix
 NAM218_x_y_something_time <- function(X, name, dimname = 'isobaric',
-    value = 1000, bb = X$BB,
+    value = 1000,
     xy = list(start = c(1,1), count = c(-1, -1)),
     time_index = 1){
     ix  <- closest_index(ncdim_get(X$NC, dimname), value[1])

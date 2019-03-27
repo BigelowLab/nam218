@@ -9,9 +9,9 @@
 ncvar_dim_name(nc, sep = "_")
 }
 \arguments{
-\item{sep}{character used to separate the dimension names}
+\item{nc}{a ncdf4 object}
 
-\item{NC}{a ncdf4 object}
+\item{sep}{character used to separate the dimension names}
 }
 \value{
 a named vector of variable dimension names

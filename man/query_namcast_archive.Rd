@@ -13,7 +13,9 @@ query_namcast_archive(day = "20150115", ftime = c(0, 6, 12, 18),
 \item{ftime}{character or numeric, on or more of the forecast time one or
 more of [0, 6, 12, 18]}
 
-\item{charcater}{uri, the base uri for NOMADS NCEP DODS NAM server}
+\item{ahead}{3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc)}
+
+\item{uri, }{the base uri for NOMADS NCEP DODS NAM server}
 }
 \value{
 character vector of uri

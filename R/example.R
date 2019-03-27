@@ -1,6 +1,11 @@
 #' Get the total precipitation for two days.
 #'
 #' @export
+#' @param param name of the parameter
+#' @param date date as POSIXct or Date
+#' @param fun character, the name of the summarizing function
+#' @param bb a 4 element bounding box
+#' @param ... further arguments for the summazing functions
 #' @return Raster*
 example_get_total_precipitation <- function(
     param = 'Total_precipitation',
@@ -27,7 +32,7 @@ example_get_total_precipitation <- function(
 
     if (!is.null(fun) && !is.na(fun)){
         RR <- switch(tolower(fun[1]),
-            'sum' = raster:::calc(RR, sum, ...),
+            'sum' = raster::calc(RR, sum, ...),
             'mean' = raster::calc(RR, mean, ...),
             'min' = raster::calc(RR, min, ...),
             'max' = raster::calc(RR, max, ...))

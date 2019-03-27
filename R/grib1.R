@@ -131,7 +131,7 @@ read_grib1_inv <- function(filename = "/mnt/ecocast/projects/devel/grib/namanl_2
     x       <- dplyr::as_tibble(x)
     colnames(x)  <- names(nm)
     x <- x %>%
-        dplyr::mutate(band = as.integer(band), offset = as.integer(offset))
+        dplyr::mutate(band = as.integer(.data$band), offset = as.integer(.data$offset))
     x
 }
 
@@ -144,7 +144,7 @@ read_grib1_inv <- function(filename = "/mnt/ecocast/projects/devel/grib/namanl_2
 #' @param level the z level desired
 #' @return zero or more band numbers that match the name and level
 select_band <- function(x, name = "TMP", level = "sfc"){
-    (x %>% dplyr::filter((var %in% name) & (z %in% level)))$band
+    (x %>% dplyr::filter((.data$var %in% name) & (.data$z %in% level)))$band
 }
 
 

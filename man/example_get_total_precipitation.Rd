@@ -8,6 +8,17 @@ example_get_total_precipitation(param = "Total_precipitation",
   date = as.POSIXct("2015-01-01", "\%Y-\%m-\%d", tz = "UTC"),
   fun = "sum", bb = c(-74, -57, 40, 51.5), ...)
 }
+\arguments{
+\item{param}{name of the parameter}
+
+\item{date}{date as POSIXct or Date}
+
+\item{fun}{character, the name of the summarizing function}
+
+\item{bb}{a 4 element bounding box}
+
+\item{...}{further arguments for the summazing functions}
+}
 \value{
 Raster*
 }

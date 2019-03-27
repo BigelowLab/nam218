@@ -10,10 +10,11 @@ closest_index(vec, val)
 \item{vec}{vector of numeric values to search}
 
 \item{val}{the val to match into vec}
-
-\item{1-based}{index of the closest match in vec}
+}
+\value{
+1-based index of the closest match in vec
 }
 \description{
-This is not like \code{findInterval} which places by order.  Here order 
+This is not like \code{findInterval} which places by order.  Here order
 is irrelevant.
 }

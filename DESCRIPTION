@@ -1,19 +1,27 @@
 Package: nam218
-Title: A simplified interface to NOMADS NAM-218 forecasts and archives.
+Title: nam218
+Description: A simplified interface to NOMADS NAM-218 forecasts and archives.
 Version: 0.1
 Depends:
     R (>= 3.0)
 Imports:
     methods,
-    threddscrawler,
+    utils,
+    rlang,
+    magrittr,
+    httr,
+    thredds,
     ncdf4,
     raster,
     dplyr,
-    readr
+    readr,
+    sp,
+    tibble,
+    xml2
 Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Ben Tupper <btupper@bigelow.org>
 URL: https://github.com/btupper/nam218
-License: GPL (>= 2)
+License: MIT + file LICENSE
 RoxygenNote: 6.1.1
 Encoding: UTF-8
 Collate:

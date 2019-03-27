@@ -5,8 +5,7 @@
 \title{Retrieve a variable based upon [x,y,something,time] as a matrix}
 \usage{
 NAM218_x_y_something_time(X, name, dimname = "isobaric", value = 1000,
-  bb = X$BB, xy = list(start = c(1, 1), count = c(-1, -1)),
-  time_index = 1)
+  xy = list(start = c(1, 1), count = c(-1, -1)), time_index = 1)
 }
 \arguments{
 \item{X}{NAM218RefClass object}

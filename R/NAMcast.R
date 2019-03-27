@@ -273,7 +273,7 @@ NAMcast <- function(nc =
 #   more than one to choose from
 #' @param ... further arguments (unused)
 #' @return numeric matrix
-NAMcast_x_y_time <- function(X, name, bb = X$BB,
+NAMcast_x_y_time <- function(X, name,
     xy = list(start = c(1,1), count = c(-1, -1)), time_index = 1){
     ncdf4::ncvar_get(X$NC, name, start = c(xy$start, time_index[1]), count = c(xy$count, 1))
 }

@@ -92,7 +92,7 @@ ncvarname_pretty <- function(nc, rm.names = TRUE){
 #'  'x_y_isobaric_time'.
 #'
 #' @export
-#' @param NC a ncdf4 object
+#' @param nc a ncdf4 object
 #' @param sep character used to separate the dimension names
 #' @return a named vector of variable dimension names
 ncvar_dim_name <- function(nc,sep = "_"){

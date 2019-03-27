@@ -12,11 +12,11 @@ bbox_to_polygon(bb = c(-153.681, -48.59701, 11.37212, 62.08712),
 \arguments{
 \item{bb}{numeric, a 4-element bbox vector [left, right, bottom, top]}
 
+\item{proj}{character sutiable to pass to \code{sp::CRS}}
+
 \item{id}{character, the polygon ID, by default 'bbox'}
 
 \item{output_class}{character, either "SpatialPolygons", "Polygons" or "Polygon"}
-
-\item{projstring}{character sutiable to pass to \code{sp::CRS}}
 }
 \value{
 sp::SpatialPolygons object or NULL

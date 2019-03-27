@@ -22,8 +22,9 @@ most sense when the value of ftime points to one time, such as 'latest',
 \item{NA if NA, the default then all are returned}
 \item{ any combination of 000, 001, 002, etc}
 }}
-
-\item{a}{list of DatasetRefClass, possibly empty or NULL}
+}
+\value{
+a list of DatasetRefClass, possibly empty or NULL
 }
 \description{
 Query the latest forecast datasets
