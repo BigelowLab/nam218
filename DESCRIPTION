@@ -9,6 +9,7 @@ Imports:
     utils,
     rlang,
     magrittr,
+    crul,
     httr,
     thredds,
     ncdf4,
