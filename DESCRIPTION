@@ -24,12 +24,3 @@ URL: https://github.com/btupper/nam218
 License: MIT + file LICENSE
 RoxygenNote: 6.1.1
 Encoding: UTF-8
-Collate:
-    nam218-package.R
-    NAM218.R
-    NAMcast.R
-    nc.R
-    query.R
-    misc.R
-    example.R
-    grib1.R

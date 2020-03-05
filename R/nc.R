@@ -1,5 +1,3 @@
-# nc.R
-
 #' Test if a NAM218 OpenDAP URL points to accessible datasets.
 #'
 #' @export
