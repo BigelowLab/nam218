@@ -4,8 +4,9 @@
 \alias{read_grib1_inv}
 \title{Read the grib1 inventory from a grib1 file}
 \usage{
-
-  read_grib1_inv(filename = "/mnt/ecocast/projects/devel/grib/namanl_218_20040303_0000_000.grb")
+read_grib1_inv(
+  filename = "/mnt/ecocast/projects/devel/grib/namanl_218_20040303_0000_000.grb"
+)
 }
 \arguments{
 \item{filename}{the name of the grib1 file

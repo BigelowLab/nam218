@@ -19,22 +19,24 @@ namanl_base_url <- function(type = c("html","thredds")[2]){
 #' @export
 #' @param dates Date-class, one or more dates
 #' @param base_url character, the base URL
-#' @param ftime 4 character forecast period time stamp ('0000', '0006', etc.)
-#' @param ahead 3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc)
-#' @return character URLs
+#' @param ftime 4 character forecast period time stamps ('0000', '0006', etc.)
+#' @param ahead 3 character cycle timestamps ('000' now cast, '003 three hours ahead, etc)
+#' @return character URLs,  one for each pairing of ftime and ahead
 namanl_url <- function(dates = "2018-12-18",
                        base_url = namanl_base_url(),
-                       ftime = c('0000', '0600','1200','1800')[1],
-                       ahead = c('000', '003', '006', '084')[1]) {
+                       ftime = c('0000', '0600','1200','1800'),
+                       ahead = c('000','006')) {
 
   if (!inherits(dates, "Date")) dates <- as.Date(dates)
   if (inherits(ftime, "numeric")) ftime <- sprintf("%0.4i", ftime[1])
   if (inherits(ahead, "numeric")) ahead <- sprintf("%0.4i", ahead[1])
+
+  f <- rep(ftime, times = length(ahead))
+  a <- rep(ahead, each = length(ftime))
   Ym <- format(dates, "%Y%m")
   Ymd <- format(dates, "%Y%m%d")
 
-  filename <- sprintf("namanl_218_%s_%s_%s.grb2",
-                      Ymd, ftime[1], ahead[1])
+  filename <- sprintf("namanl_218_%s_%s_%s.grb2",Ymd, f, a)
 
   file.path(base_url, Ym, Ymd, filename)
 }

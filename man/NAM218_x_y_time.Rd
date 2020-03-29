@@ -4,8 +4,15 @@
 \alias{NAM218_x_y_time}
 \title{Retrieve a variable based upon [x,y,time] as a matrix}
 \usage{
-NAM218_x_y_time(X, name, xy = list(start = c(1, 1), count = c(-1, -1)),
-  time_index = 1)
+NAM218_x_y_time(
+  X,
+  name,
+  xy = list(start = c(1, 1), count = c(-1, -1)),
+  time_index = 1,
+  n_tries = 3,
+  sleep = 10,
+  ...
+)
 }
 \arguments{
 \item{X}{NAM218RefClass object}
@@ -14,12 +21,17 @@ NAM218_x_y_time(X, name, xy = list(start = c(1, 1), count = c(-1, -1)),
 
 \item{xy}{a two element list providing start and count values}
 
-\item{time_index}{the default is to get just the first time index if there is}
+\item{time_index}{the default is to get just the first time index if there is
+more than one to choose from}
 
-\item{...}{further arguments (unused)}
+\item{n_tries}{numeric, the number attempts to make before failing}
+
+\item{sleep}{numeric, the number of seconds to wait after a fail}
+
+\item{...}{further arguments for \code{\link[ncdf4]{ncvar_get}}}
 }
 \value{
-numeric matrix
+numeric matrix or a try-error
 }
 \description{
 Retrieve a variable based upon [x,y,time] as a matrix

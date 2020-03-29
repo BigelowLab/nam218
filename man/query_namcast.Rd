@@ -4,9 +4,12 @@
 \alias{query_namcast}
 \title{Query the namcast resources for the current forecasts}
 \usage{
-query_namcast(day = format(Sys.Date(), "\%Y\%m\%d"), ftime = c(0, 6,
-  12, 18), pattern = "nam_[0-9]{2}z",
-  uri = top_url("current-forecast"))
+query_namcast(
+  day = format(Sys.Date(), "\%Y\%m\%d"),
+  ftime = c(0, 6, 12, 18),
+  pattern = "nam_[0-9]{2}z",
+  uri = top_url("current-forecast")
+)
 }
 \arguments{
 \item{day}{POSIXct or character in the form of 'YYYYmmdd', Default to today()}

@@ -4,8 +4,10 @@
 \alias{namanl_grib1_https_uri}
 \title{Construct a https uri given the name of a GRIB1 file}
 \usage{
-namanl_grib1_https_uri(name = "namanl_218_20040303_0000_000",
-  root = "https://nomads.ncdc.noaa.gov/data/namanl")
+namanl_grib1_https_uri(
+  name = "namanl_218_20040303_0000_000",
+  root = "https://nomads.ncdc.noaa.gov/data/namanl"
+)
 }
 \arguments{
 \item{name}{character, the name stub in the form of namanl_218_YYYYmmdd_ffff_aaa

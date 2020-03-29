@@ -6,8 +6,10 @@
  ahead ('ahead') determine the number of seconds to the forecast period from
  midnight}
 \usage{
-nam218_time(ftime = c("0000", "0600", "1200", "1800"), ahead = c("000",
-  "001", "003", "006"))
+nam218_time(
+  ftime = c("0000", "0600", "1200", "1800"),
+  ahead = c("000", "001", "003", "006")
+)
 }
 \arguments{
 \item{ftime}{one or more forecast periods in hhhh}

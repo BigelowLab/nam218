@@ -4,8 +4,12 @@
 \alias{query_namcast_archive}
 \title{Query the namcast resources for archived forecasts (different than analyses)}
 \usage{
-query_namcast_archive(day = "20150115", ftime = c(0, 6, 12, 18),
-  ahead = c(0, 6), uri = top_url("archived-forecast"))
+query_namcast_archive(
+  day = "20150115",
+  ftime = c(0, 6, 12, 18),
+  ahead = c(0, 6),
+  uri = top_url("archived-forecast")
+)
 }
 \arguments{
 \item{day}{POSIXct or character in the form of 'YYYYmmdd', Default to today()}

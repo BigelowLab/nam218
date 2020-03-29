@@ -335,13 +335,32 @@ NAM218 <- function(nc){
 #' @param name character variable name
 #' @param xy a two element list providing start and count values
 #' @param time_index the default is to get just the first time index if there is
-#   more than one to choose from
-#' @param ... further arguments (unused)
-#' @return numeric matrix
+#'   more than one to choose from
+#' @param n_tries numeric, the number attempts to make before failing
+#' @param sleep numeric, the number of seconds to wait after a fail
+#' @param ... further arguments for \code{\link[ncdf4]{ncvar_get}}
+#' @return numeric matrix or a try-error
 NAM218_x_y_time <- function(X, name,
     xy = list(start = c(1,1), count = c(-1, -1)),
-    time_index = 1){
-    ncdf4::ncvar_get(X$NC, name, start = c(xy$start, time_index[1]), count = c(xy$count, 1))
+    time_index = 1,
+    n_tries = 3,
+    sleep = 10,
+    ...){
+    nt <- 1
+    r <- try(log("this is a dummy error in NAM218_x_y_time"), silent = TRUE)
+    while(nt <= n_tries){
+      r <- try(ncdf4::ncvar_get(X$NC, name,
+                                start = c(xy$start, time_index[1]),
+                                count = c(xy$count, 1), ...))
+      if (!inherits(r, "try-error")){
+        break
+      } else {
+        warning(sprintf("ncvar_get try %i of %i failed", nt, n_tries))
+        Sys.sleep(sleep)
+        nt <- nt + 1
+      }
+    } # while
+    r
 }
 
 
@@ -355,13 +374,33 @@ NAM218_x_y_time <- function(X, name,
 #' @param xy a two element list providing start and count values
 #' @param time_index the default is to get just the first time index if there is
 #   more than one to choose from
-#' @param ... further arguments (unused)
-#' @return numeric matrix
+#' @param n_tries numeric, the number attempts to make before failing
+#' @param sleep numeric, the number of seconds to wait after a fail
+#' @param ... further arguments for \code{\link[ncdf4]{ncvar_get}}
+#' @return numeric matrix or try-error
 NAM218_x_y_something_time <- function(X, name, dimname = 'isobaric',
     value = 1000,
     xy = list(start = c(1,1), count = c(-1, -1)),
-    time_index = 1){
+    time_index = 1,
+    n_tries = 3,
+    sleep = 10,
+    ...){
     ix  <- closest_index(ncdim_get(X$NC, dimname), value[1])
-    ncdf4::ncvar_get(X$NC, name,  start = c(xy$start, ix, time_index[1]), count = c(xy$count,1,1))
+    nt <- 1
+    r <- try(log("this is a dummy error in NAM218_x_y_something_time"),
+             silent = TRUE)
+    while(nt <= n_tries){
+      r <- try(ncdf4::ncvar_get(X$NC, name,
+                                start = c(xy$start,ix, time_index[1]),
+                                count = c(xy$count,1,1), ...))
+      if (!inherits(r, "try-error")){
+        break
+      } else {
+        warning(sprintf("ncvar_get try %i of %i failed", nt, n_tries))
+        Sys.sleep(10)
+        nt <- nt + 1
+      }
+    } # while
+    r
 }
 

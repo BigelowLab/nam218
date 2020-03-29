@@ -4,21 +4,24 @@
 \alias{namanl_url}
 \title{Construct thredds base urls for provided date(s)}
 \usage{
-namanl_url(dates = "2018-12-18", base_url = namanl_base_url(),
-  ftime = c("0000", "0600", "1200", "1800")[1], ahead = c("000", "003",
-  "006", "084")[1])
+namanl_url(
+  dates = "2018-12-18",
+  base_url = namanl_base_url(),
+  ftime = c("0000", "0600", "1200", "1800"),
+  ahead = c("000", "006")
+)
 }
 \arguments{
 \item{dates}{Date-class, one or more dates}
 
 \item{base_url}{character, the base URL}
 
-\item{ftime}{4 character forecast period time stamp ('0000', '0006', etc.)}
+\item{ftime}{4 character forecast period time stamps ('0000', '0006', etc.)}
 
-\item{ahead}{3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc)}
+\item{ahead}{3 character cycle timestamps ('000' now cast, '003 three hours ahead, etc)}
 }
 \value{
-character URLs
+character URLs,  one for each pairing of ftime and ahead
 }
 \description{
 Completed URLs have the form

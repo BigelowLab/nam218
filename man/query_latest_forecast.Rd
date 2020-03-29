@@ -4,8 +4,10 @@
 \alias{query_latest_forecast}
 \title{Query the latest forecast datasets}
 \usage{
-query_latest_forecast(ftime = c(NA, "latest", "0000", "0600", "1200",
-  "1800")[2], ahead = c(NA, "000", "006", "084")[1])
+query_latest_forecast(
+  ftime = c(NA, "latest", "0000", "0600", "1200", "1800")[2],
+  ahead = c(NA, "000", "006", "084")[1]
+)
 }
 \arguments{
 \item{ftime}{character, the forecast time to retrieve

@@ -4,10 +4,12 @@
 \alias{bbox_to_polygon}
 \title{Convert a bbox to sp::polygon, sp::Polygons, or sp::SpatialPolygons object}
 \usage{
-bbox_to_polygon(bb = c(-153.681, -48.59701, 11.37212, 62.08712),
+bbox_to_polygon(
+  bb = c(-153.681, -48.59701, 11.37212, 62.08712),
   proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
-  id = "bbox", output_class = c("SpatialPolygons", "Polygons",
-  "Polygon")[1])
+  id = "bbox",
+  output_class = c("SpatialPolygons", "Polygons", "Polygon")[1]
+)
 }
 \arguments{
 \item{bb}{numeric, a 4-element bbox vector [left, right, bottom, top]}

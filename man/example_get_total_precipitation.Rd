@@ -4,9 +4,13 @@
 \alias{example_get_total_precipitation}
 \title{Get the total precipitation for two days.}
 \usage{
-example_get_total_precipitation(param = "Total_precipitation",
+example_get_total_precipitation(
+  param = "Total_precipitation",
   date = as.POSIXct("2015-01-01", "\%Y-\%m-\%d", tz = "UTC"),
-  fun = "sum", bb = c(-74, -57, 40, 51.5), ...)
+  fun = "sum",
+  bb = c(-74, -57, 40, 51.5),
+  ...
+)
 }
 \arguments{
 \item{param}{name of the parameter}

@@ -1,5 +1,5 @@
-#' A simplified interface to NOMADS NAM 218 forecasts and archives.
-#'
+#' @description A simplified interface to NOMADS NAM 218 forecasts and archives.
+#' @title nam218
 #' @name nam218-package
 #' @docType package
 #' @importFrom magrittr %>%

@@ -4,8 +4,10 @@
 \alias{NAMcast}
 \title{Create an instance of NAMcastRefClass}
 \usage{
-NAMcast(nc = format(Sys.Date(),
-  "http://nomads.ncep.noaa.gov:80/dods/nam/nam\%Y\%m\%d/nam_00z"))
+NAMcast(
+  nc = format(Sys.Date(),
+    "http://nomads.ncep.noaa.gov:80/dods/nam/nam\%Y\%m\%d/nam_00z")
+)
 }
 \arguments{
 \item{nc}{either a url, ncdf4 object or null}

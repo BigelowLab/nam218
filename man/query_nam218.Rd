@@ -4,10 +4,13 @@
 \alias{query_nam218}
 \title{Run a query for NAM-218 datasets}
 \usage{
-query_nam218(what = c("analysis", "forecast")[1], day = c("20060601",
-  format(Sys.Date() - ifelse(what == "analysis", 4, 0), format =
-  "\%Y\%m\%d"))[1], ftime = c(NA, "0000", "0600", "1200", "1800")[1],
-  ahead = c(NA, "000", "003", "006", "084")[1])
+query_nam218(
+  what = c("analysis", "forecast")[1],
+  day = c("20060601", format(Sys.Date() - ifelse(what == "analysis", 4, 0), format =
+    "\%Y\%m\%d"))[1],
+  ftime = c(NA, "0000", "0600", "1200", "1800")[1],
+  ahead = c(NA, "000", "003", "006", "084")[1]
+)
 }
 \arguments{
 \item{what}{character specifies 'analysis' or 'forecast'}

@@ -4,8 +4,9 @@
 \alias{Grib1}
 \title{Create a Grib1RefClass object}
 \usage{
-
-  Grib1(filename = "/mnt/ecocast/projects/devel/grib/namanl_218_20040303_0000_000.grb")
+Grib1(
+  filename = "/mnt/ecocast/projects/devel/grib/namanl_218_20040303_0000_000.grb"
+)
 }
 \arguments{
 \item{filename}{the fully qualified filename}

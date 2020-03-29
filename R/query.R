@@ -137,14 +137,10 @@ query_nam218 <- function(what = c("analysis", "forecast")[1],
     what <- tolower(what[1])
     topuri <- top_url(what)
 
-    #topuri <- switch(what,
-    #    #'analysis'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
-    #    #'forecast'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
-    #    'analysis'   = "https://www.ncei.noaa.gov/thredds/catalog/namanl/catalog.xml",
-    #    'forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.xml",
-    #    stop("what must be 'analysis' or 'forecast'") )
 
-    if (inherits(day, "POSIXt") || inherits(day, "Date")) day <- format(day[1], format = "%Y%m%d")
+    if (inherits(day, "POSIXt") || inherits(day, "Date")){
+      day <- format(day[1], format = "%Y%m%d")
+    }
     day <- gsub("[-/]", "", day)
 
     Top <- thredds::get_catalog(topuri)

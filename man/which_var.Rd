@@ -4,8 +4,12 @@
 \alias{which_var}
 \title{Retrieve the full variable name that best matches the provided pattern.}
 \usage{
-which_var(nc, pattern = c("Total_precipitation",
-  "Convective_precipitation")[1], ignore.case = TRUE, ...)
+which_var(
+  nc,
+  pattern = c("Total_precipitation", "Convective_precipitation")[1],
+  ignore.case = TRUE,
+  ...
+)
 }
 \arguments{
 \item{nc}{a ncdf4 class object}

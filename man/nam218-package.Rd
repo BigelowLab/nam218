@@ -3,7 +3,7 @@
 \docType{package}
 \name{nam218-package}
 \alias{nam218-package}
-\title{A simplified interface to NOMADS NAM 218 forecasts and archives.}
+\title{nam218}
 \description{
 A simplified interface to NOMADS NAM 218 forecasts and archives.
 }

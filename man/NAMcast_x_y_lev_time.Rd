@@ -4,8 +4,16 @@
 \alias{NAMcast_x_y_lev_time}
 \title{Retrieve a variable based upon [x,y,lev,time] as a matrix}
 \usage{
-NAMcast_x_y_lev_time(X, name, lev = 1000, time_index = 1,
-  xy = list(start = c(1, 1), count = c(-1, -1)))
+NAMcast_x_y_lev_time(
+  X,
+  name,
+  lev = 1000,
+  time_index = 1,
+  xy = list(start = c(1, 1), count = c(-1, -1)),
+  n_tries = 3,
+  sleep = 10,
+  ...
+)
 }
 \arguments{
 \item{X}{NAMcastRefClass object}
@@ -18,10 +26,14 @@ NAMcast_x_y_lev_time(X, name, lev = 1000, time_index = 1,
 
 \item{xy}{a two element list providing start and count values}
 
-\item{...}{further arguments (unused)}
+\item{n_tries}{numeric, the number attempts to make before failing}
+
+\item{sleep}{numeric, the number of seconds to wait after a fail}
+
+\item{...}{further arguments for \code{\link[ncdf4]{ncvar_get}}}
 }
 \value{
-numeric matrix
+numeric matrix or try-error
 }
 \description{
 Retrieve a variable based upon [x,y,lev,time] as a matrix

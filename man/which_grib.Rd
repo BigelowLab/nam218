@@ -4,8 +4,10 @@
 \alias{which_grib}
 \title{Determine by date whether to use grib1 or grib2}
 \usage{
-which_grib(date = c("2017-04-05", "2017-04-06"),
-  origin = as.Date("2017-04-06"))
+which_grib(
+  date = c("2017-04-05", "2017-04-06"),
+  origin = as.Date("2017-04-06")
+)
 }
 \arguments{
 \item{date}{one or more dates as character ("YYYY-mm-dd"), Date or POSIXt}
