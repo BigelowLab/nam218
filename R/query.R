@@ -106,7 +106,8 @@ top_url <- function(what = c("analysis", "forecast", "archived-forecast")[1]){
         'analysis'   = "https://www.ncei.noaa.gov/thredds/catalog/namanl/catalog.xml",
         'forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.xml",
         'archived-forecast'   = "https://www.ncei.noaa.gov/thredds/catalog/nam218/catalog.xml",
-        'current-forecast'    =  "https://nomads.ncep.noaa.gov:9090/dods/nam.xml",
+        #'current-forecast'    =  "https://nomads.ncep.noaa.gov:9090/dods/nam.xml",
+        'current-forecast'    =  "https://nomads.ncep.noaa.gov/dods/nam.xml",
         stop("what must be 'analysis', 'forecast', 'archived-forecast' or 'current-archived'") )
 }
 

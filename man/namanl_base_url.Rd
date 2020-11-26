@@ -4,10 +4,18 @@
 \alias{namanl_base_url}
 \title{Retrieve the base url for either HTML or OPENDAP}
 \usage{
-namanl_base_url(type = c("html", "thredds")[2])
+namanl_base_url(
+  type = c("html", "thredds")[2],
+  threshold = as.Date("2020-05-18"),
+  date = threshold - c(1, 0)
+)
 }
 \arguments{
 \item{type}{character, either "html" or "thredds" (default)}
+
+\item{threshold}{Date or castable as Date, the date the demarks old and new datasets (sigh)}
+
+\item{date}{night Date or castable to Date - determines whether old or new}
 }
 \value{
 URL

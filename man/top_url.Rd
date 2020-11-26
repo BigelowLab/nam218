@@ -16,6 +16,7 @@ top_url(what = c("analysis", "forecast", "archived-forecast")[1])
 character URL
 analysis'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
 forecast'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
+current-forecast'    =  "https://nomads.ncep.noaa.gov:9090/dods/nam.xml",
 }
 \description{
 Retrieve the top level catalog URL

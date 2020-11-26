@@ -6,15 +6,12 @@
 \usage{
 namanl_url(
   dates = "2018-12-18",
-  base_url = namanl_base_url(),
   ftime = c("0000", "0600", "1200", "1800"),
   ahead = c("000", "006")
 )
 }
 \arguments{
 \item{dates}{Date-class, one or more dates}
-
-\item{base_url}{character, the base URL}
 
 \item{ftime}{4 character forecast period time stamps ('0000', '0006', etc.)}
 
