@@ -6,9 +6,8 @@
 The directory name is not retained.}
 \usage{
 decompose_uri(
- 
-    x = c("https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201702/20170225/namanl_218_20040331_1800_000.grb",
-    "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201702/20170225/namanl_218_20040331_1800_006.grb")
+  x = c("201702/20170225/namanl_218_20040331_1800_000.grb",
+    "201702/20170225/namanl_218_20040331_1800_006.grb")
 )
 }
 \arguments{

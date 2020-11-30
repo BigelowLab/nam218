@@ -2,7 +2,7 @@
 % Please edit documentation in R/nam_anl.R
 \name{namanl_open}
 \alias{namanl_open}
-\title{Open an ncdf4 connection to an NAMANL uri}
+\title{Open an ncdf4 connection to an NAM-ANL uri}
 \usage{
 namanl_open(uri, verbose = FALSE)
 }
@@ -15,5 +15,5 @@ namanl_open(uri, verbose = FALSE)
 either ncdf4 object or NULL
 }
 \description{
-Open an ncdf4 connection to an NAMANL uri
+Open an ncdf4 connection to an NAM-ANL uri
 }

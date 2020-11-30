@@ -2,16 +2,33 @@
 % Please edit documentation in R/nam_cast.R
 \name{namcast_base_url}
 \alias{namcast_base_url}
-\title{Retrieve the base url for either HTML or OPENDAP}
+\title{Retrieve the base url for either HTML, XML or OPENDAP resource}
 \usage{
-namcast_base_url(type = c("html", "thredds")[2])
+namcast_base_url(
+  type = c("html", "thredds", "xml", "opendap")[2],
+  threshold = namcast_threshold_date(),
+  date = namcast_threshold_date() + c(-3, 0)
+)
 }
 \arguments{
-\item{type}{character, either "html" or "thredds" (default)}
+\item{type}{character, one of the following
+\itemize{
+\item{html - to get a URL for the human readable catalog page}
+\item{thredds - to get the URL for the XML catalog page - this is the default}
+\item{xml - same as \code{thredds} to get the URL for the XML catalog page}
+\item{opendap - to get the URL to the opendap (grib2) resource}
+}}
+
+\item{threshold}{Date or cast-able as Date, inclusive threshold identifies start of 'recent' records}
+
+\item{date}{night Date or cast-able to Date, the date(s) to search for. The default is
+a 2 element vector with the last 'old' and first 'recent' dates.}
 }
 \value{
 URL
 }
 \description{
-Retrieve the base url for either HTML or OPENDAP
+As of 2020-05-18 the resources have been split into "model-nam218-old" and "model-nam218"
+with 2 days missing (2020-05-16 and 2020-05-17).  I wish they had simply made the catalog
+have a year-level instead of an arbitrary threshold.
 }

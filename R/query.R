@@ -60,8 +60,8 @@ nam218_time <- function(
 #'  \item{f character the basename of the input file}
 #' }
 decompose_uri <- function(x = c(
-    "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201702/20170225/namanl_218_20040331_1800_000.grb",
-    "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/201702/20170225/namanl_218_20040331_1800_006.grb")){
+    "201702/20170225/namanl_218_20040331_1800_000.grb",
+    "201702/20170225/namanl_218_20040331_1800_006.grb")){
 
     f <- basename(x)
     ss <- strsplit(gsub(".grb", "", f, fixed = TRUE), "_", fixed = TRUE)
@@ -78,17 +78,7 @@ decompose_uri <- function(x = c(
 }
 
 
-#' Perform grepl on multiple patterns; it's like  AND-ing or OR-ing successive grepl statements.
-#'
-#' @export
-#' @param pattern character vector of patterns
-#' @param x the character vector to search
-#' @param op logical vector operator back quoted, defaults to `|`
-#' @param ... further arguments for \code{grepl} like \code{fixed} etc.
-#' @return logical vector
-mgrepl <- function(pattern, x, op = `|`, ... ){
-   Reduce(op, lapply(pattern, grepl, x, ...))
-}
+
 
 #' Retrieve the top level catalog URL
 #'
@@ -457,61 +447,61 @@ query_namcast_archive <- function(
     sapply(dd[ix], '[[', 'url')
 }
 
-#' Query the namcast resources for the current forecasts
-#'
-#' @export
-#' @param uri, the base uri for NOMADS NCEP DODS NAM server
-#' @param day POSIXct or character in the form of 'YYYYmmdd', Default to today()
-#' @param ftime character or numeric, on or more of the forecast time one or
-#'  more of [0, 6, 12, 18]
-#' @param pattern character of NULL, defaults to 'nam_[0-9]{2}z'
-#' @return character vector of uri
-query_namcast <- function(
-    day = format(Sys.Date(), "%Y%m%d"),
-    ftime = c(0,6,12,18),
-    pattern = 'nam_[0-9]{2}z',
-    uri = top_url("current-forecast")){
-
-    if (FALSE){
-        day = format(Sys.Date(), "%Y%m%d")
-        ftime = c(0,6,12,18)
-        pattern = 'nam_[0-9]{2}z'
-        #uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"
-        #uri = top_url("current-forecast")#"http://nomads.ncep.noaa.gov:9090/dods/nam.xml"
-        uri = top_url("archived-forecast")
-}
-
-    namcast_uri <- function(x, nm = c('dods','dds', 'das')[1]){
-        xml2::xml_find_first(x, nm) %>% xml2::xml_text()
-    }
-    if (!inherits(day, 'character')) day <- format(day, '%Y%m%d')
-    ftime <- sprintf("nam_%0.2iz", as.numeric(ftime))
-    #path <- file.path(uristub,
-    #    paste0("nam", day),
-    #    sprintf("nam_%0.2iz.xml", as.numeric(ftime))[1]
-
-    x <- try(xml2::read_xml(uri))
-    if (inherits(x, 'try-error')){
-        cat("unable to read path:", uri)
-        return(NULL)
-    }
-    dd <- x %>%
-        xml2::xml_find_all('dataset')
-    if (length(dd) == 0){
-        cat("no datasets available:", uri)
-        return(NULL)
-    }
-
-    nm <- dd %>%
-        xml2::xml_find_first("name") %>%
-        xml2::xml_text()
-
-    if (is.null(pattern)){
-        ix <- mgrepl(file.path(paste0("nam", day), ftime), nm, op = '|', fixed = TRUE)
-    } else {
-        ix <- mgrepl(file.path(paste0("nam", day), pattern), nm, op = '|')
-    }
-
-    dd[ix] %>% namcast_uri()
-}
+# #' Query the namcast resources for the current forecasts
+# #'
+# #' @export
+# #' @param uri, the base uri for NOMADS NCEP DODS NAM server
+# #' @param day POSIXct or character in the form of 'YYYYmmdd', Default to today()
+# #' @param ftime character or numeric, on or more of the forecast time one or
+# #'  more of [0, 6, 12, 18]
+# #' @param pattern character of NULL, defaults to 'nam_[0-9]{2}z'
+# #' @return character vector of uri
+# query_namcast <- function(
+#     day = format(Sys.Date(), "%Y%m%d"),
+#     ftime = c(0,6,12,18),
+#     pattern = 'nam_[0-9]{2}z',
+#     uri = top_url("current-forecast")){
+#
+#     if (FALSE){
+#         day = format(Sys.Date(), "%Y%m%d")
+#         ftime = c(0,6,12,18)
+#         pattern = 'nam_[0-9]{2}z'
+#         #uri = "http://nomads.ncep.noaa.gov/dods/nam.xml"
+#         #uri = top_url("current-forecast")#"http://nomads.ncep.noaa.gov:9090/dods/nam.xml"
+#         uri = top_url("archived-forecast")
+# }
+#
+#     namcast_uri <- function(x, nm = c('dods','dds', 'das')[1]){
+#         xml2::xml_find_first(x, nm) %>% xml2::xml_text()
+#     }
+#     if (!inherits(day, 'character')) day <- format(day, '%Y%m%d')
+#     ftime <- sprintf("nam_%0.2iz", as.numeric(ftime))
+#     #path <- file.path(uristub,
+#     #    paste0("nam", day),
+#     #    sprintf("nam_%0.2iz.xml", as.numeric(ftime))[1]
+#
+#     x <- try(xml2::read_xml(uri))
+#     if (inherits(x, 'try-error')){
+#         cat("unable to read path:", uri)
+#         return(NULL)
+#     }
+#     dd <- x %>%
+#         xml2::xml_find_all('dataset')
+#     if (length(dd) == 0){
+#         cat("no datasets available:", uri)
+#         return(NULL)
+#     }
+#
+#     nm <- dd %>%
+#         xml2::xml_find_first("name") %>%
+#         xml2::xml_text()
+#
+#     if (is.null(pattern)){
+#         ix <- mgrepl(file.path(paste0("nam", day), ftime), nm, op = '|', fixed = TRUE)
+#     } else {
+#         ix <- mgrepl(file.path(paste0("nam", day), pattern), nm, op = '|')
+#     }
+#
+#     dd[ix] %>% namcast_uri()
+# }
 

@@ -6,19 +6,19 @@
 \usage{
 namcast_url(
   dates = "2018-12-18",
-  base_url = namanl_base_url(),
   ftime = c("0000", "0600", "1200", "1800"),
-  ahead = c("000", "006")
+  ahead = c("000", "006"),
+  ...
 )
 }
 \arguments{
 \item{dates}{Date-class, one or more dates}
 
-\item{base_url}{character, the base URL}
-
 \item{ftime}{4 character forecast period time stamp ('0000', '0006', etc.)}
 
 \item{ahead}{3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc)}
+
+\item{...}{other arguments for \code{namanl_base_url}}
 }
 \value{
 character URLs one for each pairing of ftime and ahead
