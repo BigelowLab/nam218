@@ -4,14 +4,20 @@
 \alias{query_namcast_catalog}
 \title{Query the catalog at the specified URL for the specified date}
 \usage{
-query_namcast_catalog(date, uri, pattern = "^.*0000_000\\\\.grb2$")
+query_namcast_catalog(
+  date,
+  uri,
+  pattern = c("^.*0000_000\\\\.grb2$", "^.*0000_006\\\\.grb2$",
+    "^.*0600_000\\\\.grb2$", "^.*0600_006\\\\.grb2$", "^.*1200_000\\\\.grb2$",
+    "^.*1200_006\\\\.grb2$", "^.*1800_000\\\\.grb2$", "^.*1800_006\\\\.grb2$")
+)
 }
 \arguments{
 \item{date}{Date or character, cast-able to Date class}
 
 \item{uri}{character, the base uri for the top level catalog}
 
-\item{pattern}{character, the regular expression used to match the
+\item{pattern}{character, one or more regular expressions used to match the
 to just one of the opendap resources.}
 }
 \value{

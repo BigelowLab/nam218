@@ -29,12 +29,12 @@ namcast_base_url <- function(type = c("html","thredds", "xml", "opendap")[2],
   if (!inherits(date, "Date")) date <- as.Date(date)
   old <- date < threshold
 
-  uri <- switch(tolower(type[1]),
-         "html"    = "https://www.ncei.noaa.gov/thredds/catalog/model-nam218/catalog.html",
-         "thredds" = "https://www.ncei.noaa.gov/thredds/catalog/model-nam218/catalog.xml",
-         "xml"     = "https://www.ncei.noaa.gov/thredds/catalog/model-nam218/catalog.xml",
-                      "https://www.ncei.noaa.gov/thredds/dodsC/model-nam218")
-
+  uri <-switch(tolower(type[1]),
+    "html"    = "https://www.ncei.noaa.gov/thredds/catalog/model-nam218/catalog.html",
+    "thredds" = "https://www.ncei.noaa.gov/thredds/catalog/model-nam218/catalog.xml",
+    "xml"     = "https://www.ncei.noaa.gov/thredds/catalog/model-nam218/catalog.xml",
+                 "https://www.ncei.noaa.gov/thredds/dodsC/model-nam218")
+  uri <- rep(uri, length(old))
   uri[old] <- gsub("model-nam218", "model-nam218-old", uri[old], fixed = TRUE)
   uri
 }
@@ -78,11 +78,19 @@ namcast_url <- function(dates = "2018-12-18",
 #' @export
 #' @param date Date or character, cast-able to Date class
 #' @param uri character, the base uri for the top level catalog
-#' @param pattern character, the regular expression used to match the
+#' @param pattern character, one or more regular expressions used to match the
 #'        to just one of the opendap resources.
 #' @return relative URL for the resource or NA if not found
 query_namcast_catalog <- function(date, uri,
-                                 pattern = "^.*0000_000\\.grb2$"){
+                                 pattern = c(
+                                   "^.*0000_000\\.grb2$",
+                                   "^.*0000_006\\.grb2$",
+                                   "^.*0600_000\\.grb2$",
+                                   "^.*0600_006\\.grb2$",
+                                   "^.*1200_000\\.grb2$",
+                                   "^.*1200_006\\.grb2$",
+                                   "^.*1800_000\\.grb2$",
+                                   "^.*1800_006\\.grb2$")){
   r <- NA_character_
   Top <- thredds::get_catalog(uri)
   if (is.null(Top)) return(r)
@@ -94,10 +102,15 @@ query_namcast_catalog <- function(date, uri,
   Ymd <- Ym$get_catalogs(ymd)[[ymd]]
   if (is.null(Ymd)) return(r)
   dnames <- Ymd$get_dataset_names()
-  ix <- grepl(pattern, dnames)
-  D <- Ymd$get_datasets(dnames[ix][1])[[dnames[ix][1]]]
-  if (is.null(D)) return(r)
-  D$get_url()
+  ix <- mgrepl(pattern, dnames)
+  if (!any(ix)) return(r)
+  ix <- which(ix)
+  duri <- sapply(seq_along(ix),
+    function(i){
+      D <- Ymd$get_datasets(dnames[ix[i]])[[1]]
+      D$get_url()
+    })
+  duri
 }
 
 
@@ -105,7 +118,7 @@ query_namcast_catalog <- function(date, uri,
 #'
 #' @export
 #' @param dates Date or castable to Date, the date(s) to query
-#' @param ftime character or integer, 4 digit forecast hour (or castable to such)
+#' @param ftime character or integer, 4 digit forecast statement hour(s) (or castable to such)
 #' @param ahead character or integer, 4 digit forecast ahead hours (or castable to such)
 #' @param threshold Date or castable to Date, the division date betwene "old" and "recent"
 #' @return one per input date, a URL for .grb2 (opendap) resources, possibly NA
@@ -116,13 +129,30 @@ query_namcast <- function(dates = c("2020-05-15", "2020-05-18"),
 
   if (FALSE){
     dates = namanl_threshold_date() + c(-3, 0)
-    ftime = "0000"
-    ahead = "000"
+    ftime = c("0000", "0600", "1200", "1800")
+    ahead = c("000", "006")
     threshold = namcast_threshold_date()
   }
   if (!inherits(dates, "Date")) dates <- as.Date(dates)
   if (!inherits(threshold, "Date")) threshold <- as.Date(threshold[1])
-  pattern <- sprintf("^.*%s_%s\\.grb2$", ftime[1], ahead[1])
+
+  # Build the regular expressions for filename patterns
+  # @param ftime one or more 4-digits forecast statement hours
+  # @param ahead one or more 3 digit forecast hours
+  # @return a vector of regular expressions on for each combo of ftime_ahead
+  build_patterns <- function(ftime, ahead, ext = ".grb2"){
+    pattern = "^.*%s_%s\\%s$"
+    pp <- sapply(ftime,
+           function(s){
+             sapply(ahead,
+                    function(a){
+                      sprintf(pattern, s, a, ext)
+                    })
+           })
+    as.vector(pp)
+  }
+
+  pattern <- build_patterns(ftime, ahead)
 
   # make uris for catalog and for opendap
   # search the catalogs
@@ -136,7 +166,9 @@ query_namcast <- function(dates = c("2020-05-15", "2020-05-18"),
   x <- sapply(seq_along(dates),
               function(i){
                 query_namcast_catalog(dates[i], thredds_uri[i], pattern = pattern)
-              })
+              }) %>%
+    unlist()
+
   uri <- file.path(dirname(opendap_uri), x)
   uri[is.na(x)] <- NA
   uri

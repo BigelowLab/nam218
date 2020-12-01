@@ -14,7 +14,7 @@ query_namcast(
 \arguments{
 \item{dates}{Date or castable to Date, the date(s) to query}
 
-\item{ftime}{character or integer, 4 digit forecast hour (or castable to such)}
+\item{ftime}{character or integer, 4 digit forecast statement hour(s) (or castable to such)}
 
 \item{ahead}{character or integer, 4 digit forecast ahead hours (or castable to such)}
 
