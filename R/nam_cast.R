@@ -123,8 +123,8 @@ query_namcast_catalog <- function(date, uri,
 #' @param threshold Date or castable to Date, the division date betwene "old" and "recent"
 #' @return one per input date, a URL for .grb2 (opendap) resources, possibly NA
 query_namcast <- function(dates = c("2020-05-15", "2020-05-18"),
-                         ftime = "0000",
-                         ahead = "000",
+                         ftime = c("0000", "0600", "1200", "1800"),
+                         ahead = c("000", "006"),
                          threshold = namcast_threshold_date()){
 
   if (FALSE){
