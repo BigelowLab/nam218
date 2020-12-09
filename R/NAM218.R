@@ -53,6 +53,9 @@ NAM218RefClass <- setRefClass("NAM218RefClass",
         is_open = function(){
             !is.null(.self$NC) && inherits(.self$NC, 'ncdf4')
             },
+        has_var = function(var_names, ...){
+          has_var(.self$NC, var_names, ...)
+        },
         close = function(){ ncdf4::nc_close(.self$NC) },
         show = function(){
             cat("Reference Class:", classLabel(class(.self)), "\n")
@@ -303,6 +306,26 @@ which_var <- function(nc,
     pattern = c("Total_precipitation", "Convective_precipitation")[1],
     ignore.case = TRUE, ...){
     names(nc$var)[grepl(pattern[1], names(nc$var), fixed = TRUE, ...)]
+}
+
+
+#' Test if variable names include the ones specified
+#'
+#' @export
+#' @param nc a ncdf4 class object
+#' @param name character, one or more names to match
+#' @param ignore.case logical it TRUE ignore case in the pattern
+#' @return logical vector where TRUE indicates a match is found 
+has_var <- function(nc, name,
+    ignore.case = TRUE, ...){
+  
+    NM <- names(nc$var)
+    if (ignore.case){
+      ok <- tolower(name) %in% tolower(NM)
+    } else {
+      ok <- name %in% NM
+    }
+    ok
 }
 
 

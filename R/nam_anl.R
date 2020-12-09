@@ -21,10 +21,13 @@ namanl_threshold_date <- function() as.Date("2020-05-18", format = "%Y-%m-%d")
 #' @param threshold Date or cast-able as Date, inclusive threshold identifies start of 'recent' records
 #' @param date night Date or cast-able to Date, the date(s) to search for. The default is
 #'        a 2 element vector with the last 'old' and first 'recent' dates.
+#' @param base_uri character 
 #' @return URL
 namanl_base_url <- function(type = c("html","thredds", "xml", "opendap")[2],
                             threshold = namanl_threshold_date(),
-                            date = threshold - c(3,0)){
+                            date = threshold - c(3,0),
+                            base_uri = c("https://www.ncdc.noaa.gov", 
+                                         "https://www.ncei.noaa.gov")[2]){
 
   if (!inherits(threshold, "Date")) threshold <- as.Date(threshold)
   if (!inherits(date, "Date")) date <- as.Date(date)
@@ -33,10 +36,11 @@ namanl_base_url <- function(type = c("html","thredds", "xml", "opendap")[2],
   uri <- sapply(seq_along(date),
                 function(i){
                 switch(tolower(type[1]),
-                  "html"    = "https://www.ncdc.noaa.gov/thredds/catalog/model-namanl/catalog.html",
-                  "xml"     = "https://www.ncdc.noaa.gov/thredds/catalog/model-namanl/catalog.xml",
-                  "thredds" = "https://www.ncdc.noaa.gov/thredds/catalog/model-namanl/catalog.xml",
-                              "https://www.ncdc.noaa.gov/thredds/dodsC/model-namanl")
+                  "html"    = file.path(base_uri, "thredds/catalog/model-namanl/catalog.html"),
+                  "xml"     = file.path(base_uri, "thredds/catalog/model-namanl/catalog.xml"),
+                  "thredds" = file.path(base_uri, "thredds/catalog/model-namanl/catalog.xml"),
+                  "old-opendap" = "https://www.ncdc.noaa.gov/thredds/dodsC/model-namanl",
+                              "https://www.ncei.noaa.gov/thredds/dodsC/model-namanl")
                 }, simplify = TRUE)
   uri[old] <- gsub("model-namanl", "model-namanl-old", uri[old], fixed = TRUE)
   uri
@@ -79,9 +83,9 @@ namanl_url <- function(dates = "2018-12-18",
 #' @export
 #' @param date Date or character, cast-able to Date class
 #' @param uri character, the base uri for the top level catalog
-#' @param pattern character, the regular expression used to match the
-#'        to just one of the opendap resources.
+#' @param pattern character, one or more regular expression(s) used to match the opendap resources.
 #' @return relative URL for the resource or NA if not found
+#  The expected number is determined by the pattern - of which there can be one or more
 query_namanl_catalog <- function(date, uri,
                                  pattern = "^.*0000_000\\.grb2$"){
   r <- NA_character_
@@ -95,35 +99,43 @@ query_namanl_catalog <- function(date, uri,
   Ymd <- Ym$get_catalogs(ymd)[[ymd]]
   if (is.null(Ymd)) return(r)
   dnames <- Ymd$get_dataset_names()
-  ix <- grepl(pattern, dnames)
-  D <- Ymd$get_datasets(dnames[ix][1])[[dnames[ix][1]]]
-  if (is.null(D)) return(r)
-  D$get_url()
+  ix <- mgrepl(pattern, dnames)
+  D <- Ymd$get_datasets(dnames[ix])
+  if (length(D) == 0) return(r)
+  sapply(D, function(d) {d$get_url()})
 }
+
 
 
 #' Query NAM-ANL catalog for opendap resources by date
 #'
 #' @export
 #' @param dates Date or castable to Date, the date(s) to query
-#' @param ftime character or integer, 4 digit forecast hour (or castable to such)
-#' @param ahead character or integer, 4 digit forecast ahead hours (or castable to such)
+#' @param ftime character or integer, one or more 4 digit forecast hour (or castable to such).
+#  This and \code{ahead} are combined into combinations (each \code{ahead} appended to each \code{ftime}).
+#  the default produces 0000_000, 0000_006, 0600_000, 0600_006, 1200_000, 1200_006, 1800_000, 1800_006
+#' @param ahead character or integer, one or more 4 digit forecast ahead hours (or castable to such)
 #' @param threshold Date or castable to Date, the division date betwene "old" and "recent"
-#' @return one per input date, a URL for .grb2 (opendap) resources, possibly NA
+#' @return one or more URL for .grb2 (opendap) resources, possibly including NA
 query_namanl <- function(dates = c("2020-05-15", "2020-05-18"),
-                         ftime = "0000",
-                         ahead = "000",
+                         ftime = c("0000","0600", "1200", "1800"),
+                         ahead = c("000", "006"),
                          threshold = namanl_threshold_date()){
 
   if (FALSE){
     dates = namanl_threshold_date() + c(-3, 0)
-    ftime = "0000"
-    ahead = "000"
+    ftime = c("0000","0600", "1200", "1800")
+    ahead = c("000", "006")
     threshold = namanl_threshold_date()
+    
   }
   if (!inherits(dates, "Date")) dates <- as.Date(dates)
   if (!inherits(threshold, "Date")) threshold <- as.Date(threshold[1])
-  pattern <- sprintf("^.*%s_%s\\.grb2$", ftime[1], ahead[1])
+    
+  pattern <- as.vector(
+    sapply(ftime,
+      function(f) {sprintf("^.*%s_%s\\.grb2$", f, ahead)}
+      ))
 
   # make uris for catalog and for opendap
   # search the catalogs

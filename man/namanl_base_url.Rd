@@ -7,7 +7,8 @@
 namanl_base_url(
   type = c("html", "thredds", "xml", "opendap")[2],
   threshold = namanl_threshold_date(),
-  date = threshold - c(3, 0)
+  date = threshold - c(3, 0),
+  base_uri = c("https://www.ncdc.noaa.gov", "https://www.ncei.noaa.gov")[2]
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ namanl_base_url(
 
 \item{date}{night Date or cast-able to Date, the date(s) to search for. The default is
 a 2 element vector with the last 'old' and first 'recent' dates.}
+
+\item{base_uri}{character}
 }
 \value{
 URL

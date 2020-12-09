@@ -11,8 +11,7 @@ query_namanl_catalog(date, uri, pattern = "^.*0000_000\\\\.grb2$")
 
 \item{uri}{character, the base uri for the top level catalog}
 
-\item{pattern}{character, the regular expression used to match the
-to just one of the opendap resources.}
+\item{pattern}{character, one or more regular expression(s) used to match the opendap resources.}
 }
 \value{
 relative URL for the resource or NA if not found

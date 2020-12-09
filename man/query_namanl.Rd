@@ -6,22 +6,22 @@
 \usage{
 query_namanl(
   dates = c("2020-05-15", "2020-05-18"),
-  ftime = "0000",
-  ahead = "000",
+  ftime = c("0000", "0600", "1200", "1800"),
+  ahead = c("000", "006"),
   threshold = namanl_threshold_date()
 )
 }
 \arguments{
 \item{dates}{Date or castable to Date, the date(s) to query}
 
-\item{ftime}{character or integer, 4 digit forecast hour (or castable to such)}
+\item{ftime}{character or integer, one or more 4 digit forecast hour (or castable to such).}
 
-\item{ahead}{character or integer, 4 digit forecast ahead hours (or castable to such)}
+\item{ahead}{character or integer, one or more 4 digit forecast ahead hours (or castable to such)}
 
 \item{threshold}{Date or castable to Date, the division date betwene "old" and "recent"}
 }
 \value{
-one per input date, a URL for .grb2 (opendap) resources, possibly NA
+one or more URL for .grb2 (opendap) resources, possibly including NA
 }
 \description{
 Query NAM-ANL catalog for opendap resources by date
