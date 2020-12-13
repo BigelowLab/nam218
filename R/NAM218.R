@@ -315,10 +315,10 @@ which_var <- function(nc,
 #' @param nc a ncdf4 class object
 #' @param name character, one or more names to match
 #' @param ignore.case logical it TRUE ignore case in the pattern
-#' @return logical vector where TRUE indicates a match is found 
+#' @return logical vector where TRUE indicates a match is found
 has_var <- function(nc, name,
-    ignore.case = TRUE, ...){
-  
+    ignore.case = TRUE){
+
     NM <- names(nc$var)
     if (ignore.case){
       ok <- tolower(name) %in% tolower(NM)

@@ -13,7 +13,9 @@ query_namcast_catalog(
 )
 }
 \arguments{
-\item{date}{Date or character, cast-able to Date class}
+\item{date}{Date or character, cast-able to Date class. As an alternative,
+set it to "most recent" or even "recent" to automatically get the most
+forecast.}
 
 \item{uri}{character, the base uri for the top level catalog}
 

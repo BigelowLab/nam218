@@ -76,7 +76,9 @@ namcast_url <- function(dates = "2018-12-18",
 #' Query the catalog at the specified URL for the specified date
 #'
 #' @export
-#' @param date Date or character, cast-able to Date class
+#' @param date Date or character, cast-able to Date class. As an alternative,
+#'     set it to "most recent" or even "recent" to automatically get the most
+#'     forecast.
 #' @param uri character, the base uri for the top level catalog
 #' @param pattern character, one or more regular expressions used to match the
 #'        to just one of the opendap resources.
@@ -91,15 +93,39 @@ query_namcast_catalog <- function(date, uri,
                                    "^.*1200_006\\.grb2$",
                                    "^.*1800_000\\.grb2$",
                                    "^.*1800_006\\.grb2$")){
+
   r <- NA_character_
-  Top <- thredds::get_catalog(uri)
-  if (is.null(Top)) return(r)
-  if (!inherits(date, "Date")) date <- as.Date(date)
-  ym <- format(date[1], "%Y%m")
-  Ym <- Top$get_catalogs(ym)[[ym]]
-  if (is.null(Ym)) return(r)
-  ymd <- format(date[1], "%Y%m%d")
-  Ymd <- Ym$get_catalogs(ymd)[[ymd]]
+  if (inherits(date, 'character') && date[1] %in% c("recent", "most recent")){
+
+    # return most recent element
+    most_recent <- function(x){
+      x[which.max(as.integer(x))]
+    }
+    #uri = namcast_base_url(date = Sys.Date(), type = "thredds")
+    Top <- thredds::get_catalog(uri)
+    if (is.null(Top)) return(r)
+    Ym <- Top$list_catalogs()
+    if (length(Ym) == 0) return(r)
+    recent <- most_recent(names(Ym))
+    Ym <- Top$get_catalogs(recent)[[1]]
+    if (is.null(Ym)) return(r)
+    Ymd <- Ym$list_catalogs()
+    if (length(Ymd) == 0) return(r)
+    recent <- most_recent(names(Ymd))
+    Ymd <- Ym$get_catalogs(recent)[[1]]
+
+  } else {
+
+    Top <- thredds::get_catalog(uri)
+    if (is.null(Top)) return(r)
+    if (!inherits(date, "Date")) date <- as.Date(date)
+    ym <- format(date[1], "%Y%m")
+    Ym <- Top$get_catalogs(ym)[[ym]]
+    if (is.null(Ym)) return(r)
+    ymd <- format(date[1], "%Y%m%d")
+    Ymd <- Ym$get_catalogs(ymd)[[ymd]]
+  }
+
   if (is.null(Ymd)) return(r)
   dnames <- Ymd$get_dataset_names()
   ix <- mgrepl(pattern, dnames)
@@ -128,12 +154,25 @@ query_namcast <- function(dates = c("2020-05-15", "2020-05-18"),
                          threshold = namcast_threshold_date()){
 
   if (FALSE){
-    dates = namanl_threshold_date() + c(-3, 0)
+    dates = "recent"
+    #dates = namanl_threshold_date() + c(-3, 0)
     ftime = c("0000", "0600", "1200", "1800")
     ahead = c("000", "006")
     threshold = namcast_threshold_date()
   }
-  if (!inherits(dates, "Date")) dates <- as.Date(dates)
+  if (!inherits(dates, "Date")) {
+    if (inherits(dates, 'character')){
+      if (any(dates %in% c("most recent", "recent"))){
+        dates <- Sys.Date()
+        most_recent <- TRUE
+      } else {
+        most_recent <- FALSE
+        dates <- as.Date(dates)
+      }
+    } else {
+      dates <- as.Date(dates)
+    }
+  }
   if (!inherits(threshold, "Date")) threshold <- as.Date(threshold[1])
 
   # Build the regular expressions for filename patterns
@@ -162,12 +201,15 @@ query_namcast <- function(dates = c("2020-05-15", "2020-05-18"),
   opendap_uri <- namcast_base_url(type = "opendap",
                                  threshold = threshold,
                                  date = dates)
-
-  x <- sapply(seq_along(dates),
-              function(i){
-                query_namcast_catalog(dates[i], thredds_uri[i], pattern = pattern)
-              }) %>%
-    unlist()
+  if (most_recent){
+    x <- query_namcast_catalog("recent", thredds_uri, pattern = pattern)
+  } else {
+    x <- sapply(seq_along(dates),
+                function(i){
+                  query_namcast_catalog(dates[i], thredds_uri[i], pattern = pattern)
+                }) %>%
+      unlist()
+  }
 
   uri <- file.path(dirname(opendap_uri), x)
   uri[is.na(x)] <- NA
