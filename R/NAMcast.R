@@ -79,6 +79,11 @@ NAMcastRefClass <- setRefClass("NAMcastRefClass",
 
 #' Compute the POSIXct timestamps
 #'
+#' As of summer 2020 time has been stored relative to the day of the forecast
+#' embedded in the units of the time variable.  Prior to that it was relative to
+#' 0001-01-01 which required a 2-day shift to account for some mistakes made
+#' prior to current conventions.
+#'
 #' @name NAMcastRefClass_get_time
 #' @param shift numeric, the raw day numbers and epoch conspire to cause a two day
 #' difference from what is expected. So this param is used to correct that.
@@ -87,10 +92,18 @@ NAMcastRefClass <- setRefClass("NAMcastRefClass",
 #' @return POSIXct vector or NULL
 NAMcastRefClass$methods(
     get_time = function(shift = -2){
-        if (!.self$is_open() || (length(.self$time) ==0)) return(NULL)
+      if (!.self$is_open()) return(NULL)
+      if (grepl("Hour since",.self$NC$dim$time$units)){
+        t0 <- as.POSIXct(.self$NC$dim$time$units,
+          format = "Hour since %Y-%m-%dT%H:%M:%SZ",tz = "UTC")
+        tm <- t0 + .self$NC$dim$time$vals * 60 * 60
+      } else {
+        if (length(.self$time) ==0) return(NULL)
         secsperday <- 24 * 60 * 60
-        as.POSIXct("1-01-01 00:00:0.0", tz = 'UTC') +
+        tm <- as.POSIXct("1-01-01 00:00:0.0", tz = 'UTC') +
             (.self$NC$dim$time$vals + shift) * secsperday
+      }
+      return(tm)
     })
 
 #' Convert from longlat bounding box to start, count for x and y

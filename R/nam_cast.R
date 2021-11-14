@@ -1,3 +1,30 @@
+#' Parse NAM forecast filenames
+#'
+#' Filenames such as "nam_218_20210105_0000_069.grb2"
+#' are comprised of "product_YYYYmmdd_ffff_aaa.ext"
+#'
+#' @export
+#' @param x character, one or more filenames
+#' @return tibble of filename constituent parts
+#' \itemize{
+#'  \item{model most likely "nam"}
+#'  \item{domain character, code for the extent/grid see \href{https://www.nco.ncep.noaa.gov/pmb/docs/on388/tableb.html}{NCEP STORAGE GRIDS} 
+#'  \item{date Date class}
+#'  \item{ftime character, 4 digit integer code of forecast statement hour (aka cycle time)}
+#'  \item{ahead character, 3 digit integer code of the forecasted hour}}
+#' }
+namcast_parse_filename <- function(x = c("nam_218_20210105_0000_084.grb2", 
+                                "nam_218_20210105_0000_081.grb2", 
+                                "nam_218_20210105_0000_078.grb2")){
+
+  # strip the extension
+  ss <- strsplit(raster::extension(basename(x), value = ""), "_", fixed = TRUE)
+  s <- do.call(rbind, ss)
+  colnames(s) <- c("model", "domain", "date", "ftime", "ahead")
+  dplyr::as_tibble(s) %>%
+    dplyr::mutate(date = as.Date(.data$date, format = "%Y%m%d")  )                            
+}
+
 #' Retrieve the NAM-CAST inclusive threshold that defines 'recent' data
 #'
 #' @export
@@ -145,7 +172,9 @@ query_namcast_catalog <- function(date, uri,
 #' @export
 #' @param dates Date or castable to Date, the date(s) to query
 #' @param ftime character or integer, 4 digit forecast statement hour(s) (or castable to such)
+#'   or "*" do include c("0000", "0600", "1200", "1800")
 #' @param ahead character or integer, 4 digit forecast ahead hours (or castable to such)
+#'   or "*" to include all 000-084
 #' @param threshold Date or castable to Date, the division date betwene "old" and "recent"
 #' @return one per input date, a URL for .grb2 (opendap) resources, possibly NA
 query_namcast <- function(dates = c("2020-05-15", "2020-05-18"),
@@ -160,13 +189,15 @@ query_namcast <- function(dates = c("2020-05-15", "2020-05-18"),
     ahead = c("000", "006")
     threshold = namcast_threshold_date()
   }
+  if ("*" %in% ftime) ftime <- c("0000", "0600", "1200", "1800")
+  if ("*" %in% ahead) ahead <- sprintf("%0.3i", seq(from = 0, to = 84)) 
+  most_recent <- FALSE
   if (!inherits(dates, "Date")) {
     if (inherits(dates, 'character')){
       if (any(dates %in% c("most recent", "recent"))){
         dates <- Sys.Date()
         most_recent <- TRUE
       } else {
-        most_recent <- FALSE
         dates <- as.Date(dates)
       }
     } else {

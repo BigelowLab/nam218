@@ -9,20 +9,26 @@ query_nam218(
   day = c("20060601", format(Sys.Date() - ifelse(what == "analysis", 4, 0), format =
     "\%Y\%m\%d"))[1],
   ftime = c(NA, "0000", "0600", "1200", "1800")[1],
-  ahead = c(NA, "000", "003", "006", "084")[1]
+  ahead = c(NA, "000", "003", "006", "084")[1],
+  form = c("uri", "node")[2],
+  root_path = "https://www.ncei.noaa.gov/thredds/dodsC"
 )
 }
 \arguments{
-\item{what}{character specifies 'analysis' or 'forecast'}
+\item{what}{character specifies 'analysis', 'analysis-historical' or 'forecast'}
 
 \item{day}{either POSIXct or an 8 character day (YYYYmmdd)}
 
 \item{ftime}{4 character forecast period time stamp ('0000', '0006', etc.) or NA}
 
 \item{ahead}{3 character cycle timestamp ('000' now cast, '003 three hours ahead, etc) or NA}
+
+\item{form}{character, either "uri" or "node"}
+
+\item{root_path}{charcater, used as the root path if \code{form} is 'uri'}
 }
 \value{
-DatasetsRefClass or an empty list or NULL
+list of DatasetRefClass (possibly empty or NULL) or a character vector of URLs
 }
 \description{
 Run a query for NAM-218 datasets

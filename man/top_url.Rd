@@ -4,19 +4,18 @@
 \alias{top_url}
 \title{Retrieve the top level catalog URL}
 \usage{
-top_url(what = c("analysis", "forecast", "archived-forecast")[1])
+top_url(
+  what = c("analysis", "forecast", "archived-forecast", "analysis-historical")[1]
+)
 }
 \arguments{
-\item{what}{character specifies 'analysis' or 'forecast', 'current-forecast', 'archived-forecast'
+\item{what}{character specifies 'analysis' or 'forecast', "analysis-historical", 'current-forecast', 'archived-forecast'
 'forecast' and 'archived-forecast' are the same thredds catalog but here for backward compatibility
 'current-forecast' is actually a pointer NOMADS (not NCEP) which fuddles me
 'analysis' points to a thredds catalog}
 }
 \value{
 character URL
-analysis'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/namanl/catalog.xml",
-forecast'  = "https://nomads.ncdc.noaa.gov/thredds/catalog/nam218/catalog.xml",
-current-forecast'    =  "https://nomads.ncep.noaa.gov:9090/dods/nam.xml",
 }
 \description{
 Retrieve the top level catalog URL

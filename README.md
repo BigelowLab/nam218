@@ -1,218 +1,173 @@
 # nam218
 
 A simple [R language](https://www.r-project.org/) interface to
-[NCEP NAM](https://www.nco.ncep.noaa.gov/pmb/products/nam/) forecasts and archives.
+[NAM catalogs](https://www.ncei.noaa.gov/products/weather-climate-models/north-american-mesoscale) forecasts and archives.
 
-Parameters vary by the forecast hour. (Note - some of the docs seems to not match
+Products are organized by date ("day"), forecast statement time ("ftime") and forecast time ("ahead"). Parameters vary by the forecast hour. (Note - some of the docs seems to not match
 served data file contents.  Check carefully for discrepancies.)
 
-[000](https://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys00.tm00.grib2.shtml)
-[006](https://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys06.tm00.grib2.shtml)
+[Parameters at 000](https://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys00.tm00.grib2.shtml)
 
-#### Catalog-dataset mishaps
+[Parameters at 006](https://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.awphys06.tm00.grib2.shtml)
 
-There are some entires days missing from the catalog. While slightly annoying this
-generally is not an issue as the catalogs will properly match the missingness of
-the datasets ( ala catalog == dataset). Unfortunately, sometimes the catalog will
-indicate a dataset is present when in fact it is not available ( ala catalog != dataset).
-Some attempt has been made to resolve the latter issue - trying to open an unavailable
-OPeNDAP dataset that is listed in the THREDDS catalog will cause the main object
-class to return as NULL.
 
 #### Requirements
 
-+ [R](https://www.r-project.org/) version 3.0 or higher
++ [R](https://www.r-project.org/) version 4.0 or higher
 
 And packages...
 
-+ [raster](https://cran.r-project.org/web/packages/raster/index.html)
 
-+ [ncdf4](https://cran.r-project.org/web/packages/ncdf4/index.html)
-
-+ [thredds](https://github.com/BigelowLab/thredds)
-
-+ [httr](https://cran.r-project.org/web/packages/httr/index.html)
-
-+ [tibble](https://cran.r-project.org/web/packages/tibble/index.html)
-
-+ [magrittr](https://cran.r-project.org/web/packages/magrittr/index.html)
+  + [ncdf4](https://CRAN.R-project.org/package=ncdf4)
+  
+  + [thredds](https://github.com/BigelowLab/thredds)
+  
+  + [httr](https://CRAN.R-project.org/package=httr)
+  
+  + [rlang](https://CRAN.R-project.org/package=rlang)
+  
+  + [magrittr](https://CRAN.R-project.org/package=magrittr)
+  
+  + [raster](https://CRAN.R-project.org/package=raster)
+  
+  + [dplyr](https://CRAN.R-project.org/package=dplyr)
+  
+  + [readr](https://CRAN.R-project.org/package=readr)
+  
+  + [sp](https://CRAN.R-project.org/package=sp)
+  
+  + [tibble](https://CRAN.R-project.org/package=tibble)
+  
+  + [xml2](https://CRAN.R-project.org/package=xml2)
+    
 
 #### Installation
 
-It's fairly easy to install using Hadley Wickham's [devtools](http://cran.r-project.org/web/packages/devtools/index.html).
-
+Use the [remotes](https://CRAN.R-project.org/package=remotes) package to install.
 ```r
-library(devtools)
-install_github("BigelowLab/thredds")
-install_github('BigelowLab/nam218')
-```
-
-### Realtime Forecasts aka 'namcast'
-
-An [example](http://nomads.ncep.noaa.gov/dods/nam) and more specifically we
-typically use the NAM every 3 hours fcst staring from 00Z - select a day from the
-page lineked to above and then select `nam_00z.info`.
-Be aware that the date identified in the link should be updated as needed.
-
-Grid node locations are given by lat,lon coordinates. We use the `NAMcast`
-reference object to handle this data source. Note that the variable names and
-content organization are different than for **Analyses** ans **Archived Forecasts**
-
-
-```
-uri = format(Sys.Date(),"http://nomads.ncep.noaa.gov/dods/nam/nam%Y%m%d/nam_00z" )
-Z = NAMcast(uri)
-Z
-Reference Class: "NAMcastRefClass"
-  state: open
-file:  http://nomads.ncep.noaa.gov/dods/nam/nam20180221/nam_00z
-
- VARS:
-    absvprs [lon,lat,lev,time]
-    no4lftx180_0mb [lon,lat,time]
-    acpcpsfc [lon,lat,time]
-    ...
-    weasdsfc [lon,lat,time]
-    wiltsfc [lon,lat,time]
-
-  DIMS:
-    lat[443]
-    lev[42]
-    lon[913]
-    time[29]
+remotes::install_github("BigelowLab/thredds")
+remotes::install_github('BigelowLab/nam218')
 ```
 
 
-### Archived Forecasts
+From the [NAM catalogs](https://www.ncei.noaa.gov/products/weather-climate-models/north-american-mesoscale) can query for [forecasts](https://www.ncei.noaa.gov/thredds/catalog/model-nam218/catalog.html), [analyses](https://www.ncei.noaa.gov/thredds/catalog/model-namanl/catalog.html) or [historical analyses](https://www.ncei.noaa.gov/thredds/catalog/model-namanl-old/catalog.html).  
 
-An [example](https://www.ncei.noaa.gov/thredds/catalog/nam218/201802/20180219/catalog.html)
+**Warning** It seems that analyses are served back to 2006 while historical analyses are served back to 2004.  In fact, the public entry into the historical analyses are now hidden from the [user entry page](https://www.ncei.noaa.gov/products/weather-climate-models/north-american-mesoscale). I suspect that we are being encouraged to drop that use of historical analyses and just use the available analyses. On the other hand, some years are missing in the analyses public catalog that are available in the historical analyses catalog. 
 
-Note that these grids are projected Lamber Conformal Conic `lcc`.  Data covers
-2016-06 through present - typically lagging 'current' by **2 days**.
-Forecasts are available for forecast statement times `ftime = 0000, 0600, 1200, 1800`
-with look-ahead times `ahead = (hourly) 000-036, (3 hourly) 039-084`
-
-Contents accessed using the `NAM218` reference class and are arranged as shown
-above for *Analyses*
-
-### Analyses
-
-Not all variables extend through the entire 2004-present period (surface vis and cloud cover examples)
-Somewhere along the line the format changed from GRB (ugg) to GRB2 (readable by ncdf4)
-We need a switch to  navigate the GRB/GRB2 change
-    if GRB use rNOMADS
-    if GRB2 use ncdf4
+**N.B.** This package is old-but-still useful, but it needs to be refactored and simplified. Ultimately, it should be used only for locating available NAM218 resources. That's the perfect use for this package.  There are a lot of other old functions within the package that were used for accessing specific datasets that were specific to a project, and, to be frank, weren't such a good idea.  These other functions will likely be deprecated in the future.  
 
 
-An [example](https://www.ncei.noaa.gov/thredds/dodsC/nam218/201902/20190219/nam_218_20190219_0000_000.grb2.html)
 
-Note that these grids are projected Lamber Conformal Conic `lcc`.  Data covers 2004-03 through present - typically lagging 'current' by **2 days**.
-Forecasts are available for forecast statement times `ftime = 0000, 0600, 1200, 1800` with look-ahead times `ahead = 000, 001, 002, 002, 006`
+### Query for datasets
+
+This is a query we build to get a resource for `analysis` products for a date 4 days prior to present.  Note the forecast statement hour is noon.  When a statement is produced it really is a forecast statement going up to 84h ahead of the forecast statement time. 
 
 ```
-Y = NAM218("http://www.ncei.noaa.gov/thredds/dodsC/nam218/201902/20190219/nam_218_20190219_0000_000.grb2")
-Y
-Reference Class: "NAM218RefClass"
-state: open
-file:  http://www.ncei.noaa.gov/thredds/dodsC/nam218/201902/20190219/nam_218_20190219_0000_000.grb2
-
- VARS:
-    LambertConformal_Projection
-    reftime
-    height_above_ground_layer_bounds [height_above_ground_layer_bounds_1,height_above_ground_layer]
-    ...
-    Dewpoint_temperature_height_above_ground [x,y,height_above_ground,time]
-    Geopotential_height_isobaric [x,y,isobaric1,time]
-    ...
-    v-component_of_wind_tropopause [x,y,time]
-    v-component_of_wind_planetary_boundary [x,y,time]
-    v-component_of_wind_pressure_difference_layer [x,y,pressure_difference_layer2,time]
-  DIMS:
-    depth_below_surface[1]
-    depth_below_surface_layer[4]
-    ...
-    sigma_layer[1]
-    sigma_layer_bounds_1[2]
-    time[1]
-    x[614]
-    y[428]
-```
-
-### Examples
-
-Finding data with a query...
-
-```R
 library(nam218)
-dataset <- query_nam218(what = 'analysis', day = '20180704', ftime = '1200', ahead = '000')
-dataset[[1]]
-# Reference Class: "DatasetRefClass"
-#   verbose_mode: FALSE
-#   tries: 3
-#   url: https://www.ncei.noaa.gov/thredds/catalog/namanl/201807/20180704/namanl_218_20180704_1200_000.grb2
-#   children: dataSize date
-#   datasets: NA
-#   dataSize: 50.86
-#   date: 2018-07-09T22:43:47Z
-#   serviceName:
-#   urlPath:
+what = "analysis"
+day = format(Sys.Date() - 4, format = "%Y%m%d")
+ftime = '1200'
+ahead = '000'
+print(query_nam218(what = what, day = day, ftime = ftime, ahead = ahead))
+# $nam_218_20211110_1200_000.grb2
+# DatasetNode (R6): 
+#   verbose: FALSE    tries: 3    namespace prefix: d1
+#   url: model-namanl/202111/20211110/nam_218_20211110_1200_000.grb2
+#   name: nam_218_20211110_1200_000.grb2
+#   dataSize: 54.65
+#   date: 2021-11-10T14:40:10.105Z
 ```
 
-Once you have identified the resource then you can instantiate a NAM reference class to get data.
-
-```R
-# extract an OPeNDAP url
-uri <- nam218_url(dataset[[1]], what = 'OPeNDAP')
-uri
-# [1] "https://nomads.ncdc.noaa.gov/thredds/dodsC/namanl/200807/20080704/namanl_218_20080704_1200_000.grb"
-
-# create the NetCDF handler
-X <- NAM218(uri)
-
-# retrieve a layer and show it
-RH <- X$get_layer("Relative_humidity_height_above_ground")
-RH
-# class       : RasterLayer
-# dimensions  : 427, 614, 262178  (nrow, ncol, ncell)
-# resolution  : 12.191, 12.21955  (x, y)
-# extent      : -4232.202, 3253.072, -838.7938, 4378.954  (xmin, xmax, ymin, ymax)
-# coord. ref. : +proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs
-# data source : in memory
-# names       : Relative_humidity_height_above_ground
-# values      : 7.132321, 100.0323  (min, max)
-
-
-library(raster)
-sp::spplot(RH)
+A list of objects, each a `DatasetNode` class object, is produced even though we requested a single day, and time. There is a lot of stuff associated with the dataset, but the above prints some useful metadata. Alternatively, you could request that a simple URL be returned.
 
 ```
+print(query_nam218(what = what, day = day, ftime = ftime, ahead = ahead, form = "uri"))
+# [1] "https://www.ncei.noaa.gov/thredds/dodsC/model-namanl/202111/20211110/nam_218_20211110_1200_000.grb2"
+```
 
-As a convenience a spatial subset can be requested with a bounding box specified as [left, right, bottom, top].
-The inout and output subset coordinate system can be specified in NAM218 native coordinates
-`lambert conformal conic` or in `longlat` using the `from_proj` and `to_proj` arguments.
+Whoa!  That is what 99% of use cases require - "please, just give me the path to the data I need and never mind all that coding cruft." 
 
-```R
-BBOX <- c(-72,-63,39,46)
+Here are examples for `forecast` and `analysis-historical` where we retrieve just URLs.  In the first case we request all of the forecasts associated with the `1200` statement; we do this by setting `ahead=NA` which returns all available forecast products available for each statement time.
+```
+what = "forecast"
+day = format(Sys.Date() - 4, format = "%Y%m%d")
+ftime = '1200'
+ahead = NA
+print(query_nam218(what = what, day = day, ftime = ftime, ahead = ahead, form = 'uri'))
+#  [1] "https://www.ncei.noaa.gov/thredds/dodsC/model-nam218/202111/20211110/nam_218_20211110_1200_084.grb2"
+#  [2] "https://www.ncei.noaa.gov/thredds/dodsC/model-nam218/202111/20211110/nam_218_20211110_1200_081.grb2"
+#  [3] "https://www.ncei.noaa.gov/thredds/dodsC/model-nam218/202111/20211110/nam_218_20211110_1200_078.grb2"
+#  .
+#  .<blah><blah><blah>
+#  .
+# [51] "https://www.ncei.noaa.gov/thredds/dodsC/model-nam218/202111/20211110/nam_218_20211110_1200_002.grb2"
+# [52] "https://www.ncei.noaa.gov/thredds/dodsC/model-nam218/202111/20211110/nam_218_20211110_1200_001.grb2"
+# [53] "https://www.ncei.noaa.gov/thredds/dodsC/model-nam218/202111/20211110/nam_218_20211110_1200_000.grb2"
+```
 
-R_lcc <- X$get_layer("Relative_humidity_height_above_ground", bb = BBOX, from_proj = 'longlat', to_proj = 'native')
-R_lcc
-  # class       : RasterLayer
-  # dimensions  : 80, 77, 6160  (nrow, ncol, ncell)
-  # resolution  : 11.99663, 11.9678  (x, y)
-  # extent      : 1901.858, 2825.599, 1745.543, 2702.967  (xmin, xmax, ymin, ymax)
-  # coord. ref. : +proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs
-  # data source : in memory
-  # names       : Relative_humidity
-  # values      : 56, 100  (min, max)
+In this next case, we will request all of the statements on a given date for a given `ahead` hour.
 
-R_ll <- X$get_layer("Relative_humidity_height_above_ground", bb = BBOX, from_proj = 'longlat', to_proj = 'longlat')
-R_ll
-  # class       : RasterLayer
-  # dimensions  : 110, 104, 11440  (nrow, ncol, ncell)
-  # resolution  : 0.136, 0.1  (x, y)
-  # extent      : -74.21129, -60.06729, 36.93508, 47.93508  (xmin, xmax, ymin, ymax)
-  # coord. ref. : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0
-  # data source : in memory
-  # names       : Relative_humidity
-  # values      : 56.18131, 100  (min, max)
+```
+what = 'analysis-historical'
+day = '20180704'
+ftime = NA
+ahead = '000'
+print(query_nam218(what = what, day = day, ftime = ftime, ahead = ahead, form = 'uri'))
+# [1] "https://www.ncei.noaa.gov/thredds/dodsC/model-namanl-old/201807/20180704/namanl_218_20180704_1800_000.grb2"
+# [2] "https://www.ncei.noaa.gov/thredds/dodsC/model-namanl-old/201807/20180704/namanl_218_20180704_1200_000.grb2"
+# [3] "https://www.ncei.noaa.gov/thredds/dodsC/model-namanl-old/201807/20180704/namanl_218_20180704_0600_000.grb2"
+# [4] "https://www.ncei.noaa.gov/thredds/dodsC/model-namanl-old/201807/20180704/namanl_218_20180704_0000_000.grb2"
+```
+
+Please note that the listings are not in a natural order, but you could sort to your own liking.
+
+### Accessing a dataset
+
+Once you have successfully queried for a dataset, then you can access it's URL and open the resource 
+with the [ncdf4](https://CRAN.R-project.org/package=ncdf4) package. Remember that a list (or a character vector) is returned (since you could on a given `day` query for multiple values `ftime` and `ahead`), so be sure to index into the list (or character vector) even if you only ask for one dataset.
+
+```
+what = 'analysis-historical'
+day = '20180704'
+ftime = '1200'
+ahead = '000'
+qry_uri <- query_nam218(what = what, day = day, ftime = ftime, ahead = ahead, form = 'uri')
+X <- ncdf4::nc_open(query_uri[1])
+X
+#File https://www.ncei.noaa.gov/thredds/dodsC/model-namanl-old/201807/20180704/namanl_218_20180704_1200_000.grb2 (NC_FORMAT_CLASSIC):
+#
+#     110 variables (excluding dimension variables):
+#        int LambertConformal_Projection[]   
+#            grid_mapping_name: lambert_conformal_conic
+#            latitude_of_projection_origin: 25
+#            longitude_of_central_meridian: 265
+#            standard_parallel: 25
+#            earth_radius: 6371229
+#        double reftime[]   
+#            units: Hour since 2018-07-04T12:00:00Z
+#            standard_name: forecast_reference_time
+#            long_name: GRIB reference time
+#            calendar: proleptic_gregorian
+#        float height_above_ground_layer_bounds[height_above_ground_layer_bounds_1,height_above_ground_layer]   
+#            units: m
+#            long_name: bounds for height_above_ground_layer
+#    .
+#    . <blah><blah><blah>
+#    .
+#    9 global attributes:
+#        Originating_or_generating_Center: US National Weather Service, National Centres for Environmental Prediction (NCEP)
+#        Originating_or_generating_Subcenter: 0
+#        GRIB_table_version: 2,1
+#        Type_of_generating_process: Forecast
+#        Analysis_or_forecast_generating_process_identifier_defined_by_originating_centre: MESO NAM Model (currently 12 km)
+#        file_format: GRIB-2
+#        Conventions: CF-1.6
+#        history: Read using CDM IOSP GribCollection v3
+#        featureType: GRID
+```
+
+The [ncdf4](https://CRAN.R-project.org/package=ncdf4) package is not the onlt way to open and access the data. But we find it very useful and fast.  Whatever approach you use, be sure to close the resource when you are done.
+
+```
+ncdf4::nc_close(X)
 ```

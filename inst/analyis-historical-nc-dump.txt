@@ -1,0 +1,1878 @@
+File https://www.ncei.noaa.gov/thredds/dodsC/model-namanl-old/201807/20180704/namanl_218_20180704_1200_000.grb2 (NC_FORMAT_CLASSIC):
+
+     110 variables (excluding dimension variables):
+        int LambertConformal_Projection[]   
+            grid_mapping_name: lambert_conformal_conic
+            latitude_of_projection_origin: 25
+            longitude_of_central_meridian: 265
+            standard_parallel: 25
+            earth_radius: 6371229
+        double reftime[]   
+            units: Hour since 2018-07-04T12:00:00Z
+            standard_name: forecast_reference_time
+            long_name: GRIB reference time
+            calendar: proleptic_gregorian
+        float height_above_ground_layer_bounds[height_above_ground_layer_bounds_1,height_above_ground_layer]   
+            units: m
+            long_name: bounds for height_above_ground_layer
+        float depth_below_surface_layer_bounds[depth_below_surface_layer_bounds_1,depth_below_surface_layer]   
+            units: m
+            long_name: bounds for depth_below_surface_layer
+        float pressure_difference_layer_bounds[pressure_difference_layer_bounds_1,pressure_difference_layer]   
+            units: Pa
+            long_name: bounds for pressure_difference_layer
+        float sigma_layer_bounds[sigma_layer_bounds_1,sigma_layer]   
+            units: sigma
+            long_name: bounds for sigma_layer
+        float depth_below_surface_layer1_bounds[depth_below_surface_layer1_bounds_1,depth_below_surface_layer1]   
+            units: m
+            long_name: bounds for depth_below_surface_layer1
+        float isobaric_layer_bounds[isobaric_layer_bounds_1,isobaric_layer]   
+            units: Pa
+            long_name: bounds for isobaric_layer
+        float pressure_difference_layer1_bounds[pressure_difference_layer1_bounds_1,pressure_difference_layer1]   
+            units: Pa
+            long_name: bounds for pressure_difference_layer1
+        float pressure_difference_layer2_bounds[pressure_difference_layer2_bounds_1,pressure_difference_layer2]   
+            units: Pa
+            long_name: bounds for pressure_difference_layer2
+        float depth_below_surface_layer2_bounds[depth_below_surface_layer2_bounds_1,depth_below_surface_layer2]   
+            units: m
+            long_name: bounds for depth_below_surface_layer2
+        float height_above_ground_layer1_bounds[height_above_ground_layer1_bounds_1,height_above_ground_layer1]   
+            units: m
+            long_name: bounds for height_above_ground_layer1
+        float Absolute_vorticity_isobaric[x,y,isobaric,time]   
+            long_name: Absolute vorticity @ Isobaric surface
+            units: 1/s
+            abbreviation: ABSV
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric y x 
+            Grib_Variable_Id: VAR_0-2-10_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 10
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Absolute vorticity
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float Albedo_surface[x,y,time]   
+            long_name: Albedo @ Ground or water surface
+            units: %
+            abbreviation: ALBDO
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-19-1_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 19
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Physical atmospheric Properties
+            Grib2_Parameter_Name: Albedo
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Convective_available_potential_energy_surface[x,y,time]   
+            long_name: Convective available potential energy @ Ground or water surface
+            units: J/kg
+            abbreviation: CAPE
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-7-6_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 7
+             Grib2_Parameter: 6
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Thermodynamic stability indices
+            Grib2_Parameter_Name: Convective available potential energy
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Convective_available_potential_energy_pressure_difference_layer[x,y,pressure_difference_layer1,time]   
+            long_name: Convective available potential energy @ Level at specified pressure difference from ground to level layer
+            units: J/kg
+            abbreviation: CAPE
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time pressure_difference_layer1 y x 
+            Grib_Variable_Id: VAR_0-7-6_L108_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 7
+             Grib2_Parameter: 6
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Thermodynamic stability indices
+            Grib2_Parameter_Name: Convective available potential energy
+            Grib2_Level_Type: 108
+            Grib2_Level_Desc: Level at specified pressure difference from ground to level
+            Grib2_Generating_Process_Type: Forecast
+        float Convective_inhibition_surface[x,y,time]   
+            long_name: Convective inhibition @ Ground or water surface
+            units: J/kg
+            abbreviation: CIN
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-7-7_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 7
+             Grib2_Parameter: 7
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Thermodynamic stability indices
+            Grib2_Parameter_Name: Convective inhibition
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Convective_inhibition_pressure_difference_layer[x,y,pressure_difference_layer1,time]   
+            long_name: Convective inhibition @ Level at specified pressure difference from ground to level layer
+            units: J/kg
+            abbreviation: CIN
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time pressure_difference_layer1 y x 
+            Grib_Variable_Id: VAR_0-7-7_L108_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 7
+             Grib2_Parameter: 7
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Thermodynamic stability indices
+            Grib2_Parameter_Name: Convective inhibition
+            Grib2_Level_Type: 108
+            Grib2_Level_Desc: Level at specified pressure difference from ground to level
+            Grib2_Generating_Process_Type: Forecast
+        float Dewpoint_temperature_height_above_ground[x,y,height_above_ground,time]   
+            long_name: Dewpoint temperature @ Specified height level above ground
+            units: K
+            abbreviation: DPT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground y x 
+            Grib_Variable_Id: VAR_0-0-6_L103
+            Grib2_Parameter: 0
+             Grib2_Parameter: 0
+             Grib2_Parameter: 6
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Temperature
+            Grib2_Parameter_Name: Dewpoint temperature
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Geopotential_height_isobaric[x,y,isobaric1,time]   
+            long_name: Geopotential height @ Isobaric surface
+            units: gpm
+            abbreviation: HGT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric1 y x 
+            Grib_Variable_Id: VAR_0-3-5_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 5
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Geopotential height
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float Geopotential_height_zeroDegC_isotherm[x,y,time]   
+            long_name: Geopotential height @ Level of 0 °C isotherm
+            units: gpm
+            abbreviation: HGT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-5_L4
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 5
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Geopotential height
+            Grib2_Level_Type: 4
+            Grib2_Level_Desc: Level of 0 °C isotherm
+            Grib2_Generating_Process_Type: Forecast
+        float Geopotential_height_planetary_boundary[x,y,time]   
+            long_name: Geopotential height @ Planetary Boundary Layer
+            units: gpm
+            abbreviation: HGT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-5_L220
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 5
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Geopotential height
+            Grib2_Level_Type: 220
+            Grib2_Level_Desc: Planetary Boundary Layer
+            Grib2_Generating_Process_Type: Forecast
+        float Geopotential_height_lowest_level_of_the_wet_bulb_zero[x,y,time]   
+            long_name: Geopotential height @ Lowest level of the wet bulb zero
+            units: gpm
+            abbreviation: HGT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-5_L245
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 5
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Geopotential height
+            Grib2_Level_Type: 245
+            Grib2_Level_Desc: Lowest level of the wet bulb zero
+            Grib2_Generating_Process_Type: Forecast
+        float Geopotential_height_surface[x,y,time]   
+            long_name: Geopotential height @ Ground or water surface
+            units: gpm
+            abbreviation: HGT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-5_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 5
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Geopotential height
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Geopotential_height_cloud_base[x,y,time]   
+            long_name: Geopotential height @ Cloud base level
+            units: gpm
+            abbreviation: HGT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-5_L2
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 5
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Geopotential height
+            Grib2_Level_Type: 2
+            Grib2_Level_Desc: Cloud base level
+            Grib2_Generating_Process_Type: Forecast
+        float Haines_index_surface[x,y,time]   
+            long_name: Haines index @ Ground or water surface
+            units: 
+            abbreviation: HINDEX
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-4-2_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 4
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Fire Weather Products
+            Grib2_Parameter_Name: Haines index
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Ice_cover_surface[x,y,time]   
+            long_name: Ice cover @ Ground or water surface
+            units: 
+            abbreviation: ICEC
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_10-2-0_L1
+            Grib2_Parameter: 10
+             Grib2_Parameter: 2
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Oceanographic products
+            Grib2_Parameter_Category: Ice
+            Grib2_Parameter_Name: Ice cover
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Land_cover_0__sea_1__land_surface[x,y,time]   
+            long_name: Land cover (0 = sea, 1 = land) @ Ground or water surface
+            units: 
+            abbreviation: LAND
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-0-0_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Land cover (0 = sea, 1 = land)
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Latent_heat_net_flux_surface[x,y,time]   
+            long_name: Latent heat net flux @ Ground or water surface
+            units: W.m-2
+            abbreviation: LHTFL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-0-10_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 0
+             Grib2_Parameter: 10
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Temperature
+            Grib2_Parameter_Name: Latent heat net flux
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Parcel_lifted_index_to_500_hPa_pressure_difference_layer[x,y,pressure_difference_layer,time]   
+            long_name: Parcel lifted index (to 500 hPa) @ Level at specified pressure difference from ground to level layer
+            units: K
+            abbreviation: PLI
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time pressure_difference_layer y x 
+            Grib_Variable_Id: VAR_0-7-0_L108_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 7
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Thermodynamic stability indices
+            Grib2_Parameter_Name: Parcel lifted index (to 500 hPa)
+            Grib2_Level_Type: 108
+            Grib2_Level_Desc: Level at specified pressure difference from ground to level
+            Grib2_Generating_Process_Type: Forecast
+        float Precipitable_water_entire_atmosphere_single_layer[x,y,time]   
+            long_name: Precipitable water @ Entire atmosphere layer
+            units: kg.m-2
+            abbreviation: PWAT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-3_L200
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 3
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Precipitable water
+            Grib2_Level_Type: 200
+            Grib2_Level_Desc: Entire atmosphere layer
+            Grib2_Generating_Process_Type: Forecast
+        float Pressure_maximum_wind[x,y,time]   
+            long_name: Pressure @ Maximum wind level
+            units: Pa
+            abbreviation: PRES
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-0_L6
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Pressure
+            Grib2_Level_Type: 6
+            Grib2_Level_Desc: Maximum wind level
+            Grib2_Generating_Process_Type: Forecast
+        float Pressure_tropopause[x,y,time]   
+            long_name: Pressure @ Tropopause
+            units: Pa
+            abbreviation: PRES
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-0_L7
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Pressure
+            Grib2_Level_Type: 7
+            Grib2_Level_Desc: Tropopause
+            Grib2_Generating_Process_Type: Forecast
+        float Pressure_height_above_ground[x,y,height_above_ground2,time]   
+            long_name: Pressure @ Specified height level above ground
+            units: Pa
+            abbreviation: PRES
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground2 y x 
+            Grib_Variable_Id: VAR_0-3-0_L103
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Pressure
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Pressure_surface[x,y,time]   
+            long_name: Pressure @ Ground or water surface
+            units: Pa
+            abbreviation: PRES
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-0_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Pressure
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Pressure_reduced_to_MSL_msl[x,y,time]   
+            long_name: Pressure reduced to MSL @ Mean sea level
+            units: Pa
+            abbreviation: PRMSL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-1_L101
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Pressure reduced to MSL
+            Grib2_Level_Type: 101
+            Grib2_Level_Desc: Mean sea level
+            Grib2_Generating_Process_Type: Forecast
+        float Relative_humidity_isobaric[x,y,isobaric1,time]   
+            long_name: Relative humidity @ Isobaric surface
+            units: %
+            abbreviation: RH
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric1 y x 
+            Grib_Variable_Id: VAR_0-1-1_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Relative humidity
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float Relative_humidity_zeroDegC_isotherm[x,y,time]   
+            long_name: Relative humidity @ Level of 0 °C isotherm
+            units: %
+            abbreviation: RH
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-1_L4
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Relative humidity
+            Grib2_Level_Type: 4
+            Grib2_Level_Desc: Level of 0 °C isotherm
+            Grib2_Generating_Process_Type: Forecast
+        float Relative_humidity_height_above_ground[x,y,height_above_ground,time]   
+            long_name: Relative humidity @ Specified height level above ground
+            units: %
+            abbreviation: RH
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground y x 
+            Grib_Variable_Id: VAR_0-1-1_L103
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Relative humidity
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Relative_humidity_pressure_difference_layer[x,y,pressure_difference_layer2,time]   
+            long_name: Relative humidity @ Level at specified pressure difference from ground to level layer
+            units: %
+            abbreviation: RH
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time pressure_difference_layer2 y x 
+            Grib_Variable_Id: VAR_0-1-1_L108_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Relative humidity
+            Grib2_Level_Type: 108
+            Grib2_Level_Desc: Level at specified pressure difference from ground to level
+            Grib2_Generating_Process_Type: Forecast
+        float Relative_humidity_sigma_layer[x,y,sigma_layer,time]   
+            long_name: Relative humidity @ Sigma level layer
+            units: %
+            abbreviation: RH
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time sigma_layer y x 
+            Grib_Variable_Id: VAR_0-1-1_L104_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Relative humidity
+            Grib2_Level_Type: 104
+            Grib2_Level_Desc: Sigma level
+            Grib2_Generating_Process_Type: Forecast
+        float Sensible_heat_net_flux_surface[x,y,time]   
+            long_name: Sensible heat net flux @ Ground or water surface
+            units: W.m-2
+            abbreviation: SHTFL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-0-11_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 0
+             Grib2_Parameter: 11
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Temperature
+            Grib2_Parameter_Name: Sensible heat net flux
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Snow_depth_surface[x,y,time]   
+            long_name: Snow depth @ Ground or water surface
+            units: m
+            abbreviation: SNOD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-11_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 11
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Snow depth
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Soil_moisture_content_depth_below_surface_layer[x,y,depth_below_surface_layer1,time]   
+            long_name: Soil moisture content @ Depth below land surface layer
+            units: kg.m-2
+            abbreviation: SOILM
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time depth_below_surface_layer1 y x 
+            Grib_Variable_Id: VAR_2-0-3_L106_layer
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 3
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Soil moisture content
+            Grib2_Level_Type: 106
+            Grib2_Level_Desc: Depth below land surface
+            Grib2_Generating_Process_Type: Forecast
+        float Soil_temperature_depth_below_surface[x,y,depth_below_surface,time]   
+            long_name: Soil temperature @ Depth below land surface
+            units: K
+            abbreviation: TSOIL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time depth_below_surface y x 
+            Grib_Variable_Id: VAR_2-0-2_L106
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Soil temperature
+            Grib2_Level_Type: 106
+            Grib2_Level_Desc: Depth below land surface
+            Grib2_Generating_Process_Type: Forecast
+        float Soil_temperature_depth_below_surface_layer[x,y,depth_below_surface_layer,time]   
+            long_name: Soil temperature @ Depth below land surface layer
+            units: K
+            abbreviation: TSOIL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time depth_below_surface_layer y x 
+            Grib_Variable_Id: VAR_2-0-2_L106_layer
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Soil temperature
+            Grib2_Level_Type: 106
+            Grib2_Level_Desc: Depth below land surface
+            Grib2_Generating_Process_Type: Forecast
+        float Soil_type_surface[x,y,time]   
+            long_name: Soil type @ Ground or water surface
+            units: (Code table 4.213)
+            abbreviation: SOTYP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-3-0_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 3
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Soil Products
+            Grib2_Parameter_Name: Soil type
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Specific_humidity_height_above_ground[x,y,height_above_ground1,time]   
+            long_name: Specific humidity @ Specified height level above ground
+            units: kg/kg
+            abbreviation: SPFH
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground1 y x 
+            Grib_Variable_Id: VAR_0-1-0_L103
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Specific humidity
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Storm_relative_helicity_height_above_ground_layer[x,y,height_above_ground_layer,time]   
+            long_name: Storm relative helicity @ Specified height level above ground layer
+            units: J/kg
+            abbreviation: HLCY
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground_layer y x 
+            Grib_Variable_Id: VAR_0-7-8_L103_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 7
+             Grib2_Parameter: 8
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Thermodynamic stability indices
+            Grib2_Parameter_Name: Storm relative helicity
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Surface_roughness_surface[x,y,time]   
+            long_name: Surface roughness @ Ground or water surface
+            units: m
+            abbreviation: SFCR
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-0-1_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Surface roughness
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Temperature_isobaric[x,y,isobaric1,time]   
+            long_name: Temperature @ Isobaric surface
+            units: K
+            abbreviation: TMP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric1 y x 
+            Grib_Variable_Id: VAR_0-0-0_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 0
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Temperature
+            Grib2_Parameter_Name: Temperature
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float Temperature_height_above_ground[x,y,height_above_ground1,time]   
+            long_name: Temperature @ Specified height level above ground
+            units: K
+            abbreviation: TMP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground1 y x 
+            Grib_Variable_Id: VAR_0-0-0_L103
+            Grib2_Parameter: 0
+             Grib2_Parameter: 0
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Temperature
+            Grib2_Parameter_Name: Temperature
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Temperature_tropopause[x,y,time]   
+            long_name: Temperature @ Tropopause
+            units: K
+            abbreviation: TMP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-0-0_L7
+            Grib2_Parameter: 0
+             Grib2_Parameter: 0
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Temperature
+            Grib2_Parameter_Name: Temperature
+            Grib2_Level_Type: 7
+            Grib2_Level_Desc: Tropopause
+            Grib2_Generating_Process_Type: Forecast
+        float Temperature_surface[x,y,time]   
+            long_name: Temperature @ Ground or water surface
+            units: K
+            abbreviation: TMP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-0-0_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 0
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Temperature
+            Grib2_Parameter_Name: Temperature
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Temperature_pressure_difference_layer[x,y,pressure_difference_layer2,time]   
+            long_name: Temperature @ Level at specified pressure difference from ground to level layer
+            units: K
+            abbreviation: TMP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time pressure_difference_layer2 y x 
+            Grib_Variable_Id: VAR_0-0-0_L108_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 0
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Temperature
+            Grib2_Parameter_Name: Temperature
+            Grib2_Level_Type: 108
+            Grib2_Level_Desc: Level at specified pressure difference from ground to level
+            Grib2_Generating_Process_Type: Forecast
+        float Total_cloud_cover_entire_atmosphere_single_layer[x,y,time]   
+            long_name: Total cloud cover @ Entire atmosphere layer
+            units: %
+            abbreviation: TCDC
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-6-1_L200
+            Grib2_Parameter: 0
+             Grib2_Parameter: 6
+             Grib2_Parameter: 1
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Cloud
+            Grib2_Parameter_Name: Total cloud cover
+            Grib2_Level_Type: 200
+            Grib2_Level_Desc: Entire atmosphere layer
+            Grib2_Generating_Process_Type: Forecast
+        float Turbulent_kinetic_energy_isobaric[x,y,isobaric1,time]   
+            long_name: Turbulent kinetic energy @ Isobaric surface
+            units: J/kg
+            abbreviation: TKE
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric1 y x 
+            Grib_Variable_Id: VAR_0-19-11_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 19
+             Grib2_Parameter: 11
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Physical atmospheric Properties
+            Grib2_Parameter_Name: Turbulent kinetic energy
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float Categorical_Rain_surface[x,y,time]   
+            long_name: Categorical Rain @ Ground or water surface
+            units: Code table 4.222
+            abbreviation: CRAIN
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-192_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 192
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Categorical Rain
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Categorical_Freezing_Rain_surface[x,y,time]   
+            long_name: Categorical Freezing Rain @ Ground or water surface
+            units: Code table 4.222
+            abbreviation: CFRZR
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-193_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 193
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Categorical Freezing Rain
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Categorical_Ice_Pellets_surface[x,y,time]   
+            long_name: Categorical Ice Pellets @ Ground or water surface
+            units: Code table 4.222
+            abbreviation: CICEP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-194_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 194
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Categorical Ice Pellets
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Categorical_Snow_surface[x,y,time]   
+            long_name: Categorical Snow @ Ground or water surface
+            units: Code table 4.222
+            abbreviation: CSNOW
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-195_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 195
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Categorical Snow
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Snow_Cover_surface[x,y,time]   
+            long_name: Snow Cover @ Ground or water surface
+            units: %
+            abbreviation: SNOWC
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-201_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 201
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Snow Cover
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Reflectivity_hybrid[x,y,hybrid,time]   
+            long_name: Reflectivity @ Hybrid level
+            units: dB
+            abbreviation: REFD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time hybrid y x 
+            Grib_Variable_Id: VAR_0-16-195_L105
+            Grib2_Parameter: 0
+             Grib2_Parameter: 16
+             Grib2_Parameter: 195
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Forecast Radar Imagery
+            Grib2_Parameter_Name: Reflectivity
+            Grib2_Level_Type: 105
+            Grib2_Level_Desc: Hybrid level
+            Grib2_Generating_Process_Type: Forecast
+        float Reflectivity_height_above_ground[x,y,height_above_ground3,time]   
+            long_name: Reflectivity @ Specified height level above ground
+            units: dB
+            abbreviation: REFD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground3 y x 
+            Grib_Variable_Id: VAR_0-16-195_L103
+            Grib2_Parameter: 0
+             Grib2_Parameter: 16
+             Grib2_Parameter: 195
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Forecast Radar Imagery
+            Grib2_Parameter_Name: Reflectivity
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Composite_reflectivity_entire_atmosphere_single_layer[x,y,time]   
+            long_name: Composite reflectivity @ Entire atmosphere layer
+            units: dB
+            abbreviation: REFC
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-16-196_L200
+            Grib2_Parameter: 0
+             Grib2_Parameter: 16
+             Grib2_Parameter: 196
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Forecast Radar Imagery
+            Grib2_Parameter_Name: Composite reflectivity
+            Grib2_Level_Type: 200
+            Grib2_Level_Desc: Entire atmosphere layer
+            Grib2_Generating_Process_Type: Forecast
+        float Echo_Top_entire_atmosphere_single_layer[x,y,time]   
+            long_name: Echo Top (See Note 1) @ Entire atmosphere layer
+            units: m
+            abbreviation: RETOP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-16-197_L200
+            Grib2_Parameter: 0
+             Grib2_Parameter: 16
+             Grib2_Parameter: 197
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Forecast Radar Imagery
+            Grib2_Parameter_Name: Echo Top (See Note 1)
+            Grib2_Level_Type: 200
+            Grib2_Level_Desc: Entire atmosphere layer
+            Grib2_Generating_Process_Type: Forecast
+        float Lightning_surface[x,y,time]   
+            long_name: Lightning @ Ground or water surface
+            units: non-dim
+            abbreviation: LTNG
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-17-192_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 17
+             Grib2_Parameter: 192
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Electrodynamics
+            Grib2_Parameter_Name: Lightning
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Drag_Coefficient_surface[x,y,time]   
+            long_name: Drag Coefficient @ Ground or water surface
+            units: non-dim
+            abbreviation: CD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-196_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 196
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Drag Coefficient
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Frictional_Velocity_surface[x,y,time]   
+            long_name: Frictional Velocity @ Ground or water surface
+            units: m.s-1
+            abbreviation: FRICV
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-197_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 197
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Frictional Velocity
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Ventilation_Rate_planetary_boundary[x,y,time]   
+            long_name: Ventilation Rate @ Planetary Boundary Layer
+            units: m2.s-1
+            abbreviation: VRATE
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-224_L220
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 224
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Ventilation Rate
+            Grib2_Level_Type: 220
+            Grib2_Level_Desc: Planetary Boundary Layer
+            Grib2_Generating_Process_Type: Forecast
+        float MSLP_Eta_model_reduction_msl[x,y,time]   
+            long_name: MSLP (Eta model reduction) @ Mean sea level
+            units: Pa
+            abbreviation: MSLET
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-192_L101
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 192
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: MSLP (Eta model reduction)
+            Grib2_Level_Type: 101
+            Grib2_Level_Desc: Mean sea level
+            Grib2_Generating_Process_Type: Forecast
+        float Planetary_Boundary_Layer_Height_surface[x,y,time]   
+            long_name: Planetary Boundary Layer Height @ Ground or water surface
+            units: m
+            abbreviation: HPBL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-3-196_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 3
+             Grib2_Parameter: 196
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Mass
+            Grib2_Parameter_Name: Planetary Boundary Layer Height
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Downward_Short-Wave_Radiation_Flux_surface[x,y,time]   
+            long_name: Downward Short-Wave Radiation Flux @ Ground or water surface
+            units: W.m-2
+            abbreviation: DSWRF
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-4-192_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 4
+             Grib2_Parameter: 192
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Short wave radiation
+            Grib2_Parameter_Name: Downward Short-Wave Radiation Flux
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Upward_Short-Wave_Radiation_Flux_surface[x,y,time]   
+            long_name: Upward Short-Wave Radiation Flux @ Ground or water surface
+            units: W.m-2
+            abbreviation: USWRF
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-4-193_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 4
+             Grib2_Parameter: 193
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Short wave radiation
+            Grib2_Parameter_Name: Upward Short-Wave Radiation Flux
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Downward_Long-Wave_Radp_Flux_surface[x,y,time]   
+            long_name: Downward Long-Wave Rad. Flux @ Ground or water surface
+            units: W.m-2
+            abbreviation: DLWRF
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-5-192_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 5
+             Grib2_Parameter: 192
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Long wave radiation
+            Grib2_Parameter_Name: Downward Long-Wave Rad. Flux
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Upward_Long-Wave_Radp_Flux_surface[x,y,time]   
+            long_name: Upward Long-Wave Rad. Flux @ Ground or water surface
+            units: W.m-2
+            abbreviation: ULWRF
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-5-193_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 5
+             Grib2_Parameter: 193
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Long wave radiation
+            Grib2_Parameter_Name: Upward Long-Wave Rad. Flux
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Surface_Lifted_Index_isobaric_layer[x,y,isobaric_layer,time]   
+            long_name: Surface Lifted Index @ Isobaric surface layer
+            units: K
+            abbreviation: LFT X
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric_layer y x 
+            Grib_Variable_Id: VAR_0-7-192_L100_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 7
+             Grib2_Parameter: 192
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Thermodynamic stability indices
+            Grib2_Parameter_Name: Surface Lifted Index
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float Best_4_layer_Lifted_Index_pressure_difference_layer[x,y,pressure_difference_layer1,time]   
+            long_name: Best (4 layer) Lifted Index @ Level at specified pressure difference from ground to level layer
+            units: K
+            abbreviation: 4LFTX
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time pressure_difference_layer1 y x 
+            Grib_Variable_Id: VAR_0-7-193_L108_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 7
+             Grib2_Parameter: 193
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Thermodynamic stability indices
+            Grib2_Parameter_Name: Best (4 layer) Lifted Index
+            Grib2_Level_Type: 108
+            Grib2_Level_Desc: Level at specified pressure difference from ground to level
+            Grib2_Generating_Process_Type: Forecast
+        float Volumetric_Soil_Moisture_Content_depth_below_surface_layer[x,y,depth_below_surface_layer,time]   
+            long_name: Volumetric Soil Moisture Content @ Depth below land surface layer
+            units: Fraction
+            abbreviation: SOILW
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time depth_below_surface_layer y x 
+            Grib_Variable_Id: VAR_2-0-192_L106_layer
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 192
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Volumetric Soil Moisture Content
+            Grib2_Level_Type: 106
+            Grib2_Level_Desc: Depth below land surface
+            Grib2_Generating_Process_Type: Forecast
+        float Moisture_Availability_depth_below_surface_layer[x,y,depth_below_surface_layer2,time]   
+            long_name: Moisture Availability @ Depth below land surface layer
+            units: %
+            abbreviation: MSTAV
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time depth_below_surface_layer2 y x 
+            Grib_Variable_Id: VAR_2-0-194_L106_layer
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 194
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Moisture Availability
+            Grib2_Level_Type: 106
+            Grib2_Level_Desc: Depth below land surface
+            Grib2_Generating_Process_Type: Forecast
+        float Plant_Canopy_Surface_Water_surface[x,y,time]   
+            long_name: Plant Canopy Surface Water @ Ground or water surface
+            units: kg.m-2
+            abbreviation: CNWAT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-0-196_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 196
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Plant Canopy Surface Water
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Blackadars_Mixing_Length_Scale_hybrid[x,y,hybrid,time]   
+            long_name: Blackadars Mixing Length Scale @ Hybrid level
+            units: m
+            abbreviation: BMIXL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time hybrid y x 
+            Grib_Variable_Id: VAR_2-0-197_L105
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 197
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Blackadars Mixing Length Scale
+            Grib2_Level_Type: 105
+            Grib2_Level_Desc: Hybrid level
+            Grib2_Generating_Process_Type: Forecast
+        float Vegetation_Type_surface[x,y,time]   
+            long_name: Vegetation Type @ Ground or water surface
+            units: Integer.(0-13)
+            abbreviation: VGTYP
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-0-198_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 198
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Vegetation Type
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Wilting_Point_surface[x,y,time]   
+            long_name: Wilting Point @ Ground or water surface
+            units: Fraction
+            abbreviation: WILT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-0-201_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 201
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Wilting Point
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Liquid_Volumetric_Soil_Moisture_non_Frozen_depth_below_surface_layer[x,y,depth_below_surface_layer,time]   
+            long_name: Liquid Volumetric Soil Moisture (non Frozen) @ Depth below land surface layer
+            units: 
+            abbreviation: SOILL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time depth_below_surface_layer y x 
+            Grib_Variable_Id: VAR_2-3-192_L106_layer
+            Grib2_Parameter: 2
+             Grib2_Parameter: 3
+             Grib2_Parameter: 192
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Soil Products
+            Grib2_Parameter_Name: Liquid Volumetric Soil Moisture (non Frozen)
+            Grib2_Level_Type: 106
+            Grib2_Level_Desc: Depth below land surface
+            Grib2_Generating_Process_Type: Forecast
+        float Number_of_Soil_Layers_in_Root_Zone_surface[x,y,time]   
+            long_name: Number of Soil Layers in Root Zone @ Ground or water surface
+            units: non-dim
+            abbreviation: RLYRS
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-3-193_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 3
+             Grib2_Parameter: 193
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Soil Products
+            Grib2_Parameter_Name: Number of Soil Layers in Root Zone
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Transpiration_Stress-onset_soil_moisture_surface[x,y,time]   
+            long_name: Transpiration Stress-onset (soil moisture) @ Ground or water surface
+            units: 
+            abbreviation: SMREF
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-3-195_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 3
+             Grib2_Parameter: 195
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Soil Products
+            Grib2_Parameter_Name: Transpiration Stress-onset (soil moisture)
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Direct_Evaporation_Cease_soil_moisture_surface[x,y,time]   
+            long_name: Direct Evaporation Cease (soil moisture) @ Ground or water surface
+            units: 
+            abbreviation: SMDRY
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-3-196_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 3
+             Grib2_Parameter: 196
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Soil Products
+            Grib2_Parameter_Name: Direct Evaporation Cease (soil moisture)
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Soil_Porosity_surface[x,y,time]   
+            long_name: Soil Porosity @ Ground or water surface
+            units: 
+            abbreviation: POROS
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-3-197_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 3
+             Grib2_Parameter: 197
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Soil Products
+            Grib2_Parameter_Name: Soil Porosity
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Vegetation_surface[x,y,time]   
+            long_name: Vegetation @ Ground or water surface
+            units: %
+            abbreviation: VEG
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_2-0-4_L1
+            Grib2_Parameter: 2
+             Grib2_Parameter: 0
+             Grib2_Parameter: 4
+            Grib2_Parameter_Discipline: Land surface products
+            Grib2_Parameter_Category: Vegetation/Biomass
+            Grib2_Parameter_Name: Vegetation
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Vertical_u-component_shear_height_above_ground_layer[x,y,height_above_ground_layer1,time]   
+            long_name: Vertical u-component shear @ Specified height level above ground layer
+            units: 1/s
+            abbreviation: VUCSH
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground_layer1 y x 
+            Grib_Variable_Id: VAR_0-2-15_L103_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 15
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Vertical u-component shear
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Vertical_v-component_shear_height_above_ground_layer[x,y,height_above_ground_layer1,time]   
+            long_name: Vertical v-component shear @ Specified height level above ground layer
+            units: 1/s
+            abbreviation: VVCSH
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground_layer1 y x 
+            Grib_Variable_Id: VAR_0-2-16_L103_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 16
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Vertical v-component shear
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float Vertical_velocity_geometric_isobaric[x,y,isobaric2,time]   
+            long_name: Vertical velocity (geometric) @ Isobaric surface
+            units: m/s
+            abbreviation: DZDT
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric2 y x 
+            Grib_Variable_Id: VAR_0-2-9_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 9
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Vertical velocity (geometric)
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float Vertical_velocity_pressure_isobaric[x,y,isobaric1,time]   
+            long_name: Vertical velocity (pressure) @ Isobaric surface
+            units: Pa/s
+            abbreviation: VVEL
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric1 y x 
+            Grib_Variable_Id: VAR_0-2-8_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 8
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Vertical velocity (pressure)
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float Visibility_cloud_tops[x,y,time]   
+            long_name: Visibility @ Level of cloud tops
+            units: m
+            abbreviation: VIS
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-19-0_L3
+            Grib2_Parameter: 0
+             Grib2_Parameter: 19
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Physical atmospheric Properties
+            Grib2_Parameter_Name: Visibility
+            Grib2_Level_Type: 3
+            Grib2_Level_Desc: Level of cloud tops
+            Grib2_Generating_Process_Type: Forecast
+        float Visibility_surface[x,y,time]   
+            long_name: Visibility @ Ground or water surface
+            units: m
+            abbreviation: VIS
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-19-0_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 19
+             Grib2_Parameter: 0
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Physical atmospheric Properties
+            Grib2_Parameter_Name: Visibility
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Water_equivalent_of_accumulated_snow_depth_surface[x,y,time]   
+            long_name: Water equivalent of accumulated snow depth @ Ground or water surface
+            units: kg.m-2
+            abbreviation: WEASD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-1-13_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 1
+             Grib2_Parameter: 13
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Moisture
+            Grib2_Parameter_Name: Water equivalent of accumulated snow depth
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float Wind_speed_gust_surface[x,y,time]   
+            long_name: Wind speed (gust) @ Ground or water surface
+            units: m/s
+            abbreviation: GUST
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-22_L1
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 22
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: Wind speed (gust)
+            Grib2_Level_Type: 1
+            Grib2_Level_Desc: Ground or water surface
+            Grib2_Generating_Process_Type: Forecast
+        float u-component_of_wind_isobaric[x,y,isobaric1,time]   
+            long_name: u-component of wind @ Isobaric surface
+            units: m/s
+            abbreviation: UGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric1 y x 
+            Grib_Variable_Id: VAR_0-2-2_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: u-component of wind
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float u-component_of_wind_maximum_wind[x,y,time]   
+            long_name: u-component of wind @ Maximum wind level
+            units: m/s
+            abbreviation: UGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-2_L6
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: u-component of wind
+            Grib2_Level_Type: 6
+            Grib2_Level_Desc: Maximum wind level
+            Grib2_Generating_Process_Type: Forecast
+        float u-component_of_wind_height_above_ground[x,y,height_above_ground4,time]   
+            long_name: u-component of wind @ Specified height level above ground
+            units: m/s
+            abbreviation: UGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground4 y x 
+            Grib_Variable_Id: VAR_0-2-2_L103
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: u-component of wind
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float u-component_of_wind_tropopause[x,y,time]   
+            long_name: u-component of wind @ Tropopause
+            units: m/s
+            abbreviation: UGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-2_L7
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: u-component of wind
+            Grib2_Level_Type: 7
+            Grib2_Level_Desc: Tropopause
+            Grib2_Generating_Process_Type: Forecast
+        float u-component_of_wind_planetary_boundary[x,y,time]   
+            long_name: u-component of wind @ Planetary Boundary Layer
+            units: m/s
+            abbreviation: UGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-2_L220
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: u-component of wind
+            Grib2_Level_Type: 220
+            Grib2_Level_Desc: Planetary Boundary Layer
+            Grib2_Generating_Process_Type: Forecast
+        float u-component_of_wind_pressure_difference_layer[x,y,pressure_difference_layer2,time]   
+            long_name: u-component of wind @ Level at specified pressure difference from ground to level layer
+            units: m/s
+            abbreviation: UGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time pressure_difference_layer2 y x 
+            Grib_Variable_Id: VAR_0-2-2_L108_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 2
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: u-component of wind
+            Grib2_Level_Type: 108
+            Grib2_Level_Desc: Level at specified pressure difference from ground to level
+            Grib2_Generating_Process_Type: Forecast
+        float v-component_of_wind_isobaric[x,y,isobaric1,time]   
+            long_name: v-component of wind @ Isobaric surface
+            units: m/s
+            abbreviation: VGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time isobaric1 y x 
+            Grib_Variable_Id: VAR_0-2-3_L100
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 3
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: v-component of wind
+            Grib2_Level_Type: 100
+            Grib2_Level_Desc: Isobaric surface
+            Grib2_Generating_Process_Type: Forecast
+        float v-component_of_wind_maximum_wind[x,y,time]   
+            long_name: v-component of wind @ Maximum wind level
+            units: m/s
+            abbreviation: VGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-3_L6
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 3
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: v-component of wind
+            Grib2_Level_Type: 6
+            Grib2_Level_Desc: Maximum wind level
+            Grib2_Generating_Process_Type: Forecast
+        float v-component_of_wind_height_above_ground[x,y,height_above_ground4,time]   
+            long_name: v-component of wind @ Specified height level above ground
+            units: m/s
+            abbreviation: VGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time height_above_ground4 y x 
+            Grib_Variable_Id: VAR_0-2-3_L103
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 3
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: v-component of wind
+            Grib2_Level_Type: 103
+            Grib2_Level_Desc: Specified height level above ground
+            Grib2_Generating_Process_Type: Forecast
+        float v-component_of_wind_tropopause[x,y,time]   
+            long_name: v-component of wind @ Tropopause
+            units: m/s
+            abbreviation: VGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-3_L7
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 3
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: v-component of wind
+            Grib2_Level_Type: 7
+            Grib2_Level_Desc: Tropopause
+            Grib2_Generating_Process_Type: Forecast
+        float v-component_of_wind_planetary_boundary[x,y,time]   
+            long_name: v-component of wind @ Planetary Boundary Layer
+            units: m/s
+            abbreviation: VGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time y x 
+            Grib_Variable_Id: VAR_0-2-3_L220
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 3
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: v-component of wind
+            Grib2_Level_Type: 220
+            Grib2_Level_Desc: Planetary Boundary Layer
+            Grib2_Generating_Process_Type: Forecast
+        float v-component_of_wind_pressure_difference_layer[x,y,pressure_difference_layer2,time]   
+            long_name: v-component of wind @ Level at specified pressure difference from ground to level layer
+            units: m/s
+            abbreviation: VGRD
+            missing_value: NaN
+            grid_mapping: LambertConformal_Projection
+            coordinates: reftime time pressure_difference_layer2 y x 
+            Grib_Variable_Id: VAR_0-2-3_L108_layer
+            Grib2_Parameter: 0
+             Grib2_Parameter: 2
+             Grib2_Parameter: 3
+            Grib2_Parameter_Discipline: Meteorological products
+            Grib2_Parameter_Category: Momentum
+            Grib2_Parameter_Name: v-component of wind
+            Grib2_Level_Type: 108
+            Grib2_Level_Desc: Level at specified pressure difference from ground to level
+            Grib2_Generating_Process_Type: Forecast
+
+     33 dimensions:
+        depth_below_surface  Size:1
+            units: m
+            long_name: Depth below land surface
+            positive: down
+            Grib_level_type: 106
+            datum: land surface
+        depth_below_surface_layer  Size:4
+            units: m
+            long_name: Depth below land surface
+            positive: down
+            Grib_level_type: 106
+            datum: land surface
+            bounds: depth_below_surface_layer_bounds
+        depth_below_surface_layer1  Size:1
+            units: m
+            long_name: Depth below land surface
+            positive: down
+            Grib_level_type: 106
+            datum: land surface
+            bounds: depth_below_surface_layer1_bounds
+        depth_below_surface_layer1_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named depth_below_surface_layer1_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        depth_below_surface_layer2  Size:1
+            units: m
+            long_name: Depth below land surface
+            positive: down
+            Grib_level_type: 106
+            datum: land surface
+            bounds: depth_below_surface_layer2_bounds
+        depth_below_surface_layer2_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named depth_below_surface_layer2_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        depth_below_surface_layer_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named depth_below_surface_layer_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        height_above_ground  Size:1
+            units: m
+            long_name: Specified height level above ground
+            positive: up
+            Grib_level_type: 103
+            datum: ground
+        height_above_ground1  Size:2
+            units: m
+            long_name: Specified height level above ground
+            positive: up
+            Grib_level_type: 103
+            datum: ground
+        height_above_ground2  Size:1
+            units: m
+            long_name: Specified height level above ground
+            positive: up
+            Grib_level_type: 103
+            datum: ground
+        height_above_ground3  Size:2
+            units: m
+            long_name: Specified height level above ground
+            positive: up
+            Grib_level_type: 103
+            datum: ground
+        height_above_ground4  Size:2
+            units: m
+            long_name: Specified height level above ground
+            positive: up
+            Grib_level_type: 103
+            datum: ground
+        height_above_ground_layer  Size:1
+            units: m
+            long_name: Specified height level above ground
+            positive: up
+            Grib_level_type: 103
+            datum: ground
+            bounds: height_above_ground_layer_bounds
+        height_above_ground_layer1  Size:1
+            units: m
+            long_name: Specified height level above ground
+            positive: up
+            Grib_level_type: 103
+            datum: ground
+            bounds: height_above_ground_layer1_bounds
+        height_above_ground_layer1_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named height_above_ground_layer1_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        height_above_ground_layer_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named height_above_ground_layer_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        hybrid  Size:1
+            units: sigma
+            long_name: Hybrid level
+            positive: down
+            Grib_level_type: 105
+        isobaric  Size:5
+            units: Pa
+            long_name: Isobaric surface
+            positive: down
+            Grib_level_type: 100
+        isobaric1  Size:39
+            units: Pa
+            long_name: Isobaric surface
+            positive: down
+            Grib_level_type: 100
+        isobaric2  Size:42
+            units: Pa
+            long_name: Isobaric surface
+            positive: down
+            Grib_level_type: 100
+        isobaric_layer  Size:1
+            units: Pa
+            long_name: Isobaric surface
+            positive: down
+            Grib_level_type: 100
+            bounds: isobaric_layer_bounds
+        isobaric_layer_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named isobaric_layer_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        pressure_difference_layer  Size:1
+            units: Pa
+            long_name: Level at specified pressure difference from ground to level
+            positive: up
+            Grib_level_type: 108
+            datum: ground
+            bounds: pressure_difference_layer_bounds
+        pressure_difference_layer1  Size:1
+            units: Pa
+            long_name: Level at specified pressure difference from ground to level
+            positive: up
+            Grib_level_type: 108
+            datum: ground
+            bounds: pressure_difference_layer1_bounds
+        pressure_difference_layer1_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named pressure_difference_layer1_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        pressure_difference_layer2  Size:6
+            units: Pa
+            long_name: Level at specified pressure difference from ground to level
+            positive: up
+            Grib_level_type: 108
+            datum: ground
+            bounds: pressure_difference_layer2_bounds
+        pressure_difference_layer2_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named pressure_difference_layer2_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        pressure_difference_layer_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named pressure_difference_layer_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        sigma_layer  Size:1
+            units: sigma
+            long_name: Sigma level
+            positive: down
+            Grib_level_type: 104
+            bounds: sigma_layer_bounds
+        sigma_layer_bounds_1  Size:2
+[1] "vobjtovarid4: **** WARNING **** I was asked to get a varid for dimension named sigma_layer_bounds_1 BUT this dimension HAS NO DIMVAR! Code will probably fail at this point"
+        time  Size:1
+            units: Hour since 2018-07-04T12:00:00Z
+            standard_name: time
+            long_name: GRIB forecast or observation time
+            calendar: proleptic_gregorian
+        x  Size:614
+            standard_name: projection_x_coordinate
+            units: km
+        y  Size:428
+            standard_name: projection_y_coordinate
+            units: km
+
+    9 global attributes:
+        Originating_or_generating_Center: US National Weather Service, National Centres for Environmental Prediction (NCEP)
+        Originating_or_generating_Subcenter: 0
+        GRIB_table_version: 2,1
+        Type_of_generating_process: Forecast
+        Analysis_or_forecast_generating_process_identifier_defined_by_originating_centre: MESO NAM Model (currently 12 km)
+        file_format: GRIB-2
+        Conventions: CF-1.6
+        history: Read using CDM IOSP GribCollection v3
+        featureType: GRID

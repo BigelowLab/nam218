@@ -11,7 +11,10 @@ difference from what is expected. So this param is used to correct that.}
 POSIXct vector or NULL
 }
 \description{
-Compute the POSIXct timestamps
+As of summer 2020 time has been stored relative to the day of the forecast
+embedded in the units of the time variable.  Prior to that it was relative to
+0001-01-01 which required a 2-day shift to account for some mistakes made
+prior to current conventions.
 }
 \seealso{
 \url{https://github.com/dankelley/oce/issues/738}

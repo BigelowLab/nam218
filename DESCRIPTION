@@ -16,11 +16,10 @@ Imports:
     dplyr,
     readr,
     sp,
-    tibble,
-    xml2
+    tibble
 Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Ben Tupper <btupper@bigelow.org>
 URL: https://github.com/btupper/nam218
 License: MIT + file LICENSE
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
